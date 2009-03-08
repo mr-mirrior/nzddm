@@ -356,6 +356,8 @@ namespace DM.Models
             for (int k = 0; k < VehicleControl.Vehicles.Count; k++)
             {
                 Vehicle v = VehicleControl.Vehicles[k];
+                if (v.Info == null)
+                    continue;
                 TrackGPS gps = v.TrackGPSControl.Tracking;
                 Color oldcl = gps.Color;
                 gps.Color = Color.Navy;
@@ -1618,25 +1620,30 @@ namespace DM.Models
             }
 
             //图例
-            newG.FillRectangle(Brushes.Black, offset, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 + 2, w0 / 6f + 2);
-            newG.FillRectangle(Brushes.Yellow, offset + 1, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0, w0 / 6f);
-            newG.DrawString("超速", ftString, Brushes.Black, offset * 1.05f + w0, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
+            newG.FillRectangle(Brushes.Black, offset, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 *0.3f+ 2, w0 / 6f + 2);
+            newG.FillRectangle(Brushes.Yellow, offset + 1, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0*0.3f, w0 / 6f);
+            newG.DrawString("超速", ftString, Brushes.Black, offset * 1.05f + w0*0.3f, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
             Brush bs;
-            for (int i = 0; i < vehicleName.Count && i < 4; i++)
+            s=g.MeasureString("超速",ftString);
+            float cutline = (newBmp.Width - offset * 1.05f + w0 * 0.3f - s.Width) / 9;
+
+            for (int i = 0; i < vehicleName.Count && i < 8; i++)
             {
-                bs = new SolidBrush(vehicleColor[i]);
-                newG.FillRectangle(Brushes.Black, offset + (i + 2) * multiple, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.8f + 2, w0 / 6f + 2);
-                newG.FillRectangle(bs, offset + (i + 2) * multiple + 1, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.8f, w0 / 6f);
-                newG.DrawString(vehicleName[i], ftString, Brushes.Black, offset * 1.05f + w0 + (i + 2) * multiple - 0.18f * w0, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
+                if (vehicleColor[i].Equals(Color.Black))
+                    continue;
+                bs = new SolidBrush(vehicleColor[i]);                
+                newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f +s.Width+i*cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f + 2, w0 / 6f + 2);
+                newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width + 1+i * cutline, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f, w0 / 6f);
+                newG.DrawString(vehicleName[i], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
             }
-            if (vehicleName.Count > 4)
+            if (vehicleName.Count > 8)
             {
-                for (int i = 0; i < vehicleName.Count && i < 4; i++)
-                {
-                    bs = new SolidBrush(vehicleColor[i + 4]);
-                    newG.FillRectangle(Brushes.Black, offset + (i + 2) * multiple, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.8f + 2, w0 / 6f + 2);
-                    newG.FillRectangle(bs, offset + (i + 2) * multiple + 1, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0, w0 * 0.8f / 6f);
-                    newG.DrawString(vehicleName[i + 4], ftString, Brushes.Black, offset * 1.05f + w0 + (i + 2) * multiple - 0.18f * w0, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
+                for (int i = 0; i < vehicleName.Count-8; i++)
+                {//output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f    output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f
+                    bs = new SolidBrush(vehicleColor[i+4]);
+                    newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f + 2, w0 / 6f + 2);
+                    newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width + 1 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f, w0 / 6f);
+                    newG.DrawString(vehicleName[i], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
                 }
             }
 

@@ -44,7 +44,7 @@ namespace DM.Forms
         {
             InitializeComponent();
             buttons = new Button[] { btnStop0, btnStop1, btnStop2, btnStop3, btnStop4, 
-            btnStop5, btnStop6, btnStop7 };
+            btnStop5, btnStop6, btnStop7,btnStop8,btnStop9,btnStop10,btnStop11,btnStop12,btnStop13,btnStop14,btnStop15 };
             //btnStop0.Click += new EventHandler(btnStop_Click);
             btnStop1.Click += new EventHandler(btnStop_Click);
             btnStop2.Click += new EventHandler(btnStop_Click);
@@ -53,7 +53,14 @@ namespace DM.Forms
             btnStop5.Click += new EventHandler(btnStop_Click);
             btnStop6.Click += new EventHandler(btnStop_Click);
             btnStop7.Click += new EventHandler(btnStop_Click);
-
+            btnStop8.Click += new EventHandler(btnStop_Click);
+            btnStop9.Click += new EventHandler(btnStop_Click);
+            btnStop10.Click += new EventHandler(btnStop_Click);
+            btnStop11.Click += new EventHandler(btnStop_Click);
+            btnStop12.Click += new EventHandler(btnStop_Click);
+            btnStop13.Click += new EventHandler(btnStop_Click);
+            btnStop14.Click += new EventHandler(btnStop_Click);
+            btnStop15.Click += new EventHandler(btnStop_Click);
         }
         public AssignVehicle(int blockid, double designZ, int segmentid)
         {
@@ -66,7 +73,7 @@ namespace DM.Forms
         private void SendVehicle_Load(object sender, EventArgs e)
         {
             //初始化button
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < buttons.Length; i++)
             {
                 lstVehicle.Items.Add("");
                 buttons[i].Location = new Point(buttons[i].Location.X, lstVehicle.Items[i].Position.Y + lstVehicle.Location.Y);
@@ -684,6 +691,7 @@ namespace DM.Forms
                 MessageBox.Show("分配车辆成功！");
             }
         }
+
     }
 
 }
