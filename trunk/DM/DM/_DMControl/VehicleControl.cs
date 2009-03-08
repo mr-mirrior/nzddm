@@ -147,14 +147,22 @@ namespace DM.DMControl
         private List<Vehicle> Translate(List<DB.CarDistribute> lst)
         {
             Color[] cls = new Color[]{
-                Color.Navy, 
-                Color.LightSeaGreen,
-                Color.DarkGreen, 
-                Color.Black, 
-                Color.OrangeRed, 
-                Color.Purple,
-                Color.Goldenrod,
-                Color.Yellow
+                Color.Navy,//.Navy, 
+                Color.LightGreen,//LightSeaGreen,
+                Color.DarkBlue,//DarkGreen, 
+                Color.Black,//Black, 
+                Color.OrangeRed,//OrangeRed, 
+                Color.Purple,//Purple,
+                Color.Goldenrod,//Goldenrod,
+                Color.Yellow,//Yellow
+                Color.SeaGreen,
+                Color.YellowGreen,//FromArgb(0xFFC125),
+                Color.Tomato,//FromArgb(0x40E0D0),
+                Color.Silver,//FromArgb(0x0000FF),
+                Color.PaleGoldenrod,//FromArgb(0x8B636C),
+                Color.Orchid,//FromArgb(0xEE0000),
+                Color.Orange,//(0xFFE4B5),
+                Color.PapayaWhip//.FromArgb(0x000000)
             };
 
             List<Vehicle> vs = new List<Vehicle>();
@@ -167,7 +175,7 @@ namespace DM.DMControl
                 {
                     if (VehicleControl.vehiclesInfo[i].CarID == cd.Carid)
                     {
-                        color = i;
+                        color = i % 16;
                         break;
                     }
                 }
@@ -182,6 +190,44 @@ namespace DM.DMControl
             }
             return vs;
         }
+        //private List<Vehicle> Translate(List<DB.CarDistribute> lst)
+        //{
+        //    Color[] cls = new Color[]{
+        //        Color.Navy, 
+        //        Color.LightSeaGreen,
+        //        Color.DarkGreen, 
+        //        Color.Black, 
+        //        Color.OrangeRed, 
+        //        Color.Purple,
+        //        Color.Goldenrod,
+        //        Color.Yellow
+        //    };
+
+        //    List<Vehicle> vs = new List<Vehicle>();
+        //    if (lst == null)
+        //        return vs;
+        //    foreach (DB.CarDistribute cd in lst)
+        //    {
+        //        int color = 0;
+        //        for (int i = 0; i < VehicleControl.vehiclesInfo.Count; i++)
+        //        {
+        //            if (VehicleControl.vehiclesInfo[i].CarID == cd.Carid)
+        //            {
+        //                color = i;
+        //                break;
+        //            }
+        //        }
+
+        //        Vehicle vk = new Vehicle(cd);
+        //        vk.Owner = this.Owner;
+        //        vk.TrackGPSControl.LoadDB();
+        //        vk.TrackGPSControl.Tracking.Color = cls[color];
+        //        if (cd.IsWorking())
+        //            vk.ListenGPS();
+        //        vs.Add(vk);
+        //    }
+        //    return vs;
+        //}
         private static int VechilePriority(Vehicle v1, Vehicle v2)
         {
             if (v1.Assignment.DTStart < v2.Assignment.DTStart)

@@ -30,6 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnStop8 = new System.Windows.Forms.Button();
+            this.btnStop15 = new System.Windows.Forms.Button();
+            this.btnStop10 = new System.Windows.Forms.Button();
+            this.btnStop11 = new System.Windows.Forms.Button();
+            this.btnStop12 = new System.Windows.Forms.Button();
+            this.btnStop13 = new System.Windows.Forms.Button();
+            this.btnStop14 = new System.Windows.Forms.Button();
+            this.btnStop9 = new System.Windows.Forms.Button();
             this.btnStop0 = new System.Windows.Forms.Button();
             this.btnStop7 = new System.Windows.Forms.Button();
             this.btnStop2 = new System.Windows.Forms.Button();
@@ -59,6 +67,14 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.btnStop8);
+            this.panel1.Controls.Add(this.btnStop15);
+            this.panel1.Controls.Add(this.btnStop10);
+            this.panel1.Controls.Add(this.btnStop11);
+            this.panel1.Controls.Add(this.btnStop12);
+            this.panel1.Controls.Add(this.btnStop13);
+            this.panel1.Controls.Add(this.btnStop14);
+            this.panel1.Controls.Add(this.btnStop9);
             this.panel1.Controls.Add(this.btnStop0);
             this.panel1.Controls.Add(this.btnStop7);
             this.panel1.Controls.Add(this.btnStop2);
@@ -79,24 +95,104 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(434, 531);
+            this.panel1.Size = new System.Drawing.Size(436, 520);
             this.panel1.TabIndex = 4;
+            // 
+            // btnStop8
+            // 
+            this.btnStop8.Location = new System.Drawing.Point(296, 216);
+            this.btnStop8.Name = "btnStop8";
+            this.btnStop8.Size = new System.Drawing.Size(88, 24);
+            this.btnStop8.TabIndex = 24;
+            this.btnStop8.Text = "强制停止(&S)";
+            this.btnStop8.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnStop8.UseVisualStyleBackColor = true;
+            this.btnStop8.Visible = false;
+            // 
+            // btnStop15
+            // 
+            this.btnStop15.Location = new System.Drawing.Point(296, 349);
+            this.btnStop15.Name = "btnStop15";
+            this.btnStop15.Size = new System.Drawing.Size(88, 24);
+            this.btnStop15.TabIndex = 31;
+            this.btnStop15.Text = "强制停止(&S)";
+            this.btnStop15.UseVisualStyleBackColor = true;
+            this.btnStop15.Visible = false;
+            // 
+            // btnStop10
+            // 
+            this.btnStop10.Location = new System.Drawing.Point(296, 255);
+            this.btnStop10.Name = "btnStop10";
+            this.btnStop10.Size = new System.Drawing.Size(88, 24);
+            this.btnStop10.TabIndex = 30;
+            this.btnStop10.Text = "强制停止(&S)";
+            this.btnStop10.UseVisualStyleBackColor = true;
+            this.btnStop10.Visible = false;
+            // 
+            // btnStop11
+            // 
+            this.btnStop11.Location = new System.Drawing.Point(296, 274);
+            this.btnStop11.Name = "btnStop11";
+            this.btnStop11.Size = new System.Drawing.Size(88, 24);
+            this.btnStop11.TabIndex = 29;
+            this.btnStop11.Text = "强制停止(&S)";
+            this.btnStop11.UseVisualStyleBackColor = true;
+            this.btnStop11.Visible = false;
+            // 
+            // btnStop12
+            // 
+            this.btnStop12.Location = new System.Drawing.Point(296, 293);
+            this.btnStop12.Name = "btnStop12";
+            this.btnStop12.Size = new System.Drawing.Size(88, 24);
+            this.btnStop12.TabIndex = 28;
+            this.btnStop12.Text = "强制停止(&S)";
+            this.btnStop12.UseVisualStyleBackColor = true;
+            this.btnStop12.Visible = false;
+            // 
+            // btnStop13
+            // 
+            this.btnStop13.Location = new System.Drawing.Point(296, 313);
+            this.btnStop13.Name = "btnStop13";
+            this.btnStop13.Size = new System.Drawing.Size(88, 24);
+            this.btnStop13.TabIndex = 27;
+            this.btnStop13.Text = "强制停止(&S)";
+            this.btnStop13.UseVisualStyleBackColor = true;
+            this.btnStop13.Visible = false;
+            // 
+            // btnStop14
+            // 
+            this.btnStop14.Location = new System.Drawing.Point(296, 330);
+            this.btnStop14.Name = "btnStop14";
+            this.btnStop14.Size = new System.Drawing.Size(88, 24);
+            this.btnStop14.TabIndex = 26;
+            this.btnStop14.Text = "强制停止(&S)";
+            this.btnStop14.UseVisualStyleBackColor = true;
+            this.btnStop14.Visible = false;
+            // 
+            // btnStop9
+            // 
+            this.btnStop9.Location = new System.Drawing.Point(296, 235);
+            this.btnStop9.Name = "btnStop9";
+            this.btnStop9.Size = new System.Drawing.Size(88, 24);
+            this.btnStop9.TabIndex = 25;
+            this.btnStop9.Text = "强制停止(&S)";
+            this.btnStop9.UseVisualStyleBackColor = true;
+            this.btnStop9.Visible = false;
             // 
             // btnStop0
             // 
-            this.btnStop0.Location = new System.Drawing.Point(317, 62);
+            this.btnStop0.Location = new System.Drawing.Point(296, 63);
             this.btnStop0.Name = "btnStop0";
             this.btnStop0.Size = new System.Drawing.Size(88, 24);
             this.btnStop0.TabIndex = 16;
             this.btnStop0.Text = "强制停止(&S)";
-            this.btnStop0.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnStop0.UseVisualStyleBackColor = true;
             this.btnStop0.Visible = false;
             this.btnStop0.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // btnStop7
             // 
-            this.btnStop7.Location = new System.Drawing.Point(317, 195);
+            this.btnStop7.Location = new System.Drawing.Point(296, 196);
             this.btnStop7.Name = "btnStop7";
             this.btnStop7.Size = new System.Drawing.Size(88, 24);
             this.btnStop7.TabIndex = 23;
@@ -106,7 +202,7 @@
             // 
             // btnStop2
             // 
-            this.btnStop2.Location = new System.Drawing.Point(317, 101);
+            this.btnStop2.Location = new System.Drawing.Point(296, 102);
             this.btnStop2.Name = "btnStop2";
             this.btnStop2.Size = new System.Drawing.Size(88, 24);
             this.btnStop2.TabIndex = 22;
@@ -116,7 +212,7 @@
             // 
             // btnStop3
             // 
-            this.btnStop3.Location = new System.Drawing.Point(317, 120);
+            this.btnStop3.Location = new System.Drawing.Point(296, 121);
             this.btnStop3.Name = "btnStop3";
             this.btnStop3.Size = new System.Drawing.Size(88, 24);
             this.btnStop3.TabIndex = 21;
@@ -126,7 +222,7 @@
             // 
             // btnStop4
             // 
-            this.btnStop4.Location = new System.Drawing.Point(317, 139);
+            this.btnStop4.Location = new System.Drawing.Point(296, 140);
             this.btnStop4.Name = "btnStop4";
             this.btnStop4.Size = new System.Drawing.Size(88, 24);
             this.btnStop4.TabIndex = 20;
@@ -136,7 +232,7 @@
             // 
             // btnStop5
             // 
-            this.btnStop5.Location = new System.Drawing.Point(317, 159);
+            this.btnStop5.Location = new System.Drawing.Point(296, 160);
             this.btnStop5.Name = "btnStop5";
             this.btnStop5.Size = new System.Drawing.Size(88, 24);
             this.btnStop5.TabIndex = 19;
@@ -146,7 +242,7 @@
             // 
             // btnStop6
             // 
-            this.btnStop6.Location = new System.Drawing.Point(317, 176);
+            this.btnStop6.Location = new System.Drawing.Point(296, 177);
             this.btnStop6.Name = "btnStop6";
             this.btnStop6.Size = new System.Drawing.Size(88, 24);
             this.btnStop6.TabIndex = 18;
@@ -156,7 +252,7 @@
             // 
             // btnStop1
             // 
-            this.btnStop1.Location = new System.Drawing.Point(317, 81);
+            this.btnStop1.Location = new System.Drawing.Point(296, 82);
             this.btnStop1.Name = "btnStop1";
             this.btnStop1.Size = new System.Drawing.Size(88, 24);
             this.btnStop1.TabIndex = 17;
@@ -222,7 +318,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(225, 495);
+            this.btnCancel.Location = new System.Drawing.Point(225, 484);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(91, 27);
@@ -234,7 +330,7 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(110, 495);
+            this.btnOK.Location = new System.Drawing.Point(110, 484);
             this.btnOK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(91, 27);
@@ -259,7 +355,7 @@
             this.lstVehicle.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lstVehicle.MultiSelect = false;
             this.lstVehicle.Name = "lstVehicle";
-            this.lstVehicle.Size = new System.Drawing.Size(403, 215);
+            this.lstVehicle.Size = new System.Drawing.Size(403, 422);
             this.lstVehicle.SmallImageList = this.imageList1;
             this.lstVehicle.TabIndex = 4;
             this.lstVehicle.UseCompatibleStateImageBehavior = false;
@@ -304,7 +400,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(434, 531);
+            this.ClientSize = new System.Drawing.Size(436, 520);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -351,6 +447,14 @@
         private System.Windows.Forms.Button btnStop7;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ColumnHeader stop;
+        private System.Windows.Forms.Button btnStop8;
+        private System.Windows.Forms.Button btnStop15;
+        private System.Windows.Forms.Button btnStop10;
+        private System.Windows.Forms.Button btnStop11;
+        private System.Windows.Forms.Button btnStop12;
+        private System.Windows.Forms.Button btnStop13;
+        private System.Windows.Forms.Button btnStop14;
+        private System.Windows.Forms.Button btnStop9;
 
     }
 }
