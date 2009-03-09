@@ -1629,8 +1629,6 @@ namespace DM.Models
 
             for (int i = 0; i < vehicleName.Count && i < 8; i++)
             {
-                if (vehicleColor[i].Equals(Color.Black))
-                    continue;
                 bs = new SolidBrush(vehicleColor[i]);                
                 newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f +s.Width+i*cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f + 2, w0 / 6f + 2);
                 newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width + 1+i * cutline, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f, w0 / 6f);

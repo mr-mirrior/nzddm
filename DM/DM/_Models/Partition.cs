@@ -13,7 +13,6 @@ namespace DM.Models
     /// </summary>
     public class Partition
     {
-//         public Partition() {}
         private Partition() {}
         public Partition(int ID, string NAME, string DESCR) { id = ID; name = NAME; description = DESCR; }
         public Partition(string n) { id = 0; name = n; description = ""; }
