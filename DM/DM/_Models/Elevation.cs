@@ -52,7 +52,6 @@ namespace DM.Models
             {
                 string height = Path.GetFileNameWithoutExtension(name);
                 height = height.Replace('_', '.');
-                //height += "m";
                 return height;
             }
         }
