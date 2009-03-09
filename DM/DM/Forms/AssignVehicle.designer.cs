@@ -360,7 +360,6 @@
             this.lstVehicle.TabIndex = 4;
             this.lstVehicle.UseCompatibleStateImageBehavior = false;
             this.lstVehicle.View = System.Windows.Forms.View.Details;
-            this.lstVehicle.SelectedIndexChanged += new System.EventHandler(this.Vehical_SelectedIndexChanged);
             this.lstVehicle.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.Vehical_ItemCheck);
             // 
             // CarName

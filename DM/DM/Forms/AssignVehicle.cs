@@ -45,7 +45,7 @@ namespace DM.Forms
             InitializeComponent();
             buttons = new Button[] { btnStop0, btnStop1, btnStop2, btnStop3, btnStop4, 
             btnStop5, btnStop6, btnStop7,btnStop8,btnStop9,btnStop10,btnStop11,btnStop12,btnStop13,btnStop14,btnStop15 };
-            //btnStop0.Click += new EventHandler(btnStop_Click);
+            //添加所有按钮的事件
             btnStop1.Click += new EventHandler(btnStop_Click);
             btnStop2.Click += new EventHandler(btnStop_Click);
             btnStop3.Click += new EventHandler(btnStop_Click);
@@ -79,31 +79,23 @@ namespace DM.Forms
                 buttons[i].Location = new Point(buttons[i].Location.X, lstVehicle.Items[i].Position.Y + lstVehicle.Location.Y);
             }
 
-
             //初始化信息条
             lbBlockname.Text = blockName;
             lbPastion.Text = deck.DesignZ.ToString();
             lbDeckName.Text = deck.SegmentName;
-            //在Vehical listView 中显示闲置车辆
+            //在Vehical listView 中显示闲置车辆
             SegmentDAO segmentDAO = SegmentDAO.getInstance();
-            //Segment segment=new Segment();
             List<Segment> segments = new List<Segment>();
             segments = segmentDAO.getSegment(deck.BlockID, deck.DesignZ, deck.SegmentID);
-
-
+            if (segments.Count == 0)
+                return;
+            //取出此仓面
             foreach (Segment s in segments)
             {
                 segment = s;
             }
 
-            if (segments.Count == 0)
-            {
-                MessageBox.Show("无此仓面!");
-                return;
-            }
-
-
-
+            //根据舱面状态来选择显示内容
             if (segment.WorkState == SegmentWorkState.WORK)
             {
                 UpdateData();
@@ -125,24 +117,6 @@ namespace DM.Forms
             {
                 MessageBox.Show("您没选中空闲车辆！");
             }
-            else
-            {
-
-            }
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            //int a = WorkVehical.CheckedItems.Count;
-            ////将选中的被派遣的车辆撤销回到闲置列表
-            //for (int i=0;i<a;i++)
-            //{
-            //    string name = WorkVehical.CheckedItems[0].Text;
-            //    Cars=Cars+name;
-            //    lstVehicle.Items.SetVertex(name);
-            //    WorkVehical.Items.Remove(WorkVehical.CheckedItems[0]);
-            //}
-
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -155,11 +129,11 @@ namespace DM.Forms
 
             if (segment.WorkState == SegmentWorkState.WORK)
             {
-                DialogResult result = MessageBox.Show(
-           "仓面正在运行中，\n" +
-           "添加到此仓面的车辆将立刻开始工作！\n\n" +
-           "按\"是\"确认添加该车，按\"否\"取消操作",
-           "添加车辆", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                 DialogResult result = MessageBox.Show(
+               "仓面正在运行中，\n" +
+               "添加到此仓面的车辆将立刻开始工作！\n\n" +
+               "按\"是\"确认添加该车，按\"否\"取消操作",
+               "添加车辆", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     foreach (ListViewItem item in lstVehicle.CheckedItems)
@@ -235,7 +209,6 @@ namespace DM.Forms
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-
             SegmentDAO segmentDAO = SegmentDAO.getInstance();
             Segment segment = new Segment();
             List<Segment> segments = new List<Segment>();
@@ -287,23 +260,7 @@ namespace DM.Forms
                     DMControl.GPSServer.UpdateDeck();
                     this.Close();
 
-                    //if (segment.WorkState == SegmentWorkState.WORK)
-                    //{
-                    //    UpdateData();
-                    //}
-                    //else if (segment.WorkState == SegmentWorkState.WAIT)
-                    //{
-                    //    UpdateAssignData();
-                    //}
-                    //else if (segment.WorkState == SegmentWorkState.END)
-                    //{
-                    //    UpdateAssignData();
-                    //}
                 }
-
-
-
-
             }
             else if ((CarDistribute_Status)c.Tag == CarDistribute_Status.ASSIGNED)
             {
@@ -331,8 +288,6 @@ namespace DM.Forms
                     return;
                 }
 
-
-
                 if (segment.WorkState == SegmentWorkState.WORK)
                 {
                     UpdateData();
@@ -348,69 +303,27 @@ namespace DM.Forms
             }
 
         }
+
+        /// <summary>
+        /// 返回是否被占有
+        /// </summary>
         private bool IsOccupied(int idx)
         {
             if (idx < 0 || idx >= lstVehicle.Items.Count)
                 return false;
             return lstVehicle.Items[idx].Tag != null;
         }
-        private void CheckStopButtons()
-        {
-            //if (lstVehicle.SelectedItems.Count != 1)
-            //    return;
 
-            //int idx = lstVehicle.SelectedItems[0].Index;
-            //for (int i = 0; i < buttons.Length; i++)
-            //{
-            //    if (idx == i)
-            //    {
-            //        if ((CarDistribute_Status)buttons[i].Tag == CarDistribute_Status.WORK)
-            //        {
-            //            buttons[i].Enabled = true;
-            //            break;
-            //        }
-            //        else if ((CarDistribute_Status)buttons[i].Tag == CarDistribute_Status.ASSIGNED)
-            //        {
-            //            buttons[i].Enabled = true;
-            //            break;
-            //        }
-            //        else if ((CarDistribute_Status)buttons[i].Tag == CarDistribute_Status.ENDWORK)
-            //        {
-            //            buttons[i].Visible = false;
-            //            break;
-            //        }
-            //        else if ((CarDistribute_Status)buttons[i].Tag == CarDistribute_Status.FREE)
-            //        {
-            //            buttons[i].Visible = false;
-            //            break;
-            //        }
-            //        ////     }
-            //        //buttons[i].Visible = true;
-            //        //if (IsOccupied(i))
-            //        //    buttons[i].Enabled = true;
-            //        //else
-            //        //    buttons[i].Enabled = false;
-            //    }
-            //}
-        }
-        private void Vehical_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CheckStopButtons();
-        }
+        /// <summary>
+        /// 仓面在工作状态时更新列表
+        /// </summary>
         private void UpdateData()
         {
-
             lstVehicle.Items.Clear();
             for (int j = 0; j < buttons.Length; j++)
             {
                 buttons[j].Visible = false;
             }
-
-
-            //lbBlockname.Text = blockName;
-            //lbPastion.Text = deck.DesignZ.ToString();
-            //lbDeckName.Text = deck.SegmentName;
-
 
             List<CarInfo> inUsedAtThisDeck = cardisDAO.getCarInfosInThisSegment_inuse(deck.BlockID, deck.DesignZ, deck.SegmentID);
             List<CarDistribute> cds = cardisDAO.getCarDistributeInThisSegment_all(deck.BlockID, deck.DesignZ, deck.SegmentID);
@@ -465,7 +378,7 @@ namespace DM.Forms
 #if DEBUG
                 info = ci.CarID.ToString();
 #endif
-                item.SubItems.AddRange(new string[] { info/* + "|" + ci.ScrollWidth.ToString()*/, ci.GPSHeight.ToString(), status });
+                item.SubItems.AddRange(new string[] { info, ci.GPSHeight.ToString(), status });
                 i++;
             }
 
@@ -482,7 +395,7 @@ namespace DM.Forms
 #if DEBUG
                 info = ci.CarID.ToString();
 #endif
-                item.SubItems.AddRange(new string[] { info/*+ "|" + ci.ScrollWidth.ToString()*/, ci.GPSHeight.ToString(), status });
+                item.SubItems.AddRange(new string[] { info, ci.GPSHeight.ToString(), status });
                 item.Checked = true;
                 item.ForeColor = Color.DarkGray;
                 item.BackColor = Color.WhiteSmoke;
@@ -503,20 +416,17 @@ namespace DM.Forms
 #if DEBUG
                 info = ci.CarID.ToString();
 #endif
-                item.SubItems.AddRange(new string[] { info/* + "|" + ci.ScrollWidth.ToString()*/, ci.GPSHeight.ToString(), status });
+                item.SubItems.AddRange(new string[] { info, ci.GPSHeight.ToString(), status });
                 item.ForeColor = Color.DarkGray;
                 item.BackColor = Color.WhiteSmoke;
                 item.Font = new Font(this.Font, FontStyle.Bold);
                 i++;
             }
             lstVehicle.Items[0].Selected = true;
-            CheckStopButtons();
-
         }
-        //lstVehicle.Items[0].Selected = true;
-        //CheckStopButtons();
-        //}
-
+        /// <summary>
+        /// 舱面在wait&end状态更新显示列表
+        /// </summary>
         private void UpdateAssignData()
         {
             List<CarInfo> inUsedAtThisDeck = cardisDAO.getCarInfosInThisSegment_inuse(deck.BlockID, deck.DesignZ, deck.SegmentID);
@@ -533,9 +443,6 @@ namespace DM.Forms
                 buttons[j].Visible = false;
             }
 
-
-
-            
             //获取没有工作在此仓面的车辆信息
             foreach (CarInfo ci in allInUsedCars)
             {
@@ -574,7 +481,7 @@ namespace DM.Forms
 #if DEBUG
                              info = ci.CarID.ToString();
 #endif
-                             item.SubItems.AddRange(new string[] { info/*+"|"+CarI.ScrollWidth.ToString()*/, ci.GPSHeight.ToString(), status });
+                             item.SubItems.AddRange(new string[] { info, ci.GPSHeight.ToString(), status });
                              i++;
                              break;
                     }
@@ -607,7 +514,7 @@ namespace DM.Forms
                     item.BackColor = Color.WhiteSmoke;
                     item.Font = new Font(this.Font, FontStyle.Bold);
                     string info = ci.ScrollWidth.ToString();
-                    item.SubItems.AddRange(new string[] { info/*+"|"+CarI.ScrollWidth.ToString()*/, ci.GPSHeight.ToString(), status });
+                    item.SubItems.AddRange(new string[] { info, ci.GPSHeight.ToString(), status });
                     other.Add(ci.CarID);
                     i++;
                 }
@@ -630,51 +537,6 @@ namespace DM.Forms
                 i++;
             }
             lstVehicle.Items[0].Selected = true;
-
-            //添加车辆信息
-            //int i = 0;
-            //foreach (CarInfo CarI in allCars)
-            //{
-
-            //    lstVehicle.Items.SetVertex(CarI.CarName);
-            //    ListViewItem item = lstVehicle.Items[i];
-            //    string status = "可分配";
-            //    buttons[i].Tag = CarDistribute_Status.FREE;
-            //    foreach (CarDistribute cd in cds)
-            //    {
-            //        if (cd.Carid == CarI.CarID)
-            //        {
-            //            if (cd.IsAssigned())
-            //            {
-            //                status = "已分配";
-            //                buttons[i].Text = "取消分配(&S)";
-            //                buttons[i].Tag = CarDistribute_Status.ASSIGNED;
-            //                buttons[i].Visible = true;
-            //                break;
-            //            }
-
-            //            else if (cd.IsFinished())
-            //            {
-            //                status = "可分配";
-            //                buttons[i].Tag = CarDistribute_Status.ENDWORK;
-            //                buttons[i].Visible = false;
-            //            }
-            //            else if (cd.IsWorking())
-            //            {
-            //                status = "正在工作，可分配";
-            //                buttons[i].Tag = CarDistribute_Status.WORK;
-            //                buttons[i].Visible = false;
-            //                item.ForeColor = Color.DarkGray;
-            //                item.BackColor = Color.WhiteSmoke;
-            //                item.Font = new Font(this.Font, FontStyle.Bold);
-            //            }
-            //        }
-            //    }
-            //    item.SubItems.AddRange(new string[] { CarI.CarID.ToString()/*+"|"+CarI.ScrollWidth.ToString()*/, CarI.GPSHeight.ToString(), status });
-            //    i++;
-            //}
-            //lstVehicle.Items[0].Selected = true;
-            //CheckStopButtons();
         }
         private void AssignVehicle_FormClosed(object sender, FormClosedEventArgs e)
         {
