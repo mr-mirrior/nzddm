@@ -549,12 +549,12 @@ namespace DM.Models
             Bitmap elev = ElevationImage(out lo, out hi);
 //             roll.Save(@"C:\roll.png", System.Drawing.Imaging.ImageFormat.Png);
 //             elev.Save(@"C:\elev.png", System.Drawing.Imaging.ImageFormat.Png);
-            if (roll == null || elev == null || roll.Width != elev.Width || roll.Height != elev.Height)
+            if (roll == null || elev == null )//|| roll.Width != elev.Width || roll.Height != elev.Height)
             {
                 return null;
             }
-            int width = roll.Width;
-            int height = roll.Height;
+            int width =Math.Min(roll.Width,elev.Width); //roll.Width;
+            int height = Math.Min(roll.Height, elev.Height); //roll.Height;
 
             BitmapData dataRoll, dataElev;
             Rectangle rc = new Rectangle(0, 0, width, height);
@@ -1400,9 +1400,9 @@ namespace DM.Models
             {
                 v.TrackGPSControl.Tracking.Reset();
             }
-#if DEBUG
-            bmp.Save(@"C:\OUTPUT\"+this.DeckInfo.SegmentName+@"\elevation.png", System.Drawing.Imaging.ImageFormat.Png);
-#endif
+//#if DEBUG
+//            bmp.Save(@"C:\OUTPUT\"+this.DeckInfo.SegmentName+@"\elevation.png", System.Drawing.Imaging.ImageFormat.Png);
+//#endif
             return bmp;
         }
         public void DrawPathMap()
@@ -1637,10 +1637,10 @@ namespace DM.Models
             {
                 for (int i = 0; i < vehicleName.Count-8; i++)
                 {//output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f    output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f
-                    bs = new SolidBrush(vehicleColor[i+4]);
+                    bs = new SolidBrush(vehicleColor[i+8]);
                     newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f + 2, w0 / 6f + 2);
                     newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width + 1 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f, w0 / 6f);
-                    newG.DrawString(vehicleName[i], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
+                    newG.DrawString(vehicleName[i+8], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
                 }
             }
 
