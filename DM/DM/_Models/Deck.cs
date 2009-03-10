@@ -400,8 +400,8 @@ namespace DM.Models
 
             unsafe
             {
-                Int32* pp = (Int32*)bd.Scan0.ToPointer();
-                pp = (Int32*)bd.Scan0.ToPointer();
+                int* pp = (int*)bd.Scan0.ToPointer();
+                pp = (int*)bd.Scan0.ToPointer();
                 for (int i = 0; i < bd.Height; i++)
                 {
                     for (int j = 0; j < bd.Width; j++)
@@ -411,7 +411,6 @@ namespace DM.Models
                         //                             System.Diagnostics.Debugger.Break();
                         int cl_idx = -1; //color_dict.IndexOf(cl);
                         for (int k = 0; k < colorDict.Length; k++) { if (colorDict[k] == cl) { cl_idx = k; break; } }
-
                         if (cl_idx == 0)
                         {
                             *(pp + j) = 0;
