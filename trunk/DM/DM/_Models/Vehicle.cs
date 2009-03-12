@@ -11,7 +11,8 @@ using System.Drawing;
 namespace DM.Models
 {
     /// <summary>
-    /// 车辆（压路机）
+    /// 车辆（压路机）
+
     /// </summary>
     public class Vehicle : IDisposable
     {

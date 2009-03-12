@@ -51,8 +51,10 @@ namespace DM.Models
             set { origTP = value; }
         }
         List<Coord3D> filteredTP = new List<Coord3D>(); // 经过筛选的轨迹点，施工坐标
-        List<List<Coord3D>> segmentedTP = new List<List<Coord3D>>();   // 分段的坐标，施工坐标，未段内筛选
-        List<List<Coord3D>> filteredSeg = new List<List<Coord3D>>();    // 经过段内筛选的分段坐标，施工坐标
+        List<List<Coord3D>> segmentedTP = new List<List<Coord3D>>();   // 分段的坐标，施工坐标，未段内筛选
+
+        List<List<Coord3D>> filteredSeg = new List<List<Coord3D>>();    // 经过段内筛选的分段坐标，施工坐标
+
         List<List<Coord3D>> screenSeg = new List<List<Coord3D>>();     // 经过2次筛选的屏幕坐标
         List<List<Coord3D>> screenSegFiltered = new List<List<Coord3D>>();     // 经过2次筛选的屏幕坐标
 
@@ -184,7 +186,8 @@ namespace DM.Models
                 //System.Diagnostics.Debug.Print("angle={0:0.00}", angle);
                 if( angle < 180 )
                 {
-                    // 往下
+                    // 往下
+
                     if (s3.Count <= 2)
                     {
                         s2[1] = new Coord3D(s2[1], 1);
@@ -199,7 +202,8 @@ namespace DM.Models
                 }
                 else
                 {
-                    // 往上
+                    // 往上
+
                     if (s1.Count <= 2)
                     {
                         s2[0] = new Coord3D(s2[0], 2);
@@ -255,7 +259,8 @@ namespace DM.Models
                 Vector v = new Vector(filteredTP[i - 1].Plane, filteredTP[i].Plane);
                 Coord3D pt = filteredTP[i + 1];
 
-                // 丢包点筛选
+                // 丢包点筛选
+
                 bool newseg = isDrawingElevation;
                 if( newseg )
                 {
@@ -289,7 +294,8 @@ namespace DM.Models
             }
             //System.Diagnostics.Debug.Print("found segments: {0}", segmentedTP.Count);
         }
-        // 段内筛选
+        // 段内筛选
+
         private void FilterSegments()
         {
             if (segmentedTP.Count == 0)
@@ -543,7 +549,6 @@ namespace DM.Models
 //                     }
 //                 }
 
-
                 float scrSize = (float)owner.Owner.Owner.ScreenSize(0.05);
                 scrSize = Math.Max(scrSize, 0.1f);
                 scrSize = Math.Min(scrSize, 0.8f);
@@ -590,8 +595,10 @@ namespace DM.Models
                 {
                     return;
                 }
-                Coord c1 = lst[lst.Count - 2].Plane;  // 倒数第2点
-                Coord c2 = lst[lst.Count - 1].Plane;  // 最后1点
+                Coord c1 = lst[lst.Count - 2].Plane;  // 倒数第2点
+
+                Coord c2 = lst[lst.Count - 1].Plane;  // 最后1点
+
                 using (Pen p = new Pen(Color.Black, (float)owner.Owner.Owner.ScreenSize(0.5)))
                 {
                     p.EndCap = LineCap.ArrowAnchor;

@@ -69,7 +69,8 @@ namespace DM.DMControl
         public float Altitude;     //海拔
 
         [MarshalAs(UnmanagedType.U1)]
-        public byte WorkFlag;   //高4位为工作状态 0xFx 表示正在碾压, 低四位为GPS定位状态
+        public byte WorkFlag;   //高4位为工作状态 0xFx 表示正在碾压, 低四位为GPS定位状态
+
     }
     //超速报警结构 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -107,7 +108,8 @@ namespace DM.DMControl
         [MarshalAs(UnmanagedType.U1)]
         public byte Type;   //=3
         [MarshalAs(UnmanagedType.U1)]
-        public byte BlockID;   //分区号
+        public byte BlockID;   //分区号
+
         [MarshalAs(UnmanagedType.R4)]
         public float WorkLayer;  //层号
         [MarshalAs(UnmanagedType.U1)]

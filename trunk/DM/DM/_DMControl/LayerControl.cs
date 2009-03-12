@@ -109,7 +109,8 @@ namespace DM.DMControl
             return null;
         }
         #endregion
-        // 返回true：成功
+        // 返回true：成功
+
         // 返回false：已打开该层
         private Views.LayerView current = null;
         public Views.LayerView OpenLayer(Models.PartitionDirectory p, Models.ElevationFile e)
@@ -138,7 +139,8 @@ namespace DM.DMControl
             view.OnActiveTab();
             return view;
         }
-        // 关闭层
+        // 关闭层
+
         public void CloseLayer(Views.LayerView view)
         {
             if (view == null)

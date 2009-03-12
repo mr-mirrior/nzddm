@@ -7,7 +7,8 @@ using DM.Models;
 
 namespace DM.DMControl
 {
-    // 车辆控制，隶属于一某仓面
+    // 车辆控制，隶属于一某仓面
+
     public class VehicleControl: IDisposable
     {
         #region - 静态 -
@@ -147,22 +148,22 @@ namespace DM.DMControl
         private List<Vehicle> Translate(List<DB.CarDistribute> lst)
         {
             Color[] cls = new Color[]{
-                Color.Navy,//.Navy, 
-                Color.LightGreen,//LightSeaGreen,
-                Color.DarkBlue,//DarkGreen, 
-                Color.Black,//Black, 
-                Color.OrangeRed,//OrangeRed, 
-                Color.Purple,//Purple,
-                Color.Goldenrod,//Goldenrod,
-                Color.Yellow,//Yellow
-                Color.SeaGreen,
-                Color.YellowGreen,//FromArgb(0xFFC125),
-                Color.Tomato,//FromArgb(0x40E0D0),
-                Color.Silver,//FromArgb(0x0000FF),
-                Color.PaleGoldenrod,//FromArgb(0x8B636C),
-                Color.Orchid,//FromArgb(0xEE0000),
-                Color.Orange,//(0xFFE4B5),
-                Color.PapayaWhip//.FromArgb(0x000000)
+                Color.Blue,//Navy,//.Navy, 
+                Color.Brown,//LightGreen,//LightSeaGreen,
+                Color.Cyan,//DarkGreen,//DarkGreen, 
+                Color.DarkViolet,//Black,//Black, 
+                Color.SpringGreen,//OrangeRed,//OrangeRed, 
+                Color.Indigo,//Purple,//Purple,
+                Color.GreenYellow,//Goldenrod,//Goldenrod,
+                Color.SeaGreen,//YellowGreen,//Yellow
+                Color.IndianRed,//SeaGreen,
+                Color.LimeGreen,//Brown,//FromArgb(0xFFC125),
+                Color.Magenta,//Tomato,//FromArgb(0x40E0D0),
+                Color.Olive,//Silver,//FromArgb(0x0000FF),
+                Color.Red,//PaleGoldenrod,//FromArgb(0x8B636C),
+                Color.Tomato,//Orchid,//FromArgb(0xEE0000),
+                Color.SteelBlue,//Orange,//(0xFFE4B5),
+                Color.DarkTurquoise//PapayaWhip//.FromArgb(0x000000)
             };
 
             List<Vehicle> vs = new List<Vehicle>();
