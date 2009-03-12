@@ -10,7 +10,8 @@ using System.Xml.Serialization;
 namespace DM.Models
 {
     /// <summary>
-    /// 多边形
+    /// 多边形
+
     /// </summary>
     public class Polygon: IDisposable
     {
@@ -67,9 +68,11 @@ namespace DM.Models
             boundary = new DMRectangle(xmin, ymin, xmax - xmin, ymax - ymin);
         }
 
-        // 实际面积 平方米
+        // 实际面积 平方米
+
         public double ActualArea{get{return Geo.PolygonUtils.AreaOfPolygon(vertex);}}
-        // 屏幕面积 像素数
+        // 屏幕面积 像素数
+
         public double ScreenArea { get { return Geo.PolygonUtils.AreaOfPolygon(screenVertex); } }
         // 实际质心
         public Coord Centroid { get { return Geo.PolygonUtils.CentroidOfPolygon(vertex); } }
@@ -241,7 +244,8 @@ namespace DM.Models
 //             if (!autoCenter)
 //                 g.TranslateTransform((float)-ScreenBoundary.Left, (float)-ScreenBoundary.Top);
 
-            // 填充多边形
+            // 填充多边形
+
             g.FillPath(brFill, gp);
 
 //             // 描边

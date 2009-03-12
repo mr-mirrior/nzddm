@@ -232,7 +232,8 @@ namespace DM.DMControl
             if (decks == null)
                 decks = new List<Deck>();
             Partition p = DMControl.PartitionControl.FromName(deck.Partition.Name);
-            // 不存在该分区，返回
+            // 不存在该分区，返回
+
             if (p == null)
             {
                 //throw new ArgumentException("错误：仓面为空");
@@ -253,7 +254,8 @@ namespace DM.DMControl
 
             Forms.DeckInfo dlg = new DM.Forms.DeckInfo();
 
-            // 如果是新增仓面
+            // 如果是新增仓面
+
             if (dkFound == null || idx == -1)
             {
                 dlg.Deck = deck.DeckInfo;
@@ -299,7 +301,8 @@ namespace DM.DMControl
             return true;
         }
 
-        // 计算该仓面某点的碾压次数，按照屏幕坐标
+        // 计算该仓面某点的碾压次数，按照屏幕坐标
+
         public int RollCount(PointF pt)
         {
             int count = 0;
@@ -354,14 +357,17 @@ namespace DM.DMControl
 
 //             ThicknessMonitor(dk);
 
-            // 0) 检查操作权限
-            // 1) 仓面工作状态检查
+            // 0) 检查操作权限
+
+            // 1) 仓面工作状态检查
+
             if (dk.IsWorking)
             {
                 Utils.MB.Warning("该仓面已经在工作中，请关仓后再试一次");
                 return false;
             }
-            // 2) 检查车辆安排情况
+            // 2) 检查车辆安排情况
+
             DB.CarDistributeDAO daoCar = DB.CarDistributeDAO.getInstance();
             List<DB.CarInfo> info = daoCar.getInusedCars();
             List<DB.CarDistribute> dist = daoCar.getCarDistributeInThisSegment_all(partition.ID, elevation.Height, dk.ID);
@@ -387,7 +393,8 @@ namespace DM.DMControl
             }
 
             // 3) 更新数据库仓面项中的起始时间
-            // 4) 更新车辆安排表项中的起始、结束时间
+            // 4) 更新车辆安排表项中的起始、结束时间
+
             DB.SegmentDAO daoSeg = DB.SegmentDAO.getInstance();
             try
             {
@@ -430,16 +437,20 @@ namespace DM.DMControl
             if (!Utils.MB.OKCancelQ("您确认要关仓吗？\n仓面信息：" + dk.Name))
                 return false;
 
-            // 0) 检查操作权限
-            // 1) 仓面工作状态检查
+            // 0) 检查操作权限
+
+            // 1) 仓面工作状态检查
+
             if (!dk.IsWorking)
             {
                 Utils.MB.Warning("该仓面未开仓，请开仓后再试一次");
                 return false;
             }
-            // 2) 检查车辆安排情况
+            // 2) 检查车辆安排情况
+
             // 3) 更新数据库仓面项中的起始时间
-            // 4) 更新车辆安排表项中的起始、结束时间
+            // 4) 更新车辆安排表项中的起始、结束时间
+
             DB.SegmentDAO dao = DB.SegmentDAO.getInstance();
 
             try

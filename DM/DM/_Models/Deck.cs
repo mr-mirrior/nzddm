@@ -483,9 +483,16 @@ namespace DM.Models
             g = Graphics.FromImage(output);
             g.TranslateTransform((float)-pl.ScreenBoundary.Left, (float)-pl.ScreenBoundary.Top);
             pl.SetDrawClip(g);
-
-
-            Font fft = new Font(ft.FontFamily, 3*(float)owner.ScreenSize(0.356), GraphicsUnit.Pixel);
+            Font fft;
+            try
+            {
+                fft = new Font(new FontFamily("微软雅黑"), 3 * (float)owner.ScreenSize(0.356), GraphicsUnit.Pixel);
+            }
+            catch (System.Exception e)
+            {
+                fft = new Font(new FontFamily("宋体"), 3 * (float)owner.ScreenSize(0.356), GraphicsUnit.Pixel);
+            }
+            
             for (int i = 0; i < nrs.Count; i++)
             {
 //                 bool aa = nrs[i].Vertex.AntiAlias;
@@ -1624,23 +1631,23 @@ namespace DM.Models
             newG.DrawString("超速", ftString, Brushes.Black, offset * 1.05f + w0*0.3f, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
             Brush bs;
             s=g.MeasureString("超速",ftString);
-            float cutline = (newBmp.Width - offset * 1.05f + w0 * 0.3f - s.Width) / 9;
+            float cutline = (newBmp.Width - offset * 1.05f + w0 * 0.3f - s.Width*2) / 9;
 
             for (int i = 0; i < vehicleName.Count && i < 8; i++)
             {
                 bs = new SolidBrush(vehicleColor[i]);                
-                newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f +s.Width+i*cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f + 2, w0 / 6f + 2);
-                newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width + 1+i * cutline, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f, w0 / 6f);
-                newG.DrawString(vehicleName[i], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
+                newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f +s.Width*2+i*cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f + 2, w0 / 6f + 2);
+                newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width*2 + 1+i * cutline, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f, w0 / 6f);
+                newG.DrawString(vehicleName[i], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width*2 + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
             }
             if (vehicleName.Count > 8)
             {
                 for (int i = 0; i < vehicleName.Count-8; i++)
                 {//output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f    output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f
                     bs = new SolidBrush(vehicleColor[i+8]);
-                    newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f + 2, w0 / 6f + 2);
-                    newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width + 1 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f, w0 / 6f);
-                    newG.DrawString(vehicleName[i+8], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
+                    newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width*2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f + 2, w0 / 6f + 2);
+                    newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width*2 + 1 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f, w0 / 6f);
+                    newG.DrawString(vehicleName[i+8], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width*2 + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
                 }
             }
 
