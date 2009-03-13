@@ -57,6 +57,7 @@ namespace DM.Models
 
         List<List<Coord3D>> screenSeg = new List<List<Coord3D>>();     // 经过2次筛选的屏幕坐标
         List<List<Coord3D>> screenSegFiltered = new List<List<Coord3D>>();     // 经过2次筛选的屏幕坐标
+        List<List<Coord3D>> screenSegLibrated = new List<List<Coord3D>>();  //经过振动筛选的屏幕坐标
 
         bool inCurve = true;
         public bool InCurve { get { return inCurve; } set { inCurve = value; } }

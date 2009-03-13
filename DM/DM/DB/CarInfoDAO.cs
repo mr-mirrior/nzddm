@@ -22,7 +22,8 @@ namespace DM.DB
             return myInstance;
         }
 
-        //返回所有车辆信息
+        //返回所有车辆信息
+
         public List<CarInfo> getAllCarInfo(){
             List<CarInfo> carinfos = new List<CarInfo>();
             SqlConnection conn = null;
@@ -40,6 +41,7 @@ namespace DM.DB
                     carinfo.GPSHeight = (Convert.ToDouble(reader["gpsheight"]));
                     carinfo.PhoneNumber = (reader["phonenumber"].ToString());
                     carinfo.ScrollWidth = (Convert.ToDouble(reader["scrollwidth"]));
+                    carinfo.LibrateState = (int)reader["SenseOrganState"];
                     carinfos.Add(carinfo);
                 }                
                 return carinfos;

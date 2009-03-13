@@ -4,21 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
 using System.Data;
+using DM.Models;
 
 namespace DM.DB
 {
-    //仓面工作状态
+    //仓面工作状态
+
     public enum SegmentWorkState
     {
-        WAIT = 0,//等待状态
-        WORK = 1,//工作状态
-        END = 2//结束状态
+        WAIT = 0,//等待状态
+
+        WORK = 1,//工作状态
+
+        END = 2//结束状态
+
     }
     //结束仓面结果
     public enum EndSegmengResult
     {
-        THIS_LAYER_END = 1,//当前层结束
-        ONLY_SEGMENT_END,//只有仓面被结束
+        THIS_LAYER_END = 1,//当前层结束
+
+        ONLY_SEGMENT_END,//只有仓面被结束
+
         END_ERROR//结束失败
     }
     //操作仓面,包含车辆车辆操作
@@ -32,7 +39,8 @@ namespace DM.DB
     {
         NO_SEGMENT = 1,//没有仓面信息
         SUCCESS,//成功
-        FAIL_BUT_SEGMENT_DELETED,//失败,但是删除了仓面信息
+        FAIL_BUT_SEGMENT_DELETED,//失败,但是删除了仓面信息
+
         FAIL//失败
     }
 
@@ -212,6 +220,7 @@ namespace DM.DB
                 //string remark = segment.Remark;
                 string segmentName = segment.SegmentName;
                 Double startZ = segment.StartZ;
+                int librateState = segment.LibrateState;
                 string startDateStr = "'" + startDate.ToString() + "'";
                 string endDateStr = "'" + endDate.ToString() + "'";
                 if (startDate.Equals(DateTime.MinValue))
@@ -222,9 +231,9 @@ namespace DM.DB
                 {
                     endDateStr = "NULL";
                 }
-                sqlTxt = string.Format("insert into segment  (SegmentID, WorkState, BlockID, DesignZ, Vertex, DTStart, DTEnd, MaxSpeed, DesignRollCount, ErrorParam, SpreadZ, DesignDepth, SegmentName,StartZ,pop) values(" +
+                sqlTxt = string.Format("insert into segment  (SegmentID, WorkState, BlockID, DesignZ, Vertex, DTStart, DTEnd, MaxSpeed, DesignRollCount, ErrorParam, SpreadZ, DesignDepth, SegmentName,StartZ,pop,SenseOrganState) values(" +
                     "{0},{1},{2},'{3}','{4}',{5},{6},'{7}','{8}',{9},'{10}','{11}','{12}','{13}','{14}'"
-                    + ")", segmentID, (int)workState, blockID, designZ, vertext, startDateStr, endDateStr, maxSpeed, designRollCount, errorParam, spreadZ, designDepth, segmentName, startZ, pop);
+                    + ")", segmentID, (int)workState, blockID, designZ, vertext, startDateStr, endDateStr, maxSpeed, designRollCount, errorParam, spreadZ, designDepth, segmentName, startZ, pop,librateState);
                 if (DBConnection.executeUpdate(sqlTxt) == 1)
                 {
                     continue;
@@ -241,7 +250,8 @@ namespace DM.DB
         }
 
         /// <summary>
-        /// 得到某分区的某层的全部舱面        public List<Segment> getAllSegments()
+        /// 得到某分区的某层的全部舱面
+        public List<Segment> getAllSegments()
         {
             List<Segment> segments = new List<Segment>();
             SqlConnection connection = null;
@@ -290,6 +300,7 @@ namespace DM.DB
                     segment.POP = -1;
                     if (!reader["POP"].Equals(DBNull.Value) )
                         segment.POP = (double)reader["POP"];
+                    segment.LibrateState = (int)reader["SenseOrganState"];
                     segments.Add(segment);
                 }
                 return segments;
@@ -359,6 +370,7 @@ namespace DM.DB
                     segment.StartZ = startZ;
                     segment.DesignDepth = (double)reader["DESIGNDEPTH"];
                     segment.POP = (double)reader["POP"];
+                    segment.LibrateState = (int)reader["SenseOrganState"];
                     segments.Add(segment);
                 }
                 return segments;
@@ -413,7 +425,7 @@ namespace DM.DB
             segment.StartZ = startZ;
             segment.POP = (double)reader["POP"];
             segment.DesignDepth = (double)reader["DESIGNDEPTH"];
-
+            segment.LibrateState = (int)reader["SenseOrganState"];
             return segment;
         }
         public List<Segment> getSegment(Int32 blockID, Double designZ, Int32 segmentid)
@@ -482,7 +494,8 @@ namespace DM.DB
             }
         }
 
-        // 启动某分区下的某工作层下的全部舱面
+        // 启动某分区下的某工作层下的全部舱面
+
         public Boolean startAllSegments(Int32 blockid, Double designz)
         {
             string sqlTxt = "update segment set workstate=" + (int)SegmentWorkState.WORK + 
@@ -603,7 +616,8 @@ namespace DM.DB
 
                 return EndSegmengResult.ONLY_SEGMENT_END;
 
-                // 查看当前处于非结束状态的segment的数量
+                // 查看当前处于非结束状态的segment的数量
+
 //                 connection = DBConnection.getSqlConnection();
 //                 sqlTxt = "select * from segment where (workstate=" + (int)SegmentWorkState.WAIT +
 //                     " or workstate=" + (int)SegmentWorkState.WORK + ") and blockid=" + blockid + " and designz=" + designZ;
@@ -657,7 +671,8 @@ namespace DM.DB
                 cd.Blockid = (blockid);
                 cd.DesignZ = (designZ);
                 cd.Segmentid = (segmentid);
-                if (CarDistributeDAO.getInstance().startCars(cd, maxSpeed))
+                Segment deck=getSegment( blockid,  designZ,  segmentid)[0];
+                if (CarDistributeDAO.getInstance().startCars(cd, maxSpeed,deck.LibrateState))
                 {
 
                     return SegmentVehicleResult.SUCCESS;
@@ -671,7 +686,8 @@ namespace DM.DB
             }
             return SegmentVehicleResult.SEGMENT_FAIL;
         }
-        ////包含车辆操作的重新启动仓面
+        ////包含车辆操作的重新启动仓面
+
         //public SegmentVehicleResult reStartSegment(Int32 blockid, Double designZ, Int32 segmentid)
         //{
         //    //更新舱面状态.			
@@ -693,7 +709,8 @@ namespace DM.DB
         //    }
         //    return SegmentVehicleResult.SEGMENT_FAIL;
         //}
-        //包含车辆操作的结束仓面
+        //包含车辆操作的结束仓面
+
         public SegmentVehicleResult endSegment(Int32 blockid, Double designZ, Int32 segmentid)
         {
             //结束本仓面全部车辆.		
@@ -703,7 +720,8 @@ namespace DM.DB
             cd.Segmentid = (segmentid);
 
             if (CarDistributeDAO.getInstance().endCars(cd) >= 0)
-            {//成功结束了车辆
+            {//成功结束了车辆
+
                 if (endThisSegment(blockid, designZ, segmentid) != EndSegmengResult.END_ERROR)
                 {
                     return SegmentVehicleResult.SUCCESS;
