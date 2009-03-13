@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0D02E7DE-F9B1-40E4-BFAC-DA0E7B83E9DA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -61,6 +61,7 @@
     <Compile Include="DB\DBconfig.cs" />
     <Compile Include="DB\DBconnectioin.cs" />
     <Compile Include="DB\DebugUtil.cs" />
+    <Compile Include="DB\LibrateInfo.cs" />
     <Compile Include="DB\Segment.cs" />
     <Compile Include="DB\SegmentDAO.cs" />
     <Compile Include="DB\TracePoint.cs" />

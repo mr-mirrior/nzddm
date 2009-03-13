@@ -58,7 +58,7 @@ namespace DM.Models
         List<List<Coord3D>> screenSeg = new List<List<Coord3D>>();     // 经过2次筛选的屏幕坐标
         List<List<Coord3D>> screenSegFiltered = new List<List<Coord3D>>();     // 经过2次筛选的屏幕坐标
         List<List<Coord3D>> screenSegLibrated = new List<List<Coord3D>>(); //经过筛选振动的屏幕坐标
-
+        Color LibratedColor = Color.Gray;
 
         bool inCurve = true;
         public bool InCurve { get { return inCurve; } set { inCurve = value; } }
@@ -424,6 +424,7 @@ namespace DM.Models
                         onelist.Add(lst[i]);
                         previous = lst[i];
                     }
+                    FiterLibrated();
                     //System.Diagnostics.Debug.Print("舍弃超速点{0}个", count);
                     using (Pen p = WidthPen(Color.Black))
                         for (int i = 0; i < lstoflst.Count; i++)
@@ -467,6 +468,16 @@ namespace DM.Models
 
                 scrBoundary = new DMRectangle(rc);
 //             }
+        }
+
+        /// <summary>
+        /// 筛选振动不合格点
+        /// </summary>
+        private void FiterLibrated()
+        {
+            if (this.owner.Owner.WorkState == DM.DB.SegmentWorkState.WAIT)
+                return;
+
         }
         private float WidthPen()
         {
