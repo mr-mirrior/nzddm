@@ -30,5 +30,6 @@ namespace DM.Models
         public int OVERTHICKNESS_DISTANCE = 1; // 米
 
         public bool IS_OVERSPEED_VALID = false;
+        public bool IS_LIBRATE_VALID = true;//是否显示振动
     }
 }
