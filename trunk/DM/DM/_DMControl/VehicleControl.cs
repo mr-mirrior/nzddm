@@ -68,6 +68,14 @@ namespace DM.DMControl
         }
         #endregion
 
+        /*
+        None：	不振
+        High：	高频低振
+        Low：	低频高振
+        Normal：震动	//此值只适用于只有两种状态的碾压机
+         */
+        public enum SenseOrganState { None = 0, High = 1, Low = 2, Normal = 3 };
+
         List<Vehicle> vehicles = new List<Vehicle>();
         Deck owner = null;
         public void Dispose()
