@@ -41,7 +41,7 @@ namespace DM.DB
                     carinfo.GPSHeight = (Convert.ToDouble(reader["gpsheight"]));
                     carinfo.PhoneNumber = (reader["phonenumber"].ToString());
                     carinfo.ScrollWidth = (Convert.ToDouble(reader["scrollwidth"]));
-                    carinfo.LibrateState = (int)reader["SenseOrganState"];
+                    //carinfo.LibrateState = (int)reader["SenseOrganState"];
                     carinfos.Add(carinfo);
                 }                
                 return carinfos;

@@ -53,13 +53,16 @@
             this.lbPastiondsa = new System.Windows.Forms.Label();
             this.lbBlockname = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cbLibrate = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(201, 88);
+            this.label3.Location = new System.Drawing.Point(180, 88);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(116, 17);
             this.label3.TabIndex = 4;
@@ -78,7 +81,7 @@
             // 
             // label11
             // 
-            this.label11.Location = new System.Drawing.Point(386, 187);
+            this.label11.Location = new System.Drawing.Point(422, 187);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(65, 21);
             this.label11.TabIndex = 13;
@@ -98,7 +101,7 @@
             // txDesignDepth
             // 
             this.txDesignDepth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txDesignDepth.Location = new System.Drawing.Point(315, 187);
+            this.txDesignDepth.Location = new System.Drawing.Point(351, 187);
             this.txDesignDepth.Name = "txDesignDepth";
             this.txDesignDepth.Size = new System.Drawing.Size(65, 23);
             this.txDesignDepth.TabIndex = 12;
@@ -158,7 +161,7 @@
             this.tbMaxSpeed.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbMaxSpeed.Location = new System.Drawing.Point(123, 116);
             this.tbMaxSpeed.Name = "tbMaxSpeed";
-            this.tbMaxSpeed.Size = new System.Drawing.Size(71, 23);
+            this.tbMaxSpeed.Size = new System.Drawing.Size(50, 23);
             this.tbMaxSpeed.TabIndex = 6;
             this.tbMaxSpeed.Text = "0";
             this.tbMaxSpeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -179,7 +182,7 @@
             this.tbDesignRollCount.Location = new System.Drawing.Point(123, 85);
             this.tbDesignRollCount.MaxLength = 2;
             this.tbDesignRollCount.Name = "tbDesignRollCount";
-            this.tbDesignRollCount.Size = new System.Drawing.Size(71, 23);
+            this.tbDesignRollCount.Size = new System.Drawing.Size(50, 23);
             this.tbDesignRollCount.TabIndex = 3;
             this.tbDesignRollCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.tbDesignRollCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DesignRollCount_KeyPress);
@@ -227,14 +230,14 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Location = new System.Drawing.Point(12, 159);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(450, 91);
+            this.groupBox1.Size = new System.Drawing.Size(451, 91);
             this.groupBox1.TabIndex = 38;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "碾压高程";
             // 
             // label5
             // 
-            this.label5.Location = new System.Drawing.Point(201, 28);
+            this.label5.Location = new System.Drawing.Point(237, 28);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(98, 21);
             this.label5.TabIndex = 44;
@@ -243,9 +246,11 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbLibrate);
+            this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Location = new System.Drawing.Point(12, 62);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(450, 91);
+            this.groupBox2.Size = new System.Drawing.Size(451, 91);
             this.groupBox2.TabIndex = 39;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "合格判定";
@@ -257,7 +262,7 @@
             this.cbSpeedUnit.Items.AddRange(new object[] {
             "米/秒",
             "千米/小时"});
-            this.cbSpeedUnit.Location = new System.Drawing.Point(201, 116);
+            this.cbSpeedUnit.Location = new System.Drawing.Point(180, 116);
             this.cbSpeedUnit.Name = "cbSpeedUnit";
             this.cbSpeedUnit.Size = new System.Drawing.Size(101, 25);
             this.cbSpeedUnit.TabIndex = 7;
@@ -298,6 +303,29 @@
             this.label4.Size = new System.Drawing.Size(44, 17);
             this.label4.TabIndex = 40;
             this.label4.Text = "分区：";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(298, 25);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(68, 17);
+            this.label9.TabIndex = 44;
+            this.label9.Text = "振动级别：";
+            // 
+            // cbLibrate
+            // 
+            this.cbLibrate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbLibrate.FormattingEnabled = true;
+            this.cbLibrate.Items.AddRange(new object[] {
+            "不振",
+            "高频低振",
+            "低频高振",
+            "振动(只有2种状态的碾压机)"});
+            this.cbLibrate.Location = new System.Drawing.Point(302, 54);
+            this.cbLibrate.Name = "cbLibrate";
+            this.cbLibrate.Size = new System.Drawing.Size(135, 25);
+            this.cbLibrate.TabIndex = 44;
             // 
             // DeckInfo
             // 
@@ -341,6 +369,8 @@
             this.Load += new System.EventHandler(this.OpenDeckInfo_Load);
             this.Shown += new System.EventHandler(this.DeckInfo_Shown);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -373,5 +403,7 @@
         private System.Windows.Forms.Label lbBlockname;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cbLibrate;
+        private System.Windows.Forms.Label label9;
     }
 }

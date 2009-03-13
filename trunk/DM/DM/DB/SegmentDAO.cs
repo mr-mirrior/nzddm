@@ -300,6 +300,7 @@ namespace DM.DB
                     segment.POP = -1;
                     if (!reader["POP"].Equals(DBNull.Value) )
                         segment.POP = (double)reader["POP"];
+                    if (reader["SenseOrganState"] != DBNull.Value)
                     segment.LibrateState = (int)reader["SenseOrganState"];
                     segments.Add(segment);
                 }
@@ -370,6 +371,7 @@ namespace DM.DB
                     segment.StartZ = startZ;
                     segment.DesignDepth = (double)reader["DESIGNDEPTH"];
                     segment.POP = (double)reader["POP"];
+                    if (reader["SenseOrganState"]!=DBNull.Value)
                     segment.LibrateState = (int)reader["SenseOrganState"];
                     segments.Add(segment);
                 }
@@ -425,6 +427,7 @@ namespace DM.DB
             segment.StartZ = startZ;
             segment.POP = (double)reader["POP"];
             segment.DesignDepth = (double)reader["DESIGNDEPTH"];
+            if (reader["SenseOrganState"] != DBNull.Value)
             segment.LibrateState = (int)reader["SenseOrganState"];
             return segment;
         }

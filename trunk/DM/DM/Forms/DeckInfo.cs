@@ -107,6 +107,7 @@ namespace DM.Forms
             }
 #endif
             cbSpeedUnit.SelectedIndex = 1;
+            cbLibrate.SelectedIndex = 1;
             lbBlockname.Text = BlockName;
             lbPastion.Text = deck.DesignZ.ToString();
             this.tbDeckName.Text = deck.SegmentName;
