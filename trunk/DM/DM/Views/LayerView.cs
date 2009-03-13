@@ -301,8 +301,10 @@ namespace DM.Views
         // 多边形选择
         private void CancelPolySelecting() 
         {
-            // 每次取消最后一个选择点
-            // 如果列表中只剩下一个点，或者根本没开始，就完全取消选择状态
+            // 每次取消最后一个选择点
+
+            // 如果列表中只剩下一个点，或者根本没开始，就完全取消选择状态
+
             if (deckSelectPolygon.Count <=1 )
             {
                 isPolySelecting = false;
@@ -317,11 +319,13 @@ namespace DM.Views
 
         //////////////////////////////////////////////////////////////////////////////////
         #region - 属性 -
-        // 是否反走样绘图
+        // 是否反走样绘图
+
         bool smooth = true;
         [DefaultValue(true)]
         public bool Smooth { get { return smooth; } set { smooth = value; MyRefresh(); } }
-        // 放大率
+        // 放大率
+
         double zoom = 10;
         public double Zoom { get { return zoom; } 
             set 
@@ -525,7 +529,8 @@ namespace DM.Views
                 isPainting = false;
             }
         }
-        // 画各个元素
+        // 画各个元素
+
         RectSelector selector = new RectSelector();
         private void DrawRectSelect(Graphics g)
         {
@@ -580,7 +585,8 @@ namespace DM.Views
         }
         private void CheckDeckFocus()
         {
-            // 改到画仓面的同时进行，提高效率
+            // 改到画仓面的同时进行，提高效率
+
 //             Coord cursor = RestoreCoord(cursorPos);
 //             layer.CheckDeckFocus(cursor);
         }
@@ -737,7 +743,8 @@ namespace DM.Views
         public bool IsEqual(string s) { return FullPath.Equals(s, StringComparison.OrdinalIgnoreCase); }
         public bool IsEqual(LayerView lv) { return IsEqual(lv.FullPath); }
         //Models.Deck experiment;
-        // 打开层
+        // 打开层
+
         public bool OpenLayer(Models.PartitionDirectory p, Models.ElevationFile e)
         {
             if (p == null || e == null)
@@ -973,7 +980,8 @@ namespace DM.Views
         // d > 0 往上滚，否则往下滚
         // op = 0: 垂直滚动
         // op = 1: 水平滚动
-        // op = 2: 全方位滚动
+        // op = 2: 全方位滚动
+
         private void RoamStepping(int op, int d) 
         {
 //             if( !AutoScroll ) return;
@@ -997,11 +1005,14 @@ namespace DM.Views
         }
         #endregion
         #region - 放大、旋转 -
-        // d > 0 放大，否则缩小
+        // d > 0 放大，否则缩小
+
         private void ZoomStepping(int deltaPercent) 
         {
-            // ALT+SHIFT+滚轮：大规模放大、缩小
-            // ALT+滚轮：微调放大、缩小
+            // ALT+SHIFT+滚轮：大规模放大、缩小
+
+            // ALT+滚轮：微调放大、缩小
+
 //             double delta = .5;
 //             if (ModifierKeys == (Keys.Control|Keys.Shift))
 //                 delta = 5;

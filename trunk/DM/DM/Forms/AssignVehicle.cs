@@ -146,7 +146,7 @@ namespace DM.Forms
                         thisCardis.Segmentid = deck.SegmentID;
                         thisCardis.Carid = carid;
 
-                        Dresult = cardisDAO.startCar(thisCardis, deck.MaxSpeed);
+                        Dresult = cardisDAO.startCar(thisCardis, deck.MaxSpeed,deck.LibrateState);
                         DMControl.GPSServer.UpdateDeck();
                     }
 
@@ -331,7 +331,8 @@ namespace DM.Forms
             List<CarInfo> InUsedNotAtThisDeck = new List<CarInfo>();
             List<CarInfo> allInUsedCars = CarDistributeDAO.getInstance().getInusedCars();
 
-            //获取没在工作的所有车辆
+            //获取没在工作的所有车辆
+
             foreach (CarInfo ci in allCars)
             {
                 int j = 0;
@@ -348,7 +349,8 @@ namespace DM.Forms
                 }
 
             }
-            //获取没有工作在此仓面的车辆信息
+            //获取没有工作在此仓面的车辆信息
+
             foreach (CarInfo ci in allInUsedCars)
             {
                 int j = 0;
@@ -443,7 +445,8 @@ namespace DM.Forms
                 buttons[j].Visible = false;
             }
 
-            //获取没有工作在此仓面的车辆信息
+            //获取没有工作在此仓面的车辆信息
+
             foreach (CarInfo ci in allInUsedCars)
             {
                 int j = 0;

@@ -166,6 +166,14 @@ namespace DM.DB
         {
             return WorkState == SegmentWorkState.END;
         }
+
+        int librateState;
+
+        public int LibrateState
+        {
+            get { return librateState; }
+            set { librateState = value; }
+        }
         //         public string getSegmentName()
         //         {
         //             return segmentName;

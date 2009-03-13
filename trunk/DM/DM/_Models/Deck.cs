@@ -488,7 +488,7 @@ namespace DM.Models
             {
                 fft = new Font(new FontFamily("微软雅黑"), 3 * (float)owner.ScreenSize(0.356), GraphicsUnit.Pixel);
             }
-            catch (System.Exception e)
+            catch
             {
                 fft = new Font(new FontFamily("宋体"), 3 * (float)owner.ScreenSize(0.356), GraphicsUnit.Pixel);
             }
