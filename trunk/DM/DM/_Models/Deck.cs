@@ -1624,30 +1624,32 @@ namespace DM.Models
                 s = g.MeasureString("三号碾压机", ftString);
                 fa = fa - 0.1f;
             }
-
+            float cutline = (newBmp.Width - offset * 1.05f + w0 * 0.3f - s.Width * 2.6f) / 9;
             //图例
             newG.FillRectangle(Brushes.Black, offset, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 *0.3f+ 2, w0 / 6f + 2);
             newG.FillRectangle(Brushes.Yellow, offset + 1, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0*0.3f, w0 / 6f);
             newG.DrawString("超速", ftString, Brushes.Black, offset * 1.05f + w0*0.3f, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
+            //振动不合格
+            newG.FillRectangle(Brushes.Black, offset, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.3f + 2, w0 / 6f + 2);
+            newG.FillRectangle(Brushes.Gray, offset + 1, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.3f, w0 / 6f);
+            newG.DrawString("振动不合格", ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
             Brush bs;
             s=g.MeasureString("超速",ftString);
-            float cutline = (newBmp.Width - offset * 1.05f + w0 * 0.3f - s.Width*2) / 9;
-
             for (int i = 0; i < vehicleName.Count && i < 8; i++)
             {
-                bs = new SolidBrush(vehicleColor[i]);                
-                newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f +s.Width*2+i*cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f + 2, w0 / 6f + 2);
-                newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width*2 + 1+i * cutline, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f, w0 / 6f);
-                newG.DrawString(vehicleName[i], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width*2 + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
+                bs = new SolidBrush(vehicleColor[i]);
+                newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width * 2.6f + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f + 2, w0 / 6f + 2);
+                newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width * 2.6f + 1 + i * cutline, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 * 0.2f, w0 / 6f);
+                newG.DrawString(vehicleName[i], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width * 2.6f + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
             }
             if (vehicleName.Count > 8)
             {
                 for (int i = 0; i < vehicleName.Count-8; i++)
                 {//output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f    output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f
                     bs = new SolidBrush(vehicleColor[i+8]);
-                    newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width*2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f + 2, w0 / 6f + 2);
-                    newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width*2 + 1 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f, w0 / 6f);
-                    newG.DrawString(vehicleName[i+8], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width*2 + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
+                    newG.FillRectangle(Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width * 2.6f + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f + 2, w0 / 6f + 2);
+                    newG.FillRectangle(bs, offset * 1.05f + w0 * 0.3f + s.Width*2.6f + 1 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.2f, w0 / 6f);
+                    newG.DrawString(vehicleName[i + 8], ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f + s.Width * 2.6f + w0 * 0.2f + 2 + i * cutline, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
                 }
             }
 
