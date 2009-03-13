@@ -107,7 +107,7 @@ namespace DM.Forms
             }
 #endif
             cbSpeedUnit.SelectedIndex = 1;
-            cbLibrate.SelectedIndex = 1;
+            cbLibrate.SelectedIndex = deck.LibrateState;
             lbBlockname.Text = BlockName;
             lbPastion.Text = deck.DesignZ.ToString();
             this.tbDeckName.Text = deck.SegmentName;
@@ -152,6 +152,7 @@ namespace DM.Forms
                     deck.StartZ = Convert.ToDouble(txStartZ.Text);
                     deck.DesignDepth = Convert.ToDouble(txDesignDepth.Text);
                     deck.SegmentName = tbDeckName.Text;
+                    deck.LibrateState = cbLibrate.SelectedIndex;
                 }
                 else
                 {

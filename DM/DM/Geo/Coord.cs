@@ -6,7 +6,8 @@ using System;
 namespace DM.Geo
 {
     /// <summary>
-    /// 基本2D坐标点
+    /// 基本2D坐标点
+
     /// </summary>
     public struct Coord
     {
@@ -100,9 +101,11 @@ namespace DM.Geo
         /*
         X0 = -COS *X - SIN *Y + 46557.7811830799932563179112397188
         Y0 =  SIN *X - COS *Y - 20616.2311146461071871455578251375
-        式中，X、Y为大地坐标，X0、Y0为坝轴线坐标。
+        式中，X、Y为大地坐标，X0、Y0为坝轴线坐标。
 
-        反算公式：
+
+        反算公式：
+
         X = － COS *X0 ＋ SIN *Y0 ＋ 50212.59
         Y = － SIN *X0 － COS *Y0 ＋ 8447
 

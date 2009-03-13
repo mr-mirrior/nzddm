@@ -59,6 +59,7 @@ namespace DM.DB
             return myInstance;
         }
 
+
         //!!!!待修改
         /// <summary>
         /// 更新数据库仓面面积和碾压遍数百分比字段
@@ -232,7 +233,7 @@ namespace DM.DB
                     endDateStr = "NULL";
                 }
                 sqlTxt = string.Format("insert into segment  (SegmentID, WorkState, BlockID, DesignZ, Vertex, DTStart, DTEnd, MaxSpeed, DesignRollCount, ErrorParam, SpreadZ, DesignDepth, SegmentName,StartZ,pop,SenseOrganState) values(" +
-                    "{0},{1},{2},'{3}','{4}',{5},{6},'{7}','{8}',{9},'{10}','{11}','{12}','{13}','{14}'"
+                    "{0},{1},{2},'{3}','{4}',{5},{6},'{7}','{8}',{9},'{10}','{11}','{12}','{13}','{14}',{15}"
                     + ")", segmentID, (int)workState, blockID, designZ, vertext, startDateStr, endDateStr, maxSpeed, designRollCount, errorParam, spreadZ, designDepth, segmentName, startZ, pop,librateState);
                 if (DBConnection.executeUpdate(sqlTxt) == 1)
                 {
