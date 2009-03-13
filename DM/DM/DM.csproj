@@ -62,6 +62,7 @@
     <Compile Include="DB\DBconnectioin.cs" />
     <Compile Include="DB\DebugUtil.cs" />
     <Compile Include="DB\LibrateInfo.cs" />
+    <Compile Include="DB\LibrateInfoDAO.cs" />
     <Compile Include="DB\Segment.cs" />
     <Compile Include="DB\SegmentDAO.cs" />
     <Compile Include="DB\TracePoint.cs" />
