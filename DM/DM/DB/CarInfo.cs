@@ -49,13 +49,13 @@ namespace DM.DB
             get { return phoneNumber; }
             set { phoneNumber = value; }
         }
-        int librateState;
+        //int librateState;
 
-        public int LibrateState
-        {
-            get { return librateState; }
-            set { librateState = value; }
-        }
+        //public int LibrateState
+        //{
+        //    get { return librateState; }
+        //    set { librateState = value; }
+        //}
 //         public string getPhoneNumber()
 //         {
 //             return PhoneNumber;
