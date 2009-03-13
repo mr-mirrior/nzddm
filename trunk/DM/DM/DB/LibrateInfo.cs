@@ -9,15 +9,15 @@ namespace DM.DB
     {
         int carID;
 
-        int CarID
+        public int CarID
         {
             get { return carID; }
             set { carID = value; }
         }
 
-        int state;
+       int state;
 
-       int State
+       public int State
         {
             get { return state; }
             set { state = value; }
