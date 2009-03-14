@@ -182,6 +182,15 @@ namespace DM.Geo
             z = zz;
             v = vv;
         }
+        public Coord3D(double xx, double yy, double zz, double vv, byte t1,DateTime dt)
+        {
+            when = dt;
+            tag1 = t1;
+
+            plane = new Coord(xx, yy);
+            z = zz;
+            v = vv;
+        }
         public Coord3D(Coord c, double zz)
         {
             when = DateTime.MinValue;

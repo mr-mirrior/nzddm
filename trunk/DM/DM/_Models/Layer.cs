@@ -11,7 +11,8 @@ using System.Xml.Serialization;
 namespace DM.Models
 {
     /// <summary>
-    /// 层
+    /// 层
+
     /// </summary>
     public class Layer: IDisposable
     {
@@ -113,7 +114,8 @@ namespace DM.Models
                 if( lst[i].IsEqual(lst[i+1]))
                 {
                     // 这里千万不能用Remove(object)
-                    // 否则会删错对象，期望删除第71，却删除了第一个
+                    // 否则会删错对象，期望删除第71，却删除了第一个
+
                     // 估计和Coord.Equals有关？（未重写）
                     lst.RemoveAt(i);
                     i--;
@@ -150,7 +152,8 @@ namespace DM.Models
             else
             {
                 // 第一次添加层信息
-                // 尝试从数据库读取改层的仓面信息
+                // 尝试从数据库读取改层的仓面信息
+
                 if (dkcontrol.Decks.Count == 0)
                 {
                     dkcontrol.Owner = this;
@@ -180,7 +183,8 @@ namespace DM.Models
                     first = false;
                     continue;
                 }
-                // 如果发现和第一个点相同的点，说明图形封闭
+                // 如果发现和第一个点相同的点，说明图形封闭
+
                 // 添加前面已经统计的点，并开启新统计
                 if( pt.IsEqual(batch.First())  )
                 {
@@ -343,7 +347,8 @@ namespace DM.Models
         public Deck VisibleDeck { get { return DeckControl.GetVisibleDeck(); } }
 
         // 主界面每次MouseMove都会调用Refresh
-        // 所以每次OnPaint都会到这里
+        // 所以每次OnPaint都会到这里
+
         Polygon lastHoverLayer = null;
         public void Draw(Graphics g, Coord scrCursor, bool autoCenter, bool frameonly, Font ft)
         {
@@ -396,7 +401,8 @@ namespace DM.Models
                 }
             }
 
-            // 顺序画仓面，保证最晚的仓面在最上
+            // 顺序画仓面，保证最晚的仓面在最上
+
             foreach (Deck deck in dkcontrol.Decks)
             {
                 deck.Draw(g, frameonly, ft);
@@ -404,7 +410,8 @@ namespace DM.Models
 
             // 层激活：thisHoverLayer != null
             // 仓激活：selectedDeck != null
-            // 仓优先
+            // 仓优先
+
             if (focusedDeck != null)
             {
                 OnMouseLeave(lastHoverLayer, null);
@@ -488,7 +495,8 @@ namespace DM.Models
             foreach (Polygon pl in layers)
             {
                 // 目前只允许对当前层面进行分仓处理
-                // 其他层面只做视觉参考
+                // 其他层面只做视觉参考
+
                 Polygon scrDeck = pl.CutBy(scrCut);
                 if (scrDeck != null && (!pl.Partition.Equals(this.Partition) || !pl.Elevation.Equals(this.Elevation)))
                 {

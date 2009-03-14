@@ -9,8 +9,8 @@ namespace DM.DB
 {
     public class LibrateInfoDAO
     {
-        LibrateInfoDAO dao = new LibrateInfoDAO();
-        public LibrateInfoDAO Instance { get { return dao; } }
+        static LibrateInfoDAO dao = new LibrateInfoDAO();
+        public static LibrateInfoDAO Instance { get { return dao; } }
 
         /// <summary>
         /// 获得此时间段内的所有车辆振动信息
@@ -56,13 +56,14 @@ namespace DM.DB
         public List<LibrateInfo> getLibrateInfosOfthisCar(int carid,DateTime dtstart,DateTime dtend)
         {
             List<LibrateInfo> list = new List<LibrateInfo>();
-            string sqltxt = "select * from SenseOrgan where CarID=" + carid + ", DT between '" + dtstart + "' and '" + dtend + "' order by DT";
+            string sqltxt = "select * from SenseOrgan where CarID=" + carid + "and DT between '" + dtstart + "' and '" + dtend + "' order by DT";
             SqlDataReader reader = DBConnection.executeQuery(DBConnection.getSqlConnection(), sqltxt);
-            LibrateInfo info = new LibrateInfo();
+            LibrateInfo info;
             try
             {
                 while (reader.Read())
                 {
+                    info = new LibrateInfo();
                     info.CarID = (int)reader["CarID"];
                     info.State = (int)reader["State"];
                     info.Dt = (DateTime)reader["DT"];

@@ -1631,7 +1631,7 @@ namespace DM.Models
             newG.DrawString("超速", ftString, Brushes.Black, offset * 1.05f + w0*0.3f, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
             //振动不合格
             newG.FillRectangle(Brushes.Black, offset, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.3f + 2, w0 / 6f + 2);
-            newG.FillRectangle(Brushes.Gray, offset + 1, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.3f, w0 / 6f);
+            newG.FillRectangle(Brushes.Red, offset + 1, 1 + output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 * 0.3f, w0 / 6f);
             newG.DrawString("振动不合格", ftString, Brushes.Black, offset * 1.05f + w0 * 0.3f, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
             Brush bs;
             s=g.MeasureString("超速",ftString);

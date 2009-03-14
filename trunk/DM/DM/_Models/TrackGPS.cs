@@ -33,6 +33,7 @@ namespace DM.Models
                 gpOverspeed.Clear();
                 gpTracking.Clear();
                 gpBand.Clear();
+                //libratedNOlst.Clear();
             }
             screenSeg.Clear();
             screenSegFiltered.Clear();
@@ -98,6 +99,7 @@ namespace DM.Models
         List<GraphicsPath> gpTracking = new List<GraphicsPath>();
         List<GraphicsPath> gpBand = new List<GraphicsPath>();
         List<bool> gpOverspeed = new List<bool>();
+        List<List<Coord3D>> libratedNOlst = new List<List<Coord3D>>();//存放所有振动不合格段
         public void SetTracking(List<Coord3D> pts, double offScrX, double offScrY)
         {
             lock (adding)
@@ -297,7 +299,6 @@ namespace DM.Models
             //System.Diagnostics.Debug.Print("found segments: {0}", segmentedTP.Count);
         }
         // 段内筛选
-        
         private void FilterSegments()
         {
             if (segmentedTP.Count == 0)
@@ -356,6 +357,7 @@ namespace DM.Models
 //             {
                 if (filteredSeg.Count == 0)
                     return;
+                //libratedNOlst.Clear();
                 gpTracking.Clear();
                 gpBand.Clear();
                 gpOverspeed.Clear();
@@ -368,20 +370,22 @@ namespace DM.Models
                     screenSeg[i] = new List<Coord3D>(filteredSeg[i]);
                 }
                 Layer ownerLayer = owner.Owner.Owner;
-
+        
                 for (int i = 0; i < screenSeg.Count; i++)
                 {
                     for (int j = 0; j < screenSeg[i].Count; j++)
                     {
                         Coord c = new Coord(ownerLayer.DamToScreen(screenSeg[i][j].Plane));
                         c = c.Offset(offScrX, offScrY);
-                        screenSeg[i][j] = new Coord3D(c.X, c.Y, screenSeg[i][j].Z, screenSeg[i][j].V, screenSeg[i][j].tag1);
-
+                        screenSeg[i][j] = new Coord3D(c.X, c.Y, screenSeg[i][j].Z, screenSeg[i][j].V, screenSeg[i][j].tag1, filteredSeg[i][j].When);
                         //FilterBoundary(c);
                     }
                 }
-
                 RectangleF rc = new RectangleF();
+               //筛选击震力不合格点
+                List<Timeslice> times = FiterLibrated();
+                List<Coord3D> libratedNO = new List<Coord3D>();
+                
                 foreach (List<Coord3D> lst in screenSeg)
                 {
                     // 筛选超速点
@@ -391,12 +395,33 @@ namespace DM.Models
                     bool overspeeding = (lst[0].V >= owner.Owner.DeckInfo.MaxSpeed);
                     onelist.Add(lst[0]);
                     lstoflst.Add(onelist);
+                    for (int j = 0; j < times.Count; j++)
+                    {
+                        if (lst[0].When < times[j].DtEnd && lst[0].When > times[j].DtStart)
+                        {
+                            libratedNO.Add(lst[0]);
+                        }
+                    }
                     //                 gpOverspeed.SetVertex(overspeeding);
                     Coord3D previous = lst[0];
                     //                 if (lst.Count == 2)
                     //                     System.Diagnostics.Debugger.Break();
                     for (int i = 1; i < lst.Count; i++)
                     {
+                        for (int j = 0; j < times.Count;j++ )
+                        {
+                            if (lst[i].When < times[j].DtEnd && lst[i].When > times[j].DtStart)
+                            {
+                                libratedNO.Add(lst[i]);
+                            }
+                        }
+                        
+                        //foreach (Timeslice t in times)
+                        //{
+                        //    if (lst[i].When < t.DtEnd && lst[0].When > t.DtStart)
+                        //        libratedNO.Add(lst[i]);
+                        //    libratedNOlst.Add(libratedNO);
+                        //}
                         if (lst[i].V >= owner.Owner.DeckInfo.MaxSpeed)
                         {
                             if (!overspeeding)
@@ -424,7 +449,7 @@ namespace DM.Models
                         onelist.Add(lst[i]);
                         previous = lst[i];
                     }
-                    FiterLibrated();
+                    
                     //System.Diagnostics.Debug.Print("舍弃超速点{0}个", count);
                     using (Pen p = WidthPen(Color.Black))
                         for (int i = 0; i < lstoflst.Count; i++)
@@ -443,7 +468,7 @@ namespace DM.Models
                             gpOverspeed.Add(lstoflst[i].Last().V >= owner.Owner.DeckInfo.MaxSpeed);
                         }
                 }
-
+                libratedNOlst.Add(libratedNO);
                 // John, 2009-1-19
                 if (Config.I.IS_OVERSPEED_VALID)
                 {
@@ -464,20 +489,81 @@ namespace DM.Models
                             gpBand.Add(gp.Clone() as GraphicsPath);
                     }
                 }
+
+                //// feiying,09,3,14
+                //if (Config.I.IS_LIBRATE_VALID)
+                //{
+                //    foreach (List<Coord3D> elem in screenSeg)
+                //    {
+                //        GraphicsPath gp = new GraphicsPath();
+                //        PointF[] lines = Geo.DamUtils.Translate(elem);
+                //        gp.AddLines(lines);
+                //        gpBand.Add(gp);
+                //    }
+                //}
+                //else
+                //{
+                //    for (int i = 0; i < gpTracking.Count; i++)
+                //    {
+                //        GraphicsPath gp = gpTracking[i];
+                //        if (!gpOverspeed[i])
+                //            gpBand.Add(gp.Clone() as GraphicsPath);
+                //    }
+                //}
                 // John, 2009-1-19
 
                 scrBoundary = new DMRectangle(rc);
 //             }
         }
 
+        //时间片结构体
+        struct Timeslice
+        {
+            DateTime dtStart;
+
+            public DateTime DtStart
+            {
+                get { return dtStart; }
+                set { dtStart = value; }
+            }
+            DateTime dtEnd;
+
+            public DateTime DtEnd
+            {
+                get { return dtEnd; }
+                set { dtEnd = value; }
+            }
+        }
         /// <summary>
         /// 筛选振动不合格点
         /// </summary>
-        private void FiterLibrated()
+        private List<Timeslice> FiterLibrated()
         {
+            DateTime end;
+            //不合格时间段集合
+            List<Timeslice> times = new List<Timeslice>();
+            Timeslice time = new Timeslice();
             if (this.owner.Owner.WorkState == DM.DB.SegmentWorkState.WAIT)
-                return;
+                return null;
+            else if (this.owner.Assignment.DTEnd==DateTime.MinValue)
+                end=DB.DBCommon.getDate();
+            else 
+                end=this.owner.Assignment.DTEnd;
+            List<DB.LibrateInfo> lstLInfos = DB.LibrateInfoDAO.Instance.getLibrateInfosOfthisCar(this.owner.ID, this.owner.Assignment.DTStart, end);
 
+            for (int i = 0; i < lstLInfos.Count;i++ )
+            {
+                if (lstLInfos[i].State!=this.owner.Owner.DeckInfo.LibrateState)
+                {
+                    time.DtStart = lstLInfos[i].Dt;
+                    if ((i + 1) < lstLInfos.Count)
+                        time.DtEnd = lstLInfos[i + 1].Dt;
+                    else
+                        time.DtEnd = DB.DBCommon.getDate();
+                }
+                times.Add(time);
+            }
+            return times;
         }
         private float WidthPen()
         {
@@ -586,6 +672,19 @@ namespace DM.Models
                         else
                             g.DrawPath(p, gpTracking[i]);
                     }
+                    Pen pl=new Pen(Brushes.Red);
+                    foreach (List<Coord3D> lst in libratedNOlst)
+                    {
+                        PointF[] pf= Geo.DamUtils.Translate(lst);
+                        GraphicsPath path=new GraphicsPath();
+                        for (int i = pf.Length-1; i >0;i-- )
+                        {
+                            path.AddLine(pf[i], pf[i - 1]);
+                        }
+                        
+                        g.DrawPath(pl,path);
+                    }
+                
             }
         }
         public void DrawAnchor(Graphics g)
