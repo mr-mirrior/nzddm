@@ -33,7 +33,7 @@ namespace DM.Models
                 gpOverspeed.Clear();
                 gpTracking.Clear();
                 gpBand.Clear();
-                //libratedNOlst.Clear();
+                libratedTracking.Clear();
             }
             screenSeg.Clear();
             screenSegFiltered.Clear();
@@ -59,7 +59,6 @@ namespace DM.Models
         List<List<Coord3D>> screenSeg = new List<List<Coord3D>>();     // 经过2次筛选的屏幕坐标
         List<List<Coord3D>> screenSegFiltered = new List<List<Coord3D>>();     // 经过2次筛选的屏幕坐标
         List<List<Coord3D>> screenSegLibrated = new List<List<Coord3D>>(); //经过筛选振动的屏幕坐标
-        Color LibratedColor = Color.Gray;
 
         bool inCurve = true;
         public bool InCurve { get { return inCurve; } set { inCurve = value; } }
@@ -100,6 +99,7 @@ namespace DM.Models
         List<GraphicsPath> gpBand = new List<GraphicsPath>();
         List<bool> gpOverspeed = new List<bool>();
         List<List<Coord3D>> libratedNOlst = new List<List<Coord3D>>();//存放所有振动不合格段
+        List<GraphicsPath> libratedTracking = new List<GraphicsPath>();
         public void SetTracking(List<Coord3D> pts, double offScrX, double offScrY)
         {
             lock (adding)
@@ -357,7 +357,7 @@ namespace DM.Models
 //             {
                 if (filteredSeg.Count == 0)
                     return;
-                //libratedNOlst.Clear();
+                libratedTracking.Clear();
                 gpTracking.Clear();
                 gpBand.Clear();
                 gpOverspeed.Clear();
@@ -416,12 +416,6 @@ namespace DM.Models
                             }
                         }
                         
-                        //foreach (Timeslice t in times)
-                        //{
-                        //    if (lst[i].When < t.DtEnd && lst[0].When > t.DtStart)
-                        //        libratedNO.Add(lst[i]);
-                        //    libratedNOlst.Add(libratedNO);
-                        //}
                         if (lst[i].V >= owner.Owner.DeckInfo.MaxSpeed)
                         {
                             if (!overspeeding)
@@ -469,6 +463,18 @@ namespace DM.Models
                         }
                 }
                 libratedNOlst.Add(libratedNO);
+                
+                using (Pen p = WidthPen(Color.Black))
+                    for (int i = 0; i < libratedNOlst.Count; i++)
+                    {
+                        PointF[] pf = Geo.DamUtils.Translate(libratedNOlst[i]);
+                        GraphicsPath path = new GraphicsPath();
+                        screenSegLibrated.Add(libratedNOlst[i]);
+                        if(pf.Length>2)
+                            path.AddLines(pf);
+                        rc = RectangleF.Union(rc, path.GetBounds(new Matrix(), p));
+                        libratedTracking.Add(path);
+                    }
                 // John, 2009-1-19
                 if (Config.I.IS_OVERSPEED_VALID)
                 {
@@ -489,27 +495,6 @@ namespace DM.Models
                             gpBand.Add(gp.Clone() as GraphicsPath);
                     }
                 }
-
-                //// feiying,09,3,14
-                //if (Config.I.IS_LIBRATE_VALID)
-                //{
-                //    foreach (List<Coord3D> elem in screenSeg)
-                //    {
-                //        GraphicsPath gp = new GraphicsPath();
-                //        PointF[] lines = Geo.DamUtils.Translate(elem);
-                //        gp.AddLines(lines);
-                //        gpBand.Add(gp);
-                //    }
-                //}
-                //else
-                //{
-                //    for (int i = 0; i < gpTracking.Count; i++)
-                //    {
-                //        GraphicsPath gp = gpTracking[i];
-                //        if (!gpOverspeed[i])
-                //            gpBand.Add(gp.Clone() as GraphicsPath);
-                //    }
-                //}
                 // John, 2009-1-19
 
                 scrBoundary = new DMRectangle(rc);
@@ -672,19 +657,11 @@ namespace DM.Models
                         else
                             g.DrawPath(p, gpTracking[i]);
                     }
-                    Pen pl=new Pen(Brushes.Red);
-                    foreach (List<Coord3D> lst in libratedNOlst)
+                    Pen pl=new Pen(Brushes.Red,0.5f);
+                    foreach (GraphicsPath path in libratedTracking)
                     {
-                        PointF[] pf= Geo.DamUtils.Translate(lst);
-                        GraphicsPath path=new GraphicsPath();
-                        for (int i = pf.Length-1; i >0;i-- )
-                        {
-                            path.AddLine(pf[i], pf[i - 1]);
-                        }
-                        
-                        g.DrawPath(pl,path);
+                        g.DrawPath(pl, path);
                     }
-                
             }
         }
         public void DrawAnchor(Graphics g)
@@ -809,7 +786,12 @@ namespace DM.Models
                         if (/*!gpOverspeed[i] &&*/ gpBand[i].IsOutlineVisible(scrPoint, p))
                             count++;
                     }
-
+                //using (Pen p = WidthPen(Color.Black))
+                //    for (int i = 0; i < libratedTracking.Count; i++)
+                //    {
+                //        if (/*!gpOverspeed[i] &&*/ libratedTracking[i].IsOutlineVisible(scrPoint, p))
+                //            count++;
+                //    }
                 return count;
             }
         }

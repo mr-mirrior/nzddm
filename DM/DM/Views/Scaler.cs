@@ -39,7 +39,8 @@ namespace DM.Views
             string strUnit = "";
             if (intMeters == 0)
             {
-                // 小于1米
+                // 小于1米
+
                 intMeters = HighDigitOnly(meters, out count);
                 actual = intMeters * Math.Pow(10, -count);
                 switch (count)
@@ -62,7 +63,8 @@ namespace DM.Views
             }
             else
             {
-                // 大于1米
+                // 大于1米
+
                 intMeters = HighDigitOnly((int)intMeters, out count);
                 actual = intMeters * Math.Pow(10, count);
                 switch (count)
