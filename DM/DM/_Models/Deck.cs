@@ -700,6 +700,8 @@ namespace DM.Models
 
                 int[] areas;
                 Bitmap output = CreateRollCountImage(out areas);
+
+                //output.Save("C:\\1.png");
                 areaScale = new double[areas.Length];
 
                 float factor;

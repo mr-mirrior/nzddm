@@ -30,10 +30,13 @@ namespace DM.Models
         {
             lock(sync)
             {
+                gpLibrated.Clear();
                 gpOverspeed.Clear();
                 gpTracking.Clear();
                 gpBand.Clear();
                 libratedTracking.Clear();
+                libratedOKTracking.Clear();
+                screenSegLibrated.Clear();
             }
             screenSeg.Clear();
             screenSegFiltered.Clear();
@@ -98,8 +101,9 @@ namespace DM.Models
         List<GraphicsPath> gpTracking = new List<GraphicsPath>();
         List<GraphicsPath> gpBand = new List<GraphicsPath>();
         List<bool> gpOverspeed = new List<bool>();
-        List<List<Coord3D>> libratedNOlst = new List<List<Coord3D>>();//存放所有振动不合格段
+        List<bool> gpLibrated = new List<bool>();
         List<GraphicsPath> libratedTracking = new List<GraphicsPath>();
+        List<GraphicsPath> libratedOKTracking = new List<GraphicsPath>();
         public void SetTracking(List<Coord3D> pts, double offScrX, double offScrY)
         {
             lock (adding)
@@ -362,7 +366,9 @@ namespace DM.Models
                 gpBand.Clear();
                 gpOverspeed.Clear();
                 screenSegFiltered.Clear();
-                //ResetBoundary();
+                gpLibrated.Clear();
+                libratedOKTracking.Clear();
+                screenSegLibrated.Clear();
 
                 screenSeg = new List<List<Coord3D>>(filteredSeg);
                 for (int i = 0; i < filteredSeg.Count; i++)
@@ -384,38 +390,92 @@ namespace DM.Models
                 RectangleF rc = new RectangleF();
                //筛选击震力不合格点
                 List<Timeslice> times = FiterLibrated();
-                List<Coord3D> libratedNO = new List<Coord3D>();
-                
+                //libratedOK = new List<Coord3D>();
                 foreach (List<Coord3D> lst in screenSeg)
                 {
                     // 筛选超速点
                     //int count = 0;
-                    List<List<Coord3D>> lstoflst = new List<List<Coord3D>>();
                     List<Coord3D> onelist = new List<Coord3D>();
+                    List<List<Coord3D>> lstoflst = new List<List<Coord3D>>();
+                    List<Coord3D> libratedNO = new List<Coord3D>();
+                    List<List<Coord3D>> libratedNOlst = new List<List<Coord3D>>();//存放所有振动不合格段
+                    List<Coord3D> libratedOK = new List<Coord3D>();//存放所有筛选过后振动合格的点
+                    List<List<Coord3D>> libratedOKlst = new List<List<Coord3D>>();//存放所有筛选过后振动合格的点
                     bool overspeeding = (lst[0].V >= owner.Owner.DeckInfo.MaxSpeed);
                     onelist.Add(lst[0]);
                     lstoflst.Add(onelist);
-                    for (int j = 0; j < times.Count; j++)
+                    bool isbreak = false;
+                    if (times.Count > 0)
                     {
-                        if (lst[0].When < times[j].DtEnd && lst[0].When > times[j].DtStart)
+                        for (int j = 0; j < times.Count; j++)
                         {
-                            libratedNO.Add(lst[0]);
+                            if (lst[0].When < times[j].DtEnd && lst[0].When > times[j].DtStart)
+                            {
+                                    libratedNO.Add(lst[0]);
+                                    libratedNOlst.Add(libratedNO);
+                                    isbreak = true;
+                            }
+                            else
+                            {
+                                libratedOK.Add(lst[0]);
+                                libratedOKlst.Add(libratedOK);
+                                isbreak = true;
+                            }
+                            if(isbreak)
+                                break;
                         }
                     }
+                    else
+                    {
+                        libratedOK.Add(lst[0]);
+                        libratedOKlst.Add(libratedOK);
+                    }
+                    isbreak = false;  
                     //                 gpOverspeed.SetVertex(overspeeding);
                     Coord3D previous = lst[0];
                     //                 if (lst.Count == 2)
                     //                     System.Diagnostics.Debugger.Break();
+
+                    
                     for (int i = 1; i < lst.Count; i++)
                     {
-                        for (int j = 0; j < times.Count;j++ )
+                        //筛选各个时间片内的点集合
+                        if(times.Count>0)
                         {
-                            if (lst[i].When < times[j].DtEnd && lst[i].When > times[j].DtStart)
+                            for (int j = 0; j < times.Count; j++)
                             {
-                                libratedNO.Add(lst[i]);
+                                if (lst[i].When < times[j].DtEnd && lst[i].When > times[j].DtStart)
+                                {
+                                    if (lst[i].When - lst[i - 1].When < TimeSpan.FromSeconds(Config.I.LIBRATE_Secends))
+                                    {
+                                        libratedNO.Add(lst[i]);
+                                        isbreak = true;
+                                    }
+                                    else
+                                    {
+                                        libratedNO = new List<Coord3D>();
+                                        libratedNO.Add(lst[i]);
+                                        libratedNOlst.Add(libratedNO);
+                                        isbreak = true;
+                                    }
+                                }
+                                else
+                                {
+                                    libratedOK.Add(lst[i]);
+                                    //libratedOKlst.Add(libratedOK);
+                                    isbreak = true;
+                                }
+                                if (isbreak)
+                                    break;
                             }
                         }
-                        
+                        else
+                        {
+                            libratedOK.Add(lst[i]);
+                            //libratedOKlst.Add(libratedOK);
+                        }
+                        isbreak = false; 
+
                         if (lst[i].V >= owner.Owner.DeckInfo.MaxSpeed)
                         {
                             if (!overspeeding)
@@ -443,7 +503,6 @@ namespace DM.Models
                         onelist.Add(lst[i]);
                         previous = lst[i];
                     }
-                    
                     //System.Diagnostics.Debug.Print("舍弃超速点{0}个", count);
                     using (Pen p = WidthPen(Color.Black))
                         for (int i = 0; i < lstoflst.Count; i++)
@@ -461,22 +520,53 @@ namespace DM.Models
                             gpTracking.Add(gp);
                             gpOverspeed.Add(lstoflst[i].Last().V >= owner.Owner.DeckInfo.MaxSpeed);
                         }
+                    using (Pen p = WidthPen(Color.Black))
+                        for (int i = 0; i < libratedNOlst.Count; i++)
+                        {
+                            PointF[] pf = Geo.DamUtils.Translate(libratedNOlst[i]);
+                            GraphicsPath path = new GraphicsPath();
+                            if (pf.Length > 2)
+                                path.AddLines(pf);
+                            rc = RectangleF.Union(rc, path.GetBounds(new Matrix(), p));
+                            libratedTracking.Add(path);
+                           
+                        }
+                    using (Pen p = WidthPen(Color.Black))
+                        for (int i = 0; i < libratedOKlst.Count; i++)
+                        {
+                            PointF[] pf = Geo.DamUtils.Translate(libratedOKlst[i]);
+                            GraphicsPath path = new GraphicsPath();
+                            if (pf.Length > 2)
+                                path.AddLines(pf);
+                            rc = RectangleF.Union(rc, path.GetBounds(new Matrix(), p));
+                            screenSegLibrated.Add(libratedOKlst[i]);
+                            libratedOKTracking.Add(path);
+                        }
+                    //取出振动合格的点列表放入screenSegLibrated
                 }
-                libratedNOlst.Add(libratedNO);
-                
-                using (Pen p = WidthPen(Color.Black))
-                    for (int i = 0; i < libratedNOlst.Count; i++)
-                    {
-                        PointF[] pf = Geo.DamUtils.Translate(libratedNOlst[i]);
-                        GraphicsPath path = new GraphicsPath();
-                        screenSegLibrated.Add(libratedNOlst[i]);
-                        if(pf.Length>2)
-                            path.AddLines(pf);
-                        rc = RectangleF.Union(rc, path.GetBounds(new Matrix(), p));
-                        libratedTracking.Add(path);
-                    }
-                // John, 2009-1-19
-                if (Config.I.IS_OVERSPEED_VALID)
+               
+                //// John, 2009-1-19
+                //if (Config.I.IS_OVERSPEED_VALID)
+                //{
+                //    foreach (List<Coord3D> elem in screenSeg)
+                //    {
+                //        GraphicsPath gp = new GraphicsPath();
+                //        PointF[] lines = Geo.DamUtils.Translate(elem);
+                //        gp.AddLines(lines);
+                //        gpBand.Add(gp);
+                //    }
+                //}
+                //else
+                //{
+                //    for (int i = 0; i < gpTracking.Count; i++ )
+                //    {
+                //        GraphicsPath gp = gpTracking[i];
+                //        if( !gpOverspeed[i] )
+                //            gpBand.Add(gp.Clone() as GraphicsPath);
+                //    }
+                //}
+               //////////////////////////////////////////////////////////////////feiying
+                if (Config.I.IS_LIBRATE_VALID && Config.I.IS_OVERSPEED_VALID)
                 {
                     foreach (List<Coord3D> elem in screenSeg)
                     {
@@ -486,15 +576,42 @@ namespace DM.Models
                         gpBand.Add(gp);
                     }
                 }
-                else
+                else if (Config.I.IS_LIBRATE_VALID && !Config.I.IS_OVERSPEED_VALID)//只击震力算做遍数超速不算做遍数
                 {
-                    for (int i = 0; i < gpTracking.Count; i++ )
+                    for (int i = 0; i < gpTracking.Count; i++)
                     {
                         GraphicsPath gp = gpTracking[i];
-                        if( !gpOverspeed[i] )
+                        if (!gpOverspeed[i])
                             gpBand.Add(gp.Clone() as GraphicsPath);
                     }
                 }
+                else if (!Config.I.IS_LIBRATE_VALID && Config.I.IS_OVERSPEED_VALID)//只超速算做遍数击震力不算做遍数
+                {
+                    for (int i = 0; i < libratedOKTracking.Count; i++)
+                    {
+                        GraphicsPath gp = libratedOKTracking[i];
+                        gpBand.Add(gp.Clone() as GraphicsPath);
+                    }
+                }
+                else                                                                //全部不计入遍数
+                {
+                    for (int i = 0; i < libratedOKTracking.Count; i++)
+                    {
+                        GraphicsPath gp = libratedOKTracking[i];
+                         gpBand.Add(gp.Clone() as GraphicsPath);
+                    }
+                    //foreach (List<Coord3D> item in screenSegLibrated)
+                    //{
+                    //    if (item.Count < 2)
+                    //        return;
+                    //    GraphicsPath path = new GraphicsPath();
+                    //    PointF[] lines = Geo.DamUtils.Translate(item);
+                    //    path.AddLines(lines);
+                    //    gpBand.Add(path.Clone() as GraphicsPath);
+                    //}
+                }
+               
+
                 // John, 2009-1-19
 
                 scrBoundary = new DMRectangle(rc);

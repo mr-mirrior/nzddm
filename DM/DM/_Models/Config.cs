@@ -19,7 +19,7 @@ namespace DM.Models
         public double BASE_FILTER_METERS = 5; // m, 相邻点距离
         public double BASE_FILTER_SECONDS = 3;  // sec, 相邻点时间间隔
         public string BASE_STATUS = "0";// 状态种类
-
+        public int LIBRATE_Secends = 3000;//多少毫秒之内的算做连续振动不合格
         // 高程筛选
         public double ELEV_FILTER_SPEED = 1.5; // %
         public double ELEV_FILTER_ELEV_LOWER = 0.5; // %
@@ -30,6 +30,7 @@ namespace DM.Models
         public int OVERTHICKNESS_DISTANCE = 1; // 米
 
         public bool IS_OVERSPEED_VALID = false;
-        public bool IS_LIBRATE_VALID = true;//是否显示振动
+        public bool IS_LIBRATE_VALID = false;//振动不合格是否记录遍数
+
     }
 }
