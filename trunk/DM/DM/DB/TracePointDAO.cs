@@ -24,7 +24,8 @@ namespace DM.DB
         //private const String statusLimit = " and status not in (0)";
         //private const String statusLimit = " and status not in (0,1)";
 
-        //取得某辆车最新的一点
+        //取得某辆车最新的一点
+
 //         public TracePoint getTracePoint(Int32 carid){
 //             SqlConnection conn = null;
 //             SqlDataReader reader = null;
@@ -68,13 +69,17 @@ namespace DM.DB
             return "ztracepoint" + string.Format("{0:yyyyMM}", datetime);
         }
 
-        //半路来看正在施工的仓面
+        //半路来看正在施工的仓面
 
 
-        //取得某一个仓面的List<TracePoint>.可能有多辆车,可能跨月。
-        // 按不同车 分列表
+
+        //取得某一个仓面的List<TracePoint>.可能有多辆车,可能跨月。
+
+        // 按不同车 分列表
+
         public List<List<TracePoint>> getHistoryTracePoints(Int32 blockid,Double designz,Int32 segmentid){
-            //得到所有在此舱面工作过的车辆
+            //得到所有在此舱面工作过的车辆
+
             List<List<TracePoint>> tracepointLists = new List<List<TracePoint>>();
             //当前仓面上的车辆
             List<CarDistribute> carDistributes = null;
