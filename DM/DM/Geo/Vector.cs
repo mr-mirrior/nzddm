@@ -124,7 +124,8 @@ namespace DM.Geo
         {
             return new Vector(end, begin);
         }
-        // 这里必须以end为圆心构造新坐标系
+        // 这里必须以end为圆心构造新坐标系
+
         // 2个新的向量为：end -> begin, end -> pt
         // 2D坐标系中，2个向量的相对方向有3种可能性：
         /*     /           \                |

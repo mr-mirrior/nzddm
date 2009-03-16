@@ -50,10 +50,12 @@ namespace DM.Geo
             public enum PointAttribute
             {
                 Unknown = 0,
-                Connection = 1,     // 连接点
+                Connection = 1,     // 连接点
+
                 HVertex = 2,        // 水平方向顶点
                 VVertex = 4,
-                Transition = 8,   // 过渡点
+                Transition = 8,   // 过渡点
+
                 Downing = 0x100,
                 Upping = 0x200
             }

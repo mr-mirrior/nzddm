@@ -438,7 +438,8 @@ namespace DM.Forms
 //             timerOnLoad.Tick += OnTickOnLoad;
 //             timerOnLoad.Start();
         }
-        // 打开层
+        // 打开层
+
         private bool IsInitializing()
         {
             if (thrd == null) return false;
