@@ -33,6 +33,7 @@ namespace DM.Models
                 gpLibrated.Clear();
                 gpOverspeed.Clear();
                 gpTracking.Clear();
+                gpALLNOTracking.Clear();
                 gpBand.Clear();
                 libratedTracking.Clear();
                 libratedOKTracking.Clear();
@@ -99,6 +100,7 @@ namespace DM.Models
                 CreatePath(0, 0);
         }
         List<GraphicsPath> gpTracking = new List<GraphicsPath>();
+        List<GraphicsPath> gpALLNOTracking = new List<GraphicsPath>();
         List<GraphicsPath> gpBand = new List<GraphicsPath>();
         List<bool> gpOverspeed = new List<bool>();
         List<bool> gpLibrated = new List<bool>();
@@ -362,6 +364,7 @@ namespace DM.Models
                 if (filteredSeg.Count == 0)
                     return;
                 libratedTracking.Clear();
+                gpALLNOTracking.Clear();
                 gpTracking.Clear();
                 gpBand.Clear();
                 gpOverspeed.Clear();
@@ -405,6 +408,7 @@ namespace DM.Models
                     onelist.Add(lst[0]);
                     lstoflst.Add(onelist);
                     bool isbreak = false;
+                    bool hasNOlibrated = false;//第一个不合格list开关量
                     if (times.Count > 0)
                     {
                         for (int j = 0; j < times.Count; j++)
@@ -412,17 +416,14 @@ namespace DM.Models
                             if (lst[0].When < times[j].DtEnd && lst[0].When > times[j].DtStart)
                             {
                                     libratedNO.Add(lst[0]);
-                                    libratedNOlst.Add(libratedNO);
+                                    hasNOlibrated = true;
                                     isbreak = true;
                             }
-                            else
-                            {
-                                libratedOK.Add(lst[0]);
-                                libratedOKlst.Add(libratedOK);
-                                isbreak = true;
-                            }
-                            if(isbreak)
-                                break;
+                        }
+                        if (!isbreak)
+                        {
+                            libratedOK.Add(lst[0]);
+                            libratedOKlst.Add(libratedOK);
                         }
                     }
                     else
@@ -430,13 +431,11 @@ namespace DM.Models
                         libratedOK.Add(lst[0]);
                         libratedOKlst.Add(libratedOK);
                     }
-                    isbreak = false;  
-                    //                 gpOverspeed.SetVertex(overspeeding);
-                    Coord3D previous = lst[0];
-                    //                 if (lst.Count == 2)
-                    //                     System.Diagnostics.Debugger.Break();
 
-                    
+                    isbreak = false;
+                    hasNOlibrated = false;
+                    Coord3D previous = lst[0];
+
                     for (int i = 1; i < lst.Count; i++)
                     {
                         //筛选各个时间片内的点集合
@@ -449,30 +448,25 @@ namespace DM.Models
                                     if (lst[i].When - lst[i - 1].When < TimeSpan.FromSeconds(Config.I.LIBRATE_Secends))
                                     {
                                         libratedNO.Add(lst[i]);
+                                        hasNOlibrated = true;
                                         isbreak = true;
                                     }
                                     else
                                     {
+                                        libratedNOlst.Add(libratedNO);
                                         libratedNO = new List<Coord3D>();
                                         libratedNO.Add(lst[i]);
                                         libratedNOlst.Add(libratedNO);
                                         isbreak = true;
                                     }
                                 }
-                                else
-                                {
-                                    libratedOK.Add(lst[i]);
-                                    //libratedOKlst.Add(libratedOK);
-                                    isbreak = true;
-                                }
-                                if (isbreak)
-                                    break;
                             }
+                            if (!isbreak)
+                            libratedOK.Add(lst[i]);
                         }
                         else
                         {
                             libratedOK.Add(lst[i]);
-                            //libratedOKlst.Add(libratedOK);
                         }
                         isbreak = false; 
 
@@ -503,6 +497,10 @@ namespace DM.Models
                         onelist.Add(lst[i]);
                         previous = lst[i];
                     }
+                    if (hasNOlibrated&&(libratedNOlst.Count==0))
+                    {
+                        libratedNOlst.Add(libratedNO);
+                    }
                     //System.Diagnostics.Debug.Print("舍弃超速点{0}个", count);
                     using (Pen p = WidthPen(Color.Black))
                         for (int i = 0; i < lstoflst.Count; i++)
@@ -523,21 +521,22 @@ namespace DM.Models
                     using (Pen p = WidthPen(Color.Black))
                         for (int i = 0; i < libratedNOlst.Count; i++)
                         {
+                            if (libratedNOlst[i].Count < 2)
+                                continue;
                             PointF[] pf = Geo.DamUtils.Translate(libratedNOlst[i]);
                             GraphicsPath path = new GraphicsPath();
-                            if (pf.Length > 2)
-                                path.AddLines(pf);
+                            path.AddLines(pf);
                             rc = RectangleF.Union(rc, path.GetBounds(new Matrix(), p));
                             libratedTracking.Add(path);
-                           
                         }
                     using (Pen p = WidthPen(Color.Black))
                         for (int i = 0; i < libratedOKlst.Count; i++)
                         {
+                            if (libratedOKlst[i].Count < 2)
+                                continue;
                             PointF[] pf = Geo.DamUtils.Translate(libratedOKlst[i]);
                             GraphicsPath path = new GraphicsPath();
-                            if (pf.Length > 2)
-                                path.AddLines(pf);
+                            path.AddLines(pf);
                             rc = RectangleF.Union(rc, path.GetBounds(new Matrix(), p));
                             screenSegLibrated.Add(libratedOKlst[i]);
                             libratedOKTracking.Add(path);
@@ -595,20 +594,73 @@ namespace DM.Models
                 }
                 else                                                                //全部不计入遍数
                 {
-                    for (int i = 0; i < libratedOKTracking.Count; i++)
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ /////////////////////从振动合格的点中筛选超速点、//////////////////
+                    foreach (List<Coord3D> lst in screenSegLibrated)
                     {
-                        GraphicsPath gp = libratedOKTracking[i];
-                         gpBand.Add(gp.Clone() as GraphicsPath);
+                        // 筛选超速点
+                        //int count = 0;
+                        List<Coord3D> onelist = new List<Coord3D>();
+                        List<List<Coord3D>> lstoflst = new List<List<Coord3D>>();
+
+                        bool overspeeding = (lst[0].V >= owner.Owner.DeckInfo.MaxSpeed);
+                        onelist.Add(lst[0]);
+                        lstoflst.Add(onelist);
+
+                        Coord3D previous = lst[0];
+
+                        for (int i = 1; i < lst.Count; i++)
+                        {
+                            if (lst[i].V >= owner.Owner.DeckInfo.MaxSpeed)
+                            {
+                                if (!overspeeding)
+                                {
+                                    onelist = new List<Coord3D>();
+                                    onelist.Add(previous);
+                                    lstoflst.Add(onelist);
+                                    //System.Diagnostics.Debug.Print("未超速->超速");
+                                    //                             gpOverspeed.SetVertex(true);
+                                }
+                                overspeeding = true;
+                            }
+                            else
+                            {
+                                if (overspeeding)
+                                {
+                                    onelist = new List<Coord3D>();
+                                    onelist.Add(previous);
+                                    lstoflst.Add(onelist);
+                                    //System.Diagnostics.Debug.Print("超速->未超速");
+                                    //                             gpOverspeed.SetVertex(false);
+                                }
+                                overspeeding = false;
+                            }
+                            onelist.Add(lst[i]);
+                            previous = lst[i];
+                        }
+
+                        using (Pen p = WidthPen(Color.Black))
+                            for (int i = 0; i < lstoflst.Count; i++)
+                            {
+                                if (lstoflst[i].Count < 2)
+                                    continue;
+                                GraphicsPath gp = new GraphicsPath();
+                                PointF[] plane = Geo.DamUtils.Translate(lstoflst[i]);
+                                //                 if (inCurve)
+                                //                     gp.AddCurve(plane);
+                                //                 else
+                                gp.AddLines(plane);
+                                rc = RectangleF.Union(rc, gp.GetBounds(new Matrix(), p));
+                                gpALLNOTracking.Add(gp);
+                                gpOverspeed.Add(lstoflst[i].Last().V >= owner.Owner.DeckInfo.MaxSpeed);
+                            }
                     }
-                    //foreach (List<Coord3D> item in screenSegLibrated)
-                    //{
-                    //    if (item.Count < 2)
-                    //        return;
-                    //    GraphicsPath path = new GraphicsPath();
-                    //    PointF[] lines = Geo.DamUtils.Translate(item);
-                    //    path.AddLines(lines);
-                    //    gpBand.Add(path.Clone() as GraphicsPath);
-                    //}
+                    for (int i = 0; i < gpALLNOTracking.Count; i++)
+                    {
+                        GraphicsPath gp = gpALLNOTracking[i];
+                        if (!gpOverspeed[i])
+                            gpBand.Add(gp.Clone() as GraphicsPath);
+                    }
                 }
                
 
@@ -616,6 +668,7 @@ namespace DM.Models
 
                 scrBoundary = new DMRectangle(rc);
 //             }
+                //System.Diagnostics.Debug.Print(libratedTracking.Count.ToString());
         }
 
         //时间片结构体
@@ -657,11 +710,17 @@ namespace DM.Models
             {
                 if (lstLInfos[i].State!=this.owner.Owner.DeckInfo.LibrateState)
                 {
+                    time = new Timeslice();
                     time.DtStart = lstLInfos[i].Dt;
                     if ((i + 1) < lstLInfos.Count)
                         time.DtEnd = lstLInfos[i + 1].Dt;
                     else
-                        time.DtEnd = DB.DBCommon.getDate();
+                    {
+                        if (this.owner.Assignment.DTEnd == DateTime.MinValue)
+                            time.DtEnd = DB.DBCommon.getDate();
+                        else
+                            time.DtEnd = this.owner.Assignment.DTEnd;
+                    }
                 }
                 times.Add(time);
             }
@@ -774,11 +833,11 @@ namespace DM.Models
                         else
                             g.DrawPath(p, gpTracking[i]);
                     }
-                    Pen pl=new Pen(Brushes.Red,0.5f);
-                    foreach (GraphicsPath path in libratedTracking)
-                    {
-                        g.DrawPath(pl, path);
-                    }
+                Pen pl = new Pen(Brushes.Red, size);
+                foreach (GraphicsPath path in libratedTracking)
+                {
+                    g.DrawPath(pl, path);
+                }
             }
         }
         public void DrawAnchor(Graphics g)
