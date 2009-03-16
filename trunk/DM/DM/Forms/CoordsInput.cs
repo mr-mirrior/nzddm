@@ -26,6 +26,7 @@ namespace DM.Forms
             InitializeComponent();
         }
         public string Coords { get { return tbCoords.Text; } set { tbCoords.Text = value; UpdateCoords(); TranslateToAxis(); } }
+        public string CoordsNoadd { get { return tbCoords.Text; } set { tbCoords.Text = value; UpdateCoordsNoAdd(); TranslateToAxis(); } }
         public string Comments { get { return tbMark.Text; } set { tbMark.Text = value; } }
 
         private void NotRolling_Load(object sender, EventArgs e)
@@ -116,6 +117,47 @@ namespace DM.Forms
                         v.Add(v.First());
                     nrs.Add(v);
                 }
+            }
+        }
+        private void UpdateCoordsNoAdd()
+        {
+            nrs.Clear();
+            if (tbCoords.Text == null ||
+                tbCoords.Text.Length == 0)
+                return;
+
+            string[] s0 = tbCoords.Text.Split(new char[] { '|' });
+            foreach (string batch in s0)
+            {
+                List<Geo.Coord> v = new List<DM.Geo.Coord>();
+                string[] s1;
+                s1 = batch.Split(new char[] { ';' });
+                foreach (string s2 in s1)
+                {
+                    s2.Trim();
+                    string[] s3;
+                    s3 = s2.Split(new char[] { ',' });
+                    if (s3.Length != 2)
+                    {
+                        continue;
+                    }
+                    s3[0].Trim();
+                    s3[1].Trim();
+
+                    float x, y;
+                    if (float.TryParse(s3[0], out x) &&
+                        float.TryParse(s3[1], out y))
+                    {
+                        v.Add(new DM.Geo.Coord(x, y));
+                    }
+                }
+                nrs.Add(v);
+                //if (v.Count != 0)
+                //{
+                //    if (v.First().Equals(v.Last()) == false)
+                //        v.Add(v.First());
+                //    nrs.Add(v);
+                //}
             }
         }
         private void TranslateToAxis()

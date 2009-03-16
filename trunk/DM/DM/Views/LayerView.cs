@@ -1771,8 +1771,35 @@ namespace DM.Views
                 Utils.MB.Warning("数据库读取失败，请检查系统。");
                 return;
             }
-            dlg.Coords = vtx;
+            string[] areas = vtx.Split('|');
+            if(areas.Length<2)
+            {
+                string[] j = vtx.Trim().Split(';');
+                vtx = string.Empty;
+                for (int i = 0; i < j.Length - 2; i++)
+                {
+                    vtx += j[i].Trim() + ";";
+                }
+            }
+            else
+            {
+                vtx = string.Empty;
+                for(int k=0;k<areas.Length;k++)
+                {
+                    string[] j = areas[k].Trim().Split(';');
+                    if (j.Length < 3)
+                        continue;
+                    for (int i = 0; i < j.Length - 2; i++)
+                    {
+                        vtx += j[i].Trim() + ";";
+                    }
+                    if (k != areas.Length-1)
+                    vtx += "|";
+                }
+            }
+            dlg.CoordsNoadd = vtx;
             dlg.Comments = cmt;
+            //dlg.btnOK.Enabled = false;
             if (dlg.ShowDialog() != DialogResult.OK)
                 return;
 
