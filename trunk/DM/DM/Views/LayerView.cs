@@ -282,7 +282,8 @@ namespace DM.Views
         }
         private void CancelRectSelecting() { isRectSelecting = false; MyRefresh(); }
         bool isPolySelecting = false;
-        private bool IsPolySelecting
+        public bool isDeckInput = false;
+        public bool IsPolySelecting
         {
             get { return isPolySelecting; }
             set
@@ -294,6 +295,14 @@ namespace DM.Views
                     deckSelectPolygon.Clear();
                     UnlockCursor();
                     RestoreCursor();
+                }
+                if (isDeckInput)
+                {
+                    DeckClip(deckSelectPolygon);
+                    deckSelectPolygon.Clear();
+                    //UnlockCursor();
+                    //RestoreCursor();
+                    isDeckInput = false;
                 }
                 isPolySelecting = value;
             }
@@ -722,7 +731,7 @@ namespace DM.Views
         {
             return c.Offset(-moveOffset.X, -moveOffset.Y);
         }
-        private PointF DamToScreen(Geo.Coord pt)
+        public PointF DamToScreen(Geo.Coord pt)
         {
             PointF c = layer.DamToScreen(pt);
             c.X += moveOffset.X;
@@ -1166,7 +1175,7 @@ namespace DM.Views
             //tpp.SetToolTip(this, null);
         }
 
-        List<Coord> deckSelectPolygon = new List<Coord>();
+        public List<Coord> deckSelectPolygon = new List<Coord>();
         private void OnOperationChange(Operations old, Operations newop, ref bool cancel)
         {
             if( old != Operations.DECK_RECT && newop == Operations.DECK_RECT)

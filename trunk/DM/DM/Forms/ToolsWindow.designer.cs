@@ -31,21 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.ckAllPart = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.cbElevations = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cbPartitions = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.btnOpen = new System.Windows.Forms.Button();
-            this.ckPreview = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.cbMode = new System.Windows.Forms.ComboBox();
             this.vistaButton2 = new DM.Utils.VistaButton();
             this.vistaButton1 = new DM.Utils.VistaButton();
             this.btnZuoan = new DM.Utils.VistaButton();
@@ -61,6 +46,21 @@
             this.btn3 = new DM.Utils.VistaButton();
             this.btn1 = new DM.Utils.VistaButton();
             this.btn11 = new DM.Utils.VistaButton();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbElevations = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbPartitions = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnOpen = new System.Windows.Forms.Button();
+            this.ckPreview = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.cbMode = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // toolTip1
@@ -81,168 +81,6 @@
             this.ckAllPart.Visible = false;
             this.ckAllPart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
             // 
-            // label2
-            // 
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label2.Location = new System.Drawing.Point(7, 220);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 2);
-            this.label2.TabIndex = 17;
-            // 
-            // cbElevations
-            // 
-            this.cbElevations.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.cbElevations.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.cbElevations.FormattingEnabled = true;
-            this.cbElevations.Location = new System.Drawing.Point(4, 492);
-            this.cbElevations.Name = "cbElevations";
-            this.cbElevations.Size = new System.Drawing.Size(77, 25);
-            this.cbElevations.Sorted = true;
-            this.cbElevations.TabIndex = 20;
-            this.cbElevations.SelectedIndexChanged += new System.EventHandler(this.cbElevations_SelectedIndexChanged);
-            this.cbElevations.Enter += new System.EventHandler(this.cbPartitions_Enter);
-            this.cbElevations.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
-            this.cbElevations.TextUpdate += new System.EventHandler(this.cbElevations_TextUpdate);
-            this.cbElevations.Click += new System.EventHandler(this.cbPartitions_Click);
-            // 
-            // label3
-            // 
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(1, 472);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 21);
-            this.label3.TabIndex = 19;
-            this.label3.Text = "高程：";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
-            // 
-            // cbPartitions
-            // 
-            this.cbPartitions.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.cbPartitions.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.cbPartitions.FormattingEnabled = true;
-            this.cbPartitions.Location = new System.Drawing.Point(4, 445);
-            this.cbPartitions.Name = "cbPartitions";
-            this.cbPartitions.Size = new System.Drawing.Size(77, 25);
-            this.cbPartitions.TabIndex = 18;
-            this.cbPartitions.SelectedIndexChanged += new System.EventHandler(this.cbPartitions_SelectedIndexChanged);
-            this.cbPartitions.Enter += new System.EventHandler(this.cbPartitions_Enter);
-            this.cbPartitions.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
-            this.cbPartitions.TextUpdate += new System.EventHandler(this.cbPartitions_TextUpdate);
-            this.cbPartitions.Click += new System.EventHandler(this.cbPartitions_Click);
-            // 
-            // label4
-            // 
-            this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(1, 421);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(46, 21);
-            this.label4.TabIndex = 16;
-            this.label4.Text = "分区：";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
-            // 
-            // btnOpen
-            // 
-            this.btnOpen.Location = new System.Drawing.Point(41, 419);
-            this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(41, 23);
-            this.btnOpen.TabIndex = 0;
-            this.btnOpen.Text = "打开";
-            this.btnOpen.UseVisualStyleBackColor = true;
-            this.btnOpen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
-            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
-            this.btnOpen.Enter += new System.EventHandler(this.cbPartitions_Enter);
-            // 
-            // ckPreview
-            // 
-            this.ckPreview.AutoSize = true;
-            this.ckPreview.ForeColor = System.Drawing.Color.Black;
-            this.ckPreview.Location = new System.Drawing.Point(4, 522);
-            this.ckPreview.Name = "ckPreview";
-            this.ckPreview.Size = new System.Drawing.Size(51, 21);
-            this.ckPreview.TabIndex = 21;
-            this.ckPreview.Text = "预览";
-            this.ckPreview.UseVisualStyleBackColor = true;
-            this.ckPreview.Visible = false;
-            this.ckPreview.CheckedChanged += new System.EventHandler(this.ckPreview_CheckedChanged);
-            this.ckPreview.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 226);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 17);
-            this.label1.TabIndex = 24;
-            this.label1.Text = "分仓";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 117);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 17);
-            this.label5.TabIndex = 26;
-            this.label5.Text = "视角";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 7);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(32, 17);
-            this.label6.TabIndex = 27;
-            this.label6.Text = "移动";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 61);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(32, 17);
-            this.label7.TabIndex = 28;
-            this.label7.Text = "缩放";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(8, 283);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(56, 17);
-            this.label8.TabIndex = 29;
-            this.label8.Text = "碾压情况";
-            // 
-            // label9
-            // 
-            this.label9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label9.Location = new System.Drawing.Point(6, 345);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(78, 2);
-            this.label9.TabIndex = 31;
-            // 
-            // label10
-            // 
-            this.label10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label10.Location = new System.Drawing.Point(6, 379);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(78, 2);
-            this.label10.TabIndex = 34;
-            // 
-            // cbMode
-            // 
-            this.cbMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMode.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbMode.FormattingEnabled = true;
-            this.cbMode.Items.AddRange(new object[] {
-            "设计模式",
-            "查询模式"});
-            this.cbMode.Location = new System.Drawing.Point(6, 386);
-            this.cbMode.Name = "cbMode";
-            this.cbMode.Size = new System.Drawing.Size(75, 25);
-            this.cbMode.TabIndex = 35;
-            this.cbMode.SelectedIndexChanged += new System.EventHandler(this.cbMode_SelectedIndexChanged);
-            // 
             // vistaButton2
             // 
             this.vistaButton2.BackColor = System.Drawing.Color.White;
@@ -259,6 +97,7 @@
             this.vistaButton2.Size = new System.Drawing.Size(36, 36);
             this.vistaButton2.TabIndex = 36;
             this.toolTip1.SetToolTip(this.vistaButton2, "分仓");
+            this.vistaButton2.Click += new System.EventHandler(this.vistaButton2_Click);
             // 
             // vistaButton1
             // 
@@ -501,6 +340,168 @@
             this.btn11.TabIndex = 10;
             this.toolTip1.SetToolTip(this.btn11, "左键放大/右键缩小");
             this.btn11.Click += new System.EventHandler(this.btn11_Click);
+            // 
+            // label2
+            // 
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label2.Location = new System.Drawing.Point(7, 220);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(78, 2);
+            this.label2.TabIndex = 17;
+            // 
+            // cbElevations
+            // 
+            this.cbElevations.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.cbElevations.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.cbElevations.FormattingEnabled = true;
+            this.cbElevations.Location = new System.Drawing.Point(4, 492);
+            this.cbElevations.Name = "cbElevations";
+            this.cbElevations.Size = new System.Drawing.Size(77, 25);
+            this.cbElevations.Sorted = true;
+            this.cbElevations.TabIndex = 20;
+            this.cbElevations.SelectedIndexChanged += new System.EventHandler(this.cbElevations_SelectedIndexChanged);
+            this.cbElevations.Enter += new System.EventHandler(this.cbPartitions_Enter);
+            this.cbElevations.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
+            this.cbElevations.TextUpdate += new System.EventHandler(this.cbElevations_TextUpdate);
+            this.cbElevations.Click += new System.EventHandler(this.cbPartitions_Click);
+            // 
+            // label3
+            // 
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(1, 472);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(46, 21);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "高程：";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
+            // 
+            // cbPartitions
+            // 
+            this.cbPartitions.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.cbPartitions.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.cbPartitions.FormattingEnabled = true;
+            this.cbPartitions.Location = new System.Drawing.Point(4, 445);
+            this.cbPartitions.Name = "cbPartitions";
+            this.cbPartitions.Size = new System.Drawing.Size(77, 25);
+            this.cbPartitions.TabIndex = 18;
+            this.cbPartitions.SelectedIndexChanged += new System.EventHandler(this.cbPartitions_SelectedIndexChanged);
+            this.cbPartitions.Enter += new System.EventHandler(this.cbPartitions_Enter);
+            this.cbPartitions.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
+            this.cbPartitions.TextUpdate += new System.EventHandler(this.cbPartitions_TextUpdate);
+            this.cbPartitions.Click += new System.EventHandler(this.cbPartitions_Click);
+            // 
+            // label4
+            // 
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.Location = new System.Drawing.Point(1, 421);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(46, 21);
+            this.label4.TabIndex = 16;
+            this.label4.Text = "分区：";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
+            // 
+            // btnOpen
+            // 
+            this.btnOpen.Location = new System.Drawing.Point(41, 419);
+            this.btnOpen.Name = "btnOpen";
+            this.btnOpen.Size = new System.Drawing.Size(41, 23);
+            this.btnOpen.TabIndex = 0;
+            this.btnOpen.Text = "打开";
+            this.btnOpen.UseVisualStyleBackColor = true;
+            this.btnOpen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
+            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
+            this.btnOpen.Enter += new System.EventHandler(this.cbPartitions_Enter);
+            // 
+            // ckPreview
+            // 
+            this.ckPreview.AutoSize = true;
+            this.ckPreview.ForeColor = System.Drawing.Color.Black;
+            this.ckPreview.Location = new System.Drawing.Point(4, 522);
+            this.ckPreview.Name = "ckPreview";
+            this.ckPreview.Size = new System.Drawing.Size(51, 21);
+            this.ckPreview.TabIndex = 21;
+            this.ckPreview.Text = "预览";
+            this.ckPreview.UseVisualStyleBackColor = true;
+            this.ckPreview.Visible = false;
+            this.ckPreview.CheckedChanged += new System.EventHandler(this.ckPreview_CheckedChanged);
+            this.ckPreview.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(8, 226);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(32, 17);
+            this.label1.TabIndex = 24;
+            this.label1.Text = "分仓";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 117);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 17);
+            this.label5.TabIndex = 26;
+            this.label5.Text = "视角";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 7);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(32, 17);
+            this.label6.TabIndex = 27;
+            this.label6.Text = "移动";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 61);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(32, 17);
+            this.label7.TabIndex = 28;
+            this.label7.Text = "缩放";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(8, 283);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(56, 17);
+            this.label8.TabIndex = 29;
+            this.label8.Text = "碾压情况";
+            // 
+            // label9
+            // 
+            this.label9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label9.Location = new System.Drawing.Point(6, 345);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(78, 2);
+            this.label9.TabIndex = 31;
+            // 
+            // label10
+            // 
+            this.label10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label10.Location = new System.Drawing.Point(6, 379);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(78, 2);
+            this.label10.TabIndex = 34;
+            // 
+            // cbMode
+            // 
+            this.cbMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMode.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cbMode.FormattingEnabled = true;
+            this.cbMode.Items.AddRange(new object[] {
+            "设计模式",
+            "查询模式"});
+            this.cbMode.Location = new System.Drawing.Point(6, 386);
+            this.cbMode.Name = "cbMode";
+            this.cbMode.Size = new System.Drawing.Size(75, 25);
+            this.cbMode.TabIndex = 35;
+            this.cbMode.SelectedIndexChanged += new System.EventHandler(this.cbMode_SelectedIndexChanged);
             // 
             // ToolsWindow
             // 

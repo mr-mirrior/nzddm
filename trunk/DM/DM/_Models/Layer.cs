@@ -522,9 +522,21 @@ namespace DM.Models
                     AddNewDeck(dk);
                     //cutby.SetVertex(cut);
                 }
+                if(isDeckInput)
+                {
+                    Deck dk = new Deck();
+                    scrCut.UpdateBoundary();
+                    dk.Polygon = scrCut;
+                    dk.Partition = pl.Partition;
+                    dk.Elevation = pl.Elevation;
+                    dk.Owner = this;
+                    AddNewDeck(dk);
+                    isDeckInput = false;
+                }
             }
             CreateScreen(canvas);
         }
+        public bool isDeckInput = false;
         public void DeleteCurrentDeck()
         {
             if (VisibleDeck == null)
