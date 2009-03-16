@@ -37,16 +37,16 @@
             // tbCoords
             // 
             this.tbCoords.AcceptsReturn = true;
-            this.tbCoords.Location = new System.Drawing.Point(86, 34);
+            this.tbCoords.Location = new System.Drawing.Point(86, 23);
             this.tbCoords.Multiline = true;
             this.tbCoords.Name = "tbCoords";
-            this.tbCoords.Size = new System.Drawing.Size(389, 62);
+            this.tbCoords.Size = new System.Drawing.Size(389, 79);
             this.tbCoords.TabIndex = 14;
             this.tbCoords.Text = "312.95, -259.26; 315.03, -257.96; 321.55, -254.21; 308.03, -256.99;";
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(12, 34);
+            this.label1.Location = new System.Drawing.Point(12, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 17);
             this.label1.TabIndex = 13;
@@ -57,30 +57,34 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(255, 121);
+            this.btnCancel.Location = new System.Drawing.Point(255, 115);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(91, 27);
             this.btnCancel.TabIndex = 18;
             this.btnCancel.Text = "取消(&C)";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(140, 121);
+            this.btnOK.Location = new System.Drawing.Point(140, 115);
             this.btnOK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(91, 27);
             this.btnOK.TabIndex = 17;
             this.btnOK.Text = "确认(&O)";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // DeckCoordInput
             // 
+            this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(487, 161);
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(487, 154);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.tbCoords);
@@ -89,6 +93,7 @@
             this.MinimizeBox = false;
             this.Name = "DeckCoordInput";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "仓面坐标输入";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -97,9 +102,9 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox tbCoords;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnCancel;
         public System.Windows.Forms.Button btnOK;
+        public System.Windows.Forms.TextBox tbCoords;
     }
 }

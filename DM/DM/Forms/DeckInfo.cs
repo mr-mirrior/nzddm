@@ -107,7 +107,10 @@ namespace DM.Forms
             }
 #endif
             cbSpeedUnit.SelectedIndex = 1;
-            cbLibrate.SelectedIndex = deck.LibrateState;
+            if (deck.DesignRollCount == 0)
+                cbLibrate.SelectedIndex = 1;
+            else
+                cbLibrate.SelectedIndex = deck.LibrateState;
             lbBlockname.Text = BlockName;
             lbPastion.Text = deck.DesignZ.ToString();
             this.tbDeckName.Text = deck.SegmentName;

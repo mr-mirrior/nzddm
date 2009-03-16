@@ -631,5 +631,14 @@ namespace DM.Forms
         {
             cbMode_SelectedIndexChanged(null, null);
         }
+
+        private void vistaButton2_Click(object sender, EventArgs e)
+        {
+            Forms.DeckCoordInput dlg = new DeckCoordInput();
+            if (CurrentLayer== null)
+                return;
+            dlg.Show(this.Owner);
+            dlg.tbCoords.Text = string.Empty;
+        }
     }
 }
