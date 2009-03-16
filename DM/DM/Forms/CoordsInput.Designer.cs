@@ -285,12 +285,12 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tbY;
         private System.Windows.Forms.Button btnAddCoord;
         private System.Windows.Forms.TextBox tbCoords;
         private System.Windows.Forms.Label label6;
+        public System.Windows.Forms.Button btnOK;
     }
 }

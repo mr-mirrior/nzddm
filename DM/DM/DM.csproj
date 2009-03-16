@@ -78,6 +78,12 @@
     <Compile Include="Forms\CoordsInput.Designer.cs">
       <DependentUpon>CoordsInput.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DeckCoordInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DeckCoordInput.Designer.cs">
+      <DependentUpon>DeckCoordInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\OverBlock.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -299,6 +305,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CoordChange.resx">
       <DependentUpon>CoordChange.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DeckCoordInput.resx">
+      <DependentUpon>DeckCoordInput.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DeckInfo.resx">

@@ -165,6 +165,7 @@ namespace DM.DB
                     vtx = dr["NotRolling"].ToString();
                     cmt = dr["CommentNR"].ToString();
                 }
+
             }
             catch (System.Data.SqlClient.SqlException E)
             {
