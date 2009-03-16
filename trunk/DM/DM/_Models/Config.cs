@@ -29,7 +29,7 @@ namespace DM.Models
         public int REFRESH_TIME = 500; // milliseconds
         public int OVERTHICKNESS_DISTANCE = 1; // 米
 
-        public bool IS_OVERSPEED_VALID =true;
+        public bool IS_OVERSPEED_VALID =false;
         public bool IS_LIBRATE_VALID = false;//振动不合格是否记录遍数
 
     }
