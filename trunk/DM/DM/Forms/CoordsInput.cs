@@ -12,6 +12,12 @@ namespace DM.Forms
 {
     public partial class CoordsInput : Form
     {
+/*
+/// //////////////////////////////////////////////////////大坝坐标范围
+        /// x<700;
+        /// 
+        /// y<+-500
+*/
 
         Segment deck = new Segment();
 
@@ -67,7 +73,9 @@ namespace DM.Forms
                 e.KeyChar == '\b' || 
                 e.KeyChar == Convert.ToChar(".") || 
                 e.KeyChar == Convert.ToChar(",") || 
-                e.KeyChar == Convert.ToChar(";")))
+                e.KeyChar == Convert.ToChar(";")||
+                e.KeyChar==Convert.ToChar("|")||
+                e.KeyChar == Convert.ToChar("-")))
             {
                 e.Handled = true;
             }

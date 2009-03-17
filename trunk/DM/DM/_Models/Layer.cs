@@ -524,14 +524,18 @@ namespace DM.Models
                 }
                 if(isDeckInput)
                 {
-                    Deck dk = new Deck();
-                    scrCut.UpdateBoundary();
-                    dk.Polygon = scrCut;
-                    dk.Partition = pl.Partition;
-                    dk.Elevation = pl.Elevation;
-                    dk.Owner = this;
-                    AddNewDeck(dk);
-                    isDeckInput = false;
+                    Polygon DamDeck = pl.CutByOfEarth(scrCut);
+                    if (DamDeck != null)
+                    {
+                        Deck dk = new Deck();
+                        DamDeck.UpdateBoundary();
+                        dk.Polygon = DamDeck;
+                        dk.Partition = pl.Partition;
+                        dk.Elevation = pl.Elevation;
+                        dk.Owner = this;
+                        AddNewDeck(dk);
+                        isDeckInput = false;
+                    }
                 }
             }
             CreateScreen(canvas);

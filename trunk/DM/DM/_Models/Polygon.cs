@@ -273,6 +273,25 @@ namespace DM.Models
 //                 vertex[i] = vertex[i].Offset(c);
 //             }
 //         }
+        public Polygon CutByOfEarth(Polygon scrCut)
+        {
+            List<Coord> copy = new List<Coord>(this.vertex);
+            BorderShapeII shape = new BorderShapeII(copy);
+            BorderShapeII cutShape = new BorderShapeII(scrCut.vertex);
+            shape.Intersect(cutShape);
+            if (shape.IsEmpty)
+            {
+                Utils.MB.Warning("你输入的仓面顶点坐标不全在该层范围内。请检查后重新输入！");
+                return null;
+            }
+            Polygon result = new Polygon();
+            result.Vertex = shape.Data;
+
+            return result;
+
+/*            return cut;*/
+        }
+
         public Polygon CutBy(Polygon scrCut)
         {
             List<Coord> copy = new List<Coord>(screenVertex);
@@ -286,7 +305,7 @@ namespace DM.Models
 
             return result;
 
-/*            return cut;*/
+            /*            return cut;*/
         }
 
         public bool IsScreenVisible(Coord pt)
