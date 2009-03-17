@@ -220,6 +220,8 @@ namespace DM.DB
                 //add in 2008-12-1
                 Double pop = segment.POP;
                 //string remark = segment.Remark;
+                string notrolling = segment.NotRollingstring;
+                string notrollingremark = segment.CommentNRstring;
                 string segmentName = segment.SegmentName;
                 Double startZ = segment.StartZ;
                 int librateState = segment.LibrateState;
@@ -233,9 +235,9 @@ namespace DM.DB
                 {
                     endDateStr = "NULL";
                 }
-                sqlTxt = string.Format("insert into segment  (SegmentID, WorkState, BlockID, DesignZ, Vertex, DTStart, DTEnd, MaxSpeed, DesignRollCount, ErrorParam, SpreadZ, DesignDepth, SegmentName,StartZ,pop,SenseOrganState) values(" +
+                sqlTxt = string.Format("insert into segment  (SegmentID, WorkState, BlockID, DesignZ, Vertex, DTStart, DTEnd, MaxSpeed, DesignRollCount, ErrorParam, SpreadZ, DesignDepth, SegmentName,StartZ,pop,SenseOrganState,NotRolling,CommentNR) values(" +
                     "{0},{1},{2},'{3}','{4}',{5},{6},'{7}','{8}',{9},'{10}','{11}','{12}','{13}','{14}',{15}"
-                    + ")", segmentID, (int)workState, blockID, designZ, vertext, startDateStr, endDateStr, maxSpeed, designRollCount, errorParam, spreadZ, designDepth, segmentName, startZ, pop,librateState);
+                    + ")", segmentID, (int)workState, blockID, designZ, vertext, startDateStr, endDateStr, maxSpeed, designRollCount, errorParam, spreadZ, designDepth, segmentName, startZ, pop,librateState,notrolling,notrollingremark);
                 if (DBConnection.executeUpdate(sqlTxt) == 1)
                 {
                     continue;
@@ -304,6 +306,10 @@ namespace DM.DB
                         segment.POP = (double)reader["POP"];
                     if (reader["SenseOrganState"] != DBNull.Value)
                     segment.LibrateState = (int)reader["SenseOrganState"];
+                    if (reader["NotRolling"] != DBNull.Value)
+                        segment.NotRollingstring = (string)reader["NotRolling"];
+                    if (reader["CommentNR"] != DBNull.Value)
+                        segment.CommentNRstring = (string)reader["CommentNR"];
                     segments.Add(segment);
                 }
                 return segments;
@@ -375,6 +381,10 @@ namespace DM.DB
                     segment.POP = (double)reader["POP"];
                     if (reader["SenseOrganState"]!=DBNull.Value)
                     segment.LibrateState = (int)reader["SenseOrganState"];
+                    if (reader["NotRolling"] != DBNull.Value)
+                        segment.NotRollingstring = (string)reader["NotRolling"];
+                    if (reader["CommentNR"] != DBNull.Value)
+                        segment.CommentNRstring = (string)reader["CommentNR"];
                     segments.Add(segment);
                 }
                 return segments;
@@ -426,6 +436,10 @@ namespace DM.DB
             segment.StartDate = (startdate);
             segment.EndDate = (enddate);
             segment.SegmentName = (segmentname);
+            if (reader["NotRolling"]!=DBNull.Value)
+                segment.NotRollingstring = (string)reader["NotRolling"];
+            if (reader["CommentNR"] != DBNull.Value)
+                segment.CommentNRstring = (string)reader["CommentNR"];
             segment.StartZ = startZ;
             segment.POP = (double)reader["POP"];
             segment.DesignDepth = (double)reader["DESIGNDEPTH"];

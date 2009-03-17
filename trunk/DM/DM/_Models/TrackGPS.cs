@@ -688,9 +688,17 @@ namespace DM.Models
                 get { return dtEnd; }
                 set { dtEnd = value; }
             }
+            int libratedState;
+
+            public int LibratedState
+            {
+                get { return libratedState; }
+                set { libratedState = value; }
+            }
+
         }
         /// <summary>
-        /// 筛选振动不合格点
+        /// 筛选击震力时间段
         /// </summary>
         private List<Timeslice> FiterLibrated()
         {
@@ -710,6 +718,7 @@ namespace DM.Models
             {
                 if (lstLInfos[i].State!=this.owner.Owner.DeckInfo.LibrateState)
                 {
+                    time.LibratedState = lstLInfos[i].State;
                     time = new Timeslice();
                     time.DtStart = lstLInfos[i].Dt;
                     if ((i + 1) < lstLInfos.Count)
@@ -724,7 +733,33 @@ namespace DM.Models
                 }
                 times.Add(time);
             }
+            List<Timeslice> Timeslices = new List<Timeslice>();
+           if (times.Count<2)////////////////筛选连接不合格的时间片
             return times;
+           else
+           {
+               for (int i = 0; i < times.Count;)
+               {
+                   Timeslice thistime = times[i];
+                   for (int j = i+1; j < times.Count - i;j++ )
+                   {
+                       if (j<times.Count)
+                       {
+                           if (times[j].DtStart == time.DtEnd)
+                           {
+                               thistime.DtEnd = times[j].DtEnd;
+                           }
+                           else
+                           {
+                               Timeslices.Add(thistime);
+                               i = j+1;
+                               break;
+                           }
+                       }
+                   }
+               }
+               return Timeslices;
+           }
         }
         private float WidthPen()
         {
