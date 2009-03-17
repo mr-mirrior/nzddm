@@ -123,14 +123,14 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
         }
 
         //碾压遍数不足需要指标
-        double totalAreaRatio;
+        double totalAreaRatio=0;
 
         public double TotalAreaRatio
         {
             get { return totalAreaRatio; }
             set { totalAreaRatio = value; }
         }
-        double shortRollerArea;
+        double shortRollerArea=0;
 
         public double ShortRollerArea
         {
@@ -140,7 +140,7 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
 
         //碾压过厚指标
 
-        double designDepth;
+        double designDepth=0;
 
         public double DesignDepth
         {
@@ -156,7 +156,7 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
             set { coord = value; }
         }
 
-        string overMerter;
+        string overMerter=string.Empty;
 
         public string OverMerter
         {
@@ -164,7 +164,7 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
             set { overMerter = value; }
         }
 
-        string position;
+        string position="563.2";
 
         public string Position
         {
@@ -172,14 +172,14 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
             set { position = value; }
         }
 
-        double startZ;
+        double startZ=0;
 
         public double StartZ
         {
             get { return startZ; }
             set { startZ = value; }
         }
-        double area;
+        double area=0;
         public double ActualArea { get { return area; } set { area = value; } }
 
         public Warning()
