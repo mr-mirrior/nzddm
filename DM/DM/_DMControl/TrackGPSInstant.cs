@@ -95,6 +95,26 @@ namespace DM.DMControl
 
         public float RealSpeed() { return Speed / 100; /*千米/秒*/ }
     }
+
+    //振动异常
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct LibratedError
+    {
+        [MarshalAs(UnmanagedType.U1)]
+        public byte Len;
+        [MarshalAs(UnmanagedType.U1)]
+        public byte Type;   //振动异常 0xFF
+        [MarshalAs(UnmanagedType.I4)]
+        public int CarID;
+        [MarshalAs(UnmanagedType.U1)]
+        public byte SenseOrgan;   //状态
+
+        public static int Size()
+        {
+            return Marshal.SizeOf(typeof(WorkErrorString));
+        }
+    }
+
     //施工出错
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct WorkError
@@ -153,6 +173,7 @@ namespace DM.DMControl
             TOTAL_MSG_LEN = Math.Max(TOTAL_MSG_LEN, GPSDATA.Size());
             TOTAL_MSG_LEN = Math.Max(TOTAL_MSG_LEN, WorkError.Size());
             TOTAL_MSG_LEN = Math.Max(TOTAL_MSG_LEN, WarningSpeed.Size());
+            TOTAL_MSG_LEN = Math.Max(TOTAL_MSG_LEN, LibratedError.Size());
         }
         public static void StartReceiveGPSData(string ip, int port)
         {
@@ -357,6 +378,37 @@ namespace DM.DMControl
                 }
             }
         }
+        /// <summary>
+        /// 击震力不合格报警处理
+        /// </summary>
+        unsafe private static void OnWarningLibrated()
+        {
+            LibratedError* warningLibrated = null;
+            fixed (byte* p = coords)
+            {
+                try
+                {
+                    warningLibrated = (LibratedError*)p;
+                    if (warningLibrated == null)
+                        return;
+
+                    DateTime dt = DB.DBCommon.getDate();
+                    Forms.Warning dlg = new DM.Forms.Warning();
+                    dlg.WarningType = WarningType.LIBRATED;
+                    dlg.WarningDate = dt.Date.ToString("D");
+                    dlg.WarningTime = dt.ToString("T");
+                    dlg.LibrateState = (int)warningLibrated->SenseOrgan;
+                    dlg.CarName = VehicleControl.FindVechicle(warningLibrated->CarID).CarName;
+                    dlg.FillForms();
+                    Forms.Main.MainWindow.ShowWarningDlg(dlg);
+                }
+                catch (Exception e)
+                {
+                    DB.DebugUtil.log(e);
+                }
+            }
+        }
+
         unsafe private static void OnWorkError()
         {
             try
@@ -417,6 +469,9 @@ namespace DM.DMControl
                 case GPSMessage.WORKERROR:
                     //OnWorkError();
                     break;
+                case GPSMessage.WARNLIBRATED:
+                    OnWarningLibrated();
+                    break;
             }
 
             try
@@ -458,7 +513,8 @@ namespace DM.DMControl
     {
         GPSDATA = 1,
         WARNINGSPEED = 2,
-        WORKERROR = 3
+        WORKERROR = 3,
+        WARNLIBRATED=0xFF
     }
     public class GPSCoordEventArg : EventArgs
     {

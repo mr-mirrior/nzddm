@@ -22,6 +22,40 @@ namespace DM.Forms
 
         WarningType warningType=WarningType.OVERTHICKNESS;
 
+        public enum SenseOrganState{None = 0, High = 1, Low = 2, Normal = 3};
+/*
+此枚举各值含义：
+
+None：	不振
+High：	高频低振
+Low：	低频高振
+Normal：震动	//此值只适用于只有两种状态的碾压机*/
+
+
+        int librateState;
+
+        public int LibrateState
+        {
+            get { return librateState; }
+            set { librateState = value; }
+        }
+        private string GetLibratedString(int state)
+        {
+            switch (state)
+            {
+            case 0:
+                    return "不振";
+            case 1:
+                    return "高频低振";
+            case 2:
+                    return "低频高振";
+            case 3:
+                    return "振动";
+                default:
+                    return string.Empty;
+            }
+        }
+
         public WarningType WarningType
         {
             get { return warningType; }
@@ -241,7 +275,7 @@ namespace DM.Forms
             warningInfo.designZ = this.designZ;
             warningInfo.warningDate = this.warningDate;
             warningInfo.warningTime = this.warningTime;
-
+            warningInfo.libratedState = this.librateState;
             warningInfo.maxSpeed = this.maxSpeed;
             warningInfo.thisSpeed = this.thisSpeed;
             warningInfo.ActualArea = this.ActualArea;
@@ -271,6 +305,7 @@ namespace DM.Forms
                  wi.designDepth == this.designDepth &&
                  wi.startZ == this.startZ &&
                  wi.warningDate.Equals(this.warningDate) &&
+                 wi.libratedState==this.librateState &&
                  wi.warningTime.Equals(this.warningTime))
                     has = true;
             }
@@ -341,6 +376,15 @@ namespace DM.Forms
                 lbVehicleName.Text = warningObj.deckName;
                 toolTip1.SetToolTip(warningObj.lbVehicleName, toolVehicle);
                 toolTip1.SetToolTip(warningObj.lbProportion, toolProportion);
+            }
+            else if (warningType == WarningType.LIBRATED)
+            {
+                lb.Text = "击震力警告：";
+                lbWarningType.Text = "当前击震力状态为：";
+                lbProportion.Text = GetLibratedString(librateState);
+
+                lbVehicleName.Text = this.carName;
+                lbWarningTime.Text = this.warningTime;
             }
 
             toolTip1.SetToolTip(lbWarningTime, warningDate);
