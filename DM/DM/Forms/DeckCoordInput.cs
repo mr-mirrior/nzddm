@@ -42,6 +42,10 @@ namespace DM.Forms
                 if (cdxy.Length < 2)
                     Utils.MB.Warning("您输入的坐标不正确，请检查后重新输入！");
                 DM.Geo.Coord cd = new DM.Geo.Coord(Convert.ToDouble(cdxy[0]),Convert.ToDouble(cdxy[1]));
+                if (cd.XF>700||cd.YF>500||cd.YF<-500)
+                {
+                    Utils.MB.Warning("输入坐标超越坝轴坐标界限，请检查后重新输入！");
+                }
                 deckcoords.Add(cd.ToEarthCoord());
             }
             deckcoords.Add(deckcoords.First());
@@ -51,6 +55,24 @@ namespace DM.Forms
             Forms.ToolsWindow.I.CurrentLayer.Layer.isDeckInput = true;
             this.Close();
             Forms.ToolsWindow.I.CurrentLayer.IsPolySelecting=false;
+        }
+
+        private void DeckCoordInput_Load(object sender, EventArgs e)
+        {
+            tbCoords.Focus();
+        }
+
+        private void tbCoords_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(Char.IsNumber(e.KeyChar) ||
+                e.KeyChar == '\b' ||
+                e.KeyChar == Convert.ToChar(".") ||
+                e.KeyChar == Convert.ToChar(",") ||
+                e.KeyChar == Convert.ToChar(";")||
+                e.KeyChar == Convert.ToChar("-")))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

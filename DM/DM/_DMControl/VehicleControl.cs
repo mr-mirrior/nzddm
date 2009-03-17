@@ -276,6 +276,8 @@ namespace DM.DMControl
 
             //int 在这里实现_从数据库读取某仓面的车辆安排情况;
             DB.CarDistributeDAO dao = DB.CarDistributeDAO.getInstance();
+            if (owner == null)
+                return;
             List<DB.CarDistribute> lst = dao.getCarDistributeInThisSegment_all(owner.DeckInfo.BlockID, owner.DeckInfo.DesignZ, owner.ID);
             this.vehicles = Translate(lst);
 

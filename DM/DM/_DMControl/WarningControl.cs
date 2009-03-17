@@ -25,11 +25,27 @@ namespace DM.DMControl
         }
     }
 
+    //振动异常
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct LibratedErrorString
+    {
+        [MarshalAs(UnmanagedType.U1)]
+        public byte Len;
+        [MarshalAs(UnmanagedType.U1)]
+        public byte Type;   //振动异常 0xFF
+        [MarshalAs(UnmanagedType.I4)]
+        public int CarID;
+        [MarshalAs(UnmanagedType.U1)]
+        public byte SenseOrgan;   //状态
+    }
+
+
     public enum  WarningType
     {
         OVERSPEED = 0,
         ROLLINGLESS = 1,
-        OVERTHICKNESS =2
+        OVERTHICKNESS =2,
+        LIBRATED=3
     }
 
     public struct WarningInfo 
