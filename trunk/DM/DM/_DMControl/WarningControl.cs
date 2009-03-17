@@ -25,19 +25,7 @@ namespace DM.DMControl
         }
     }
 
-    //振动异常
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct LibratedErrorString
-    {
-        [MarshalAs(UnmanagedType.U1)]
-        public byte Len;
-        [MarshalAs(UnmanagedType.U1)]
-        public byte Type;   //振动异常 0xFF
-        [MarshalAs(UnmanagedType.I4)]
-        public int CarID;
-        [MarshalAs(UnmanagedType.U1)]
-        public byte SenseOrgan;   //状态
-    }
+   
 
 
     public enum  WarningType
@@ -60,6 +48,7 @@ namespace DM.DMControl
         public double designZ;
         public string deckName;
         public double ActualArea;
+        public int libratedState;
 
         //超速需要指标
         public double maxSpeed;
@@ -118,6 +107,10 @@ namespace DM.DMControl
                 workErrorString.Type = 4;
             }
             else if (type==WarningType.OVERTHICKNESS)
+            {
+                workErrorString.Type = 0x05;
+            }
+            else if (type== WarningType.LIBRATED)
             {
                 workErrorString.Type = 0x05;
             }
