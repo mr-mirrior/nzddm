@@ -253,6 +253,10 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
             {
                 return "标准遍数百分比为：";
             }
+            else if (warningType== WarningType.LIBRATED)
+            {
+                return "击震类型为：";
+            }
             return null;
         }
 
@@ -359,27 +363,27 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
                 toolTip1.SetToolTip(lbVehicleName, toolVehicle);
                 toolTip1.SetToolTip(lbProportion, toolProportion);
             }
-            else if (warningObj.warningType == WarningType.OVERTHICKNESS)
-            {
-                return;
-                if (warningObj.designDepth == 0)
-                {
-                    return;
-                }
-                warningObj.lb.Text = "告警：";
-                warningObj.lbWarningType.Text = "碾压过厚！";
-                //proportion = (coord.Z - startZ - designDepth) / designDepth * 100;
-                warningObj.lbProportion.Text = warningObj.overMerter;
+            //else if (warningObj.warningType == WarningType.OVERTHICKNESS)
+            //{
+            //    return;
+            //    if (warningObj.designDepth == 0)
+            //    {
+            //        return;
+            //    }
+            //    warningObj.lb.Text = "告警：";
+            //    warningObj.lbWarningType.Text = "碾压过厚！";
+            //    //proportion = (coord.Z - startZ - designDepth) / designDepth * 100;
+            //    warningObj.lbProportion.Text = warningObj.overMerter;
 
-                string toolVehicle = "分区：" + warningObj.blockName + ",高程：" + this.designZ.ToString();
-                string toolProportion = "碾压过厚位置：" + warningObj.position;
-                lbVehicleName.Text = warningObj.deckName;
-                toolTip1.SetToolTip(warningObj.lbVehicleName, toolVehicle);
-                toolTip1.SetToolTip(warningObj.lbProportion, toolProportion);
-            }
+            //    string toolVehicle = "分区：" + warningObj.blockName + ",高程：" + this.designZ.ToString();
+            //    string toolProportion = "碾压过厚位置：" + warningObj.position;
+            //    lbVehicleName.Text = warningObj.deckName;
+            //    toolTip1.SetToolTip(warningObj.lbVehicleName, toolVehicle);
+            //    toolTip1.SetToolTip(warningObj.lbProportion, toolProportion);
+            //}
             else if (warningType == WarningType.LIBRATED)
             {
-                lb.Text = "击震力警告：";
+                lb.Text = "振动警告：";
                 lbWarningType.Text = "当前击震力状态为：";
                 lbProportion.Text = GetLibratedString(librateState);
 
