@@ -33,9 +33,9 @@
             this.lbMessage = new System.Windows.Forms.Label();
             this.lbTimer = new System.Windows.Forms.Label();
             this.roundPanel1 = new DM.RoundPanel();
+            this.lbWarningType = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lb = new System.Windows.Forms.Label();
-            this.lbWarningType = new System.Windows.Forms.Label();
             this.lbWarningTime = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lbProportion = new System.Windows.Forms.Label();
@@ -119,6 +119,17 @@
             this.roundPanel1.Size = new System.Drawing.Size(512, 143);
             this.roundPanel1.TabIndex = 0;
             // 
+            // lbWarningType
+            // 
+            this.lbWarningType.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbWarningType.ForeColor = System.Drawing.Color.Black;
+            this.lbWarningType.Location = new System.Drawing.Point(241, 13);
+            this.lbWarningType.Name = "lbWarningType";
+            this.lbWarningType.Size = new System.Drawing.Size(177, 27);
+            this.lbWarningType.TabIndex = 2;
+            this.lbWarningType.Text = "标准遍数百分比为：";
+            this.lbWarningType.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::DM.Properties.Resources.warning;
@@ -139,17 +150,6 @@
             this.lb.TabIndex = 1;
             this.lb.Text = "碾压简报: ";
             this.lb.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lbWarningType
-            // 
-            this.lbWarningType.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbWarningType.ForeColor = System.Drawing.Color.Black;
-            this.lbWarningType.Location = new System.Drawing.Point(241, 13);
-            this.lbWarningType.Name = "lbWarningType";
-            this.lbWarningType.Size = new System.Drawing.Size(177, 27);
-            this.lbWarningType.TabIndex = 2;
-            this.lbWarningType.Text = "标准遍数百分比为：";
-            this.lbWarningType.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lbWarningTime
             // 
@@ -174,9 +174,9 @@
             // 
             this.lbProportion.Font = new System.Drawing.Font("微软雅黑", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbProportion.ForeColor = System.Drawing.Color.Black;
-            this.lbProportion.Location = new System.Drawing.Point(206, 57);
+            this.lbProportion.Location = new System.Drawing.Point(160, 57);
             this.lbProportion.Name = "lbProportion";
-            this.lbProportion.Size = new System.Drawing.Size(212, 58);
+            this.lbProportion.Size = new System.Drawing.Size(276, 58);
             this.lbProportion.TabIndex = 11;
             this.lbProportion.Text = "23.5%";
             this.lbProportion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

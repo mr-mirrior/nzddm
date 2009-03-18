@@ -59,6 +59,10 @@ namespace DM.Forms
             {
                 return "碾压简报！";
             }
+            else if (wt == WarningType.LIBRATED)
+            {
+                return "振动警报！";
+            }
             return null;
         }
 
@@ -70,6 +74,7 @@ namespace DM.Forms
 
             warnForm.ThisSpeed = wi.thisSpeed;
             warnForm.DesignDepth = wi.designDepth;
+            warnForm.LibrateState = wi.libratedState;
             warnForm.Coord3D = wi.coord;
             warnForm.CarName = wi.carName;
             warnForm.MaxSpeed = wi.maxSpeed;
