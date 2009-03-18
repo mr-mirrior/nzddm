@@ -41,7 +41,7 @@ namespace DM.DB
                 int updateRowsNumber = DBConnection.executeUpdate(sqlTxt);           
 
                     //更新车辆状态
-                sqlTxt = "update carinfo set blockid=0,maxspeed='0',segmentid=0,SenseOrganState=0 where carid in (select carid from cardistribute  where" +
+                sqlTxt = "update carinfo set blockid=0,maxspeed='0',segmentid=0,SenseOrganState=0,DesignZ='0' where carid in (select carid from cardistribute  where" +
                        " blockid=" + carDistribute.Blockid +
                        " and segmentid=" + carDistribute.Segmentid +
                        " and designz= " + carDistribute.DesignZ+" and  dtend is not null)";
@@ -73,7 +73,7 @@ namespace DM.DB
                  else
                  {
                      //更新车辆状态
-                     sqlTxt = "update carinfo set blockid=0,maxspeed='0',segmentid=0,SenseOrganState=0 where carid=" + carDistribute.Carid;
+                     sqlTxt = "update carinfo set blockid=0,maxspeed='0',segmentid=0,SenseOrganState=0,DesignZ='0' where carid=" + carDistribute.Carid;
 
                      DBConnection.executeUpdate(sqlTxt);
 
@@ -116,7 +116,7 @@ namespace DM.DB
         //分配之前检查一下是否正在使用中.
         // lect count(*) from cardistribute where carid=? and DTEnd is not null.
         //insert cardistribute (blockid,designlayerid,segmentid,carid,DTStart) values(?,?,?,?,getDate());
-         public Boolean startCar(CarDistribute carDistribute, Double maxSpeed, int librate)
+         public Boolean startCar(CarDistribute carDistribute, Double maxSpeed, int librate,double designz)
          {
 
              //检查是否在使用中
@@ -142,7 +142,7 @@ namespace DM.DB
                  }
 
 
-                 sqlTxt = "update carinfo set blockid=" + carDistribute.Blockid + ",maxspeed='" + maxSpeed + "',segmentid=" + carDistribute.Segmentid + ",SenseOrganState=" + librate + " where carid = " + carDistribute.Carid;
+                 sqlTxt = "update carinfo set blockid=" + carDistribute.Blockid + ",maxspeed='" + maxSpeed + "',segmentid=" + carDistribute.Segmentid + ",SenseOrganState=" + librate + ",DesignZ='"+designz+"' where carid = " + carDistribute.Carid;
 
                  updateCount = DBConnection.executeUpdate(sqlTxt);
 
@@ -265,7 +265,7 @@ namespace DM.DB
 
 
         //启动当前仓面上的车辆
-        public Boolean startCars(CarDistribute carDistribute, Double maxspeed, int librate)
+        public Boolean startCars(CarDistribute carDistribute, Double maxspeed, int librate,double designz)
         {
             //检查是否在使用中            
             SqlConnection conn = null;
@@ -286,7 +286,7 @@ namespace DM.DB
                     return false;
                 }
 
-                sqlTxt = "update carinfo set blockid=" + carDistribute.Blockid + ",maxspeed='" + maxspeed + "',segmentid=" + carDistribute.Segmentid + ",SenseOrganState=" + librate + " where carid in (select carid from cardistribute  where  blockid=" + carDistribute.Blockid +
+                sqlTxt = "update carinfo set blockid=" + carDistribute.Blockid + ",maxspeed='" + maxspeed + "',segmentid=" + carDistribute.Segmentid + ",SenseOrganState=" + librate + ",DesignZ='"+designz+"' where carid in (select carid from cardistribute  where  blockid=" + carDistribute.Blockid +
                     " and segmentid=" + carDistribute.Segmentid +
                     " and designz= '" + carDistribute.DesignZ +
                     "' and  dtstart is not null and dtend is null)";

@@ -13,13 +13,13 @@ namespace DM.DB
 
             //DBconfig.getInstance().init();
 
-            string server = "feiying";
-            //string server = /*"172.23.225.215"*/DBconfig.getInstance().Server;
+            //string server = "172.23.225.212";
+            string server = /*"172.23.225.215"*/DBconfig.getInstance().Server;
             string dbname = /*"DAMGPS"*/DBconfig.getInstance().Dbname;
-            //string username = /*"sa"*/DBconfig.getInstance().Username;
-            string username = "sa";
-            string password = "sa";
-            //string password = /*"s"*/DBconfig.getInstance().Password;
+            string username = /*"sa"*/DBconfig.getInstance().Username;
+            //string username = "test";
+            //string password = "test";
+            string password = /*"s"*/DBconfig.getInstance().Password;
 
             //             string sqlConnectionCommand = "Data Source="+server+";Initial Catalog="+dbname+";User ID="+username+";password="+"'"+password+"'";
             string sqlConnectionCommand = string.Format("Data Source={0}; Initial Catalog={1};User ID='{2}';password='{3}'",

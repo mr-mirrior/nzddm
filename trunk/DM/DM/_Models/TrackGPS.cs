@@ -734,32 +734,29 @@ namespace DM.Models
                 times.Add(time);
             }
             List<Timeslice> Timeslices = new List<Timeslice>();
-           if (times.Count<2)////////////////筛选连接不合格的时间片
+            //if (times.Count < 2)////////////////筛选连接不合格的时间片
             return times;
-           else
-           {
-               for (int i = 0; i < times.Count;)
-               {
-                   Timeslice thistime = times[i];
-                   for (int j = i+1; j < times.Count - i;j++ )
-                   {
-                       if (j<times.Count)
-                       {
-                           if (times[j].DtStart == time.DtEnd)
-                           {
-                               thistime.DtEnd = times[j].DtEnd;
-                           }
-                           else
-                           {
-                               Timeslices.Add(thistime);
-                               i = j+1;
-                               break;
-                           }
-                       }
-                   }
-               }
-               return Timeslices;
-           }
+           //else
+           //{
+           //    for (int i = 0; i < times.Count;)
+           //    {
+           //        Timeslice thistime = times[i];
+           //        for (int j = i+1; j < times.Count;j++ )
+           //        {
+           //            if (times[j].DtStart == thistime.DtEnd)
+           //            {
+           //                thistime.DtEnd = times[j].DtEnd;
+           //            }
+           //            else
+           //            {
+           //                Timeslices.Add(thistime);
+           //                i = j+1;
+           //                break;
+           //            }
+           //        }
+           //    }
+           //    return Timeslices;
+           //}
         }
         private float WidthPen()
         {

@@ -236,7 +236,7 @@ namespace DM.DB
                     endDateStr = "NULL";
                 }
                 sqlTxt = string.Format("insert into segment  (SegmentID, WorkState, BlockID, DesignZ, Vertex, DTStart, DTEnd, MaxSpeed, DesignRollCount, ErrorParam, SpreadZ, DesignDepth, SegmentName,StartZ,pop,SenseOrganState,NotRolling,CommentNR) values(" +
-                    "{0},{1},{2},'{3}','{4}',{5},{6},'{7}','{8}',{9},'{10}','{11}','{12}','{13}','{14}',{15}"
+                    "{0},{1},{2},'{3}','{4}',{5},{6},'{7}','{8}',{9},'{10}','{11}','{12}','{13}','{14}',{15},'{16}','{17}'"
                     + ")", segmentID, (int)workState, blockID, designZ, vertext, startDateStr, endDateStr, maxSpeed, designRollCount, errorParam, spreadZ, designDepth, segmentName, startZ, pop,librateState,notrolling,notrollingremark);
                 if (DBConnection.executeUpdate(sqlTxt) == 1)
                 {
@@ -691,7 +691,7 @@ namespace DM.DB
                 cd.DesignZ = (designZ);
                 cd.Segmentid = (segmentid);
                 Segment deck=getSegment( blockid,  designZ,  segmentid)[0];
-                if (CarDistributeDAO.getInstance().startCars(cd, maxSpeed,deck.LibrateState))
+                if (CarDistributeDAO.getInstance().startCars(cd, maxSpeed, deck.LibrateState, deck.DesignZ))
                 {
 
                     return SegmentVehicleResult.SUCCESS;

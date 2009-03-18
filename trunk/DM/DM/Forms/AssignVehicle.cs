@@ -146,7 +146,7 @@ namespace DM.Forms
                         thisCardis.Segmentid = deck.SegmentID;
                         thisCardis.Carid = carid;
 
-                        Dresult = cardisDAO.startCar(thisCardis, deck.MaxSpeed,deck.LibrateState);
+                        Dresult = cardisDAO.startCar(thisCardis, deck.MaxSpeed,deck.LibrateState,deck.DesignZ);
                         DMControl.GPSServer.UpdateDeck();
                     }
 
