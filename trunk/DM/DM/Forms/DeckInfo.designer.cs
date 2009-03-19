@@ -48,13 +48,13 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbLibrate = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.cbSpeedUnit = new System.Windows.Forms.ComboBox();
             this.lbPastion = new System.Windows.Forms.Label();
             this.lbPastiondsa = new System.Windows.Forms.Label();
             this.lbBlockname = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.cbLibrate = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -255,6 +255,28 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "合格判定";
             // 
+            // cbLibrate
+            // 
+            this.cbLibrate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbLibrate.FormattingEnabled = true;
+            this.cbLibrate.Items.AddRange(new object[] {
+            "不振",
+            "高频低振",
+            "低频高振"});
+            this.cbLibrate.Location = new System.Drawing.Point(302, 54);
+            this.cbLibrate.Name = "cbLibrate";
+            this.cbLibrate.Size = new System.Drawing.Size(135, 25);
+            this.cbLibrate.TabIndex = 44;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(298, 25);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(68, 17);
+            this.label9.TabIndex = 44;
+            this.label9.Text = "振动级别：";
+            // 
             // cbSpeedUnit
             // 
             this.cbSpeedUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -303,29 +325,6 @@
             this.label4.Size = new System.Drawing.Size(44, 17);
             this.label4.TabIndex = 40;
             this.label4.Text = "分区：";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(298, 25);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(68, 17);
-            this.label9.TabIndex = 44;
-            this.label9.Text = "振动级别：";
-            // 
-            // cbLibrate
-            // 
-            this.cbLibrate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbLibrate.FormattingEnabled = true;
-            this.cbLibrate.Items.AddRange(new object[] {
-            "不振",
-            "高频低振",
-            "低频高振",
-            "振动(只有2种状态的碾压机)"});
-            this.cbLibrate.Location = new System.Drawing.Point(302, 54);
-            this.cbLibrate.Name = "cbLibrate";
-            this.cbLibrate.Size = new System.Drawing.Size(135, 25);
-            this.cbLibrate.TabIndex = 44;
             // 
             // DeckInfo
             // 

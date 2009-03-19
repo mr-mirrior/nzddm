@@ -44,7 +44,7 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
             switch (state)
             {
             case 0:
-                    return "不振";
+                    return "未振动";
             case 1:
                     return "高频低振";
             case 2:
@@ -255,7 +255,7 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
             }
             else if (warningType== WarningType.LIBRATED)
             {
-                return "击震类型为：";
+                return "当前振动状态为：";
             }
             return null;
         }
@@ -383,8 +383,8 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
             //}
             else if (warningType == WarningType.LIBRATED)
             {
-                lb.Text = "振动警告：";
-                lbWarningType.Text = "当前击震力状态为：";
+                lb.Text = "振动警报：";
+                lbWarningType.Text = "当前振动状态为：";
                 lbProportion.Text = GetLibratedString(librateState);
 
                 lbVehicleName.Text = this.carName;
