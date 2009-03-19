@@ -1660,7 +1660,7 @@ namespace DM.Views
             if (!result)
                 return;
             System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\output\"+DM.Models.Deck.I.DeckInfo.SegmentName+@"\output.png");
-
+            layer.CreateDataMap();
             if ( result && fi.Exists )
                 Utils.Sys.SysUtils.StartProgram(fi.FullName, null);
         }
