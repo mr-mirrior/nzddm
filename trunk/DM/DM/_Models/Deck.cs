@@ -338,8 +338,7 @@ namespace DM.Models
                 colorDict[i] = learning.GetPixel(i, 0).ToArgb();
             }
             //learning.Save(@"C:\learning.png", System.Drawing.Imaging.ImageFormat.Png);
-            gLearning.Dispose();
-            learning.Dispose();
+
 
             Bitmap bmp = new Bitmap((int)Math.Ceiling(pl.ScreenBoundary.Width), (int)Math.Ceiling(pl.ScreenBoundary.Height), PixelFormat.Format32bppPArgb);
             Graphics g = Graphics.FromImage(bmp);
@@ -372,14 +371,15 @@ namespace DM.Models
                 Color c1 = nrs[i].Vertex.LineColor;
                 Color c2 = nrs[i].Vertex.FillColor;
                 nrs[i].Vertex.LineColor =
-                    nrs[i].Vertex.FillColor = layersColor[this.DeckInfo.DesignRollCount];
+                    nrs[i].Vertex.FillColor = learning.GetPixel(this.DeckInfo.DesignRollCount, 0);//layersColor[this.DeckInfo.DesignRollCount];//////////这里应该是改为蓝色的遍数
                 nrs[i].Draw(g, ft, false);
                 nrs[i].Vertex.LineColor = c1;
                 nrs[i].Vertex.FillColor = c2;
                 nrs[i].Vertex.AntiAlias = aa;
             }
 
-
+            gLearning.Dispose();
+            learning.Dispose();
             //bmp.Save(@"C:\debug.png", System.Drawing.Imaging.ImageFormat.Png);
 
             Bitmap output = (Bitmap)bmp.Clone();
@@ -435,9 +435,14 @@ namespace DM.Models
                         }
 
                         cl_idx = Math.Min(cl_idx, layersColor.Length - 1);
-                        int last_idx = Math.Min(cl_idx, this.DeckInfo.DesignRollCount);
+                        int last_idx;
+                        last_idx = Math.Min(cl_idx, this.DeckInfo.DesignRollCount);
+
                         areas[cl_idx]++;
-                        *(pp + j) = layersColor[last_idx].ToArgb();
+                        if(isDatamap)
+                            *(pp + j) = layersColor[cl_idx].ToArgb();
+                        else
+                            *(pp + j) = layersColor[last_idx].ToArgb();
                         //                         if (datamap)
                         //                         {
                         //                             sw.Write((byte)cl_idx);
@@ -464,12 +469,13 @@ namespace DM.Models
             }
             DB.SegmentDAO.getInstance().UpdateSegmentAreaAndRollingPercentages(Partition.ID, Elevation.Height, ID, Polygon.ActualArea, percentages);
             //// 超过部分统一
-            //if (cl_idx >= this.DeckInfo.DesignRollCount)
-            //    cl_idx = this.DeckInfo.DesignRollCount;
-            for (int idx = this.DeckInfo.DesignRollCount + 1; idx < areas.Length; idx++)
+            if (!isDatamap)
             {
-                areas[this.DeckInfo.DesignRollCount] += areas[idx];
-                areas[idx] = 0;
+                for (int idx = this.DeckInfo.DesignRollCount + 1; idx < areas.Length; idx++)
+                {
+                    areas[this.DeckInfo.DesignRollCount] += areas[idx];
+                    areas[idx] = 0;
+                }
             }
             //*/
             //             if (datamap)
@@ -529,7 +535,7 @@ namespace DM.Models
                             Color.Indigo,
                             Color.Aqua
                         };
-
+        public bool isDatamap = false;
         public unsafe byte[] CreateDatamap()
         {
             /*
@@ -542,6 +548,7 @@ namespace DM.Models
              * float height1 (4 bytes)
              * ...
              */
+            isDatamap = true;
             Layer layer = owner;
             double oldZoom = layer.Zoom;
             double oldRotate = layer.RotateDegree;
@@ -556,6 +563,7 @@ namespace DM.Models
             Bitmap elev = ElevationImage(out lo, out hi);
 //             roll.Save(@"C:\roll.png", System.Drawing.Imaging.ImageFormat.Png);
 //             elev.Save(@"C:\elev.png", System.Drawing.Imaging.ImageFormat.Png);
+            isDatamap = false;
             if (roll == null || elev == null )//|| roll.Width != elev.Width || roll.Height != elev.Height)
             {
                 return null;

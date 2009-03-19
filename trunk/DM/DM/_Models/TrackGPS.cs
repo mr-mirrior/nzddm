@@ -391,8 +391,8 @@ namespace DM.Models
                     }
                 }
                 RectangleF rc = new RectangleF();
-               //筛选击震力不合格点
-                List<Timeslice> times = FiterLibrated();
+               //筛选击震力不合格点  feiying 09.3.19
+                List<Timeslice> times = FiterLibrated();  //现在是每个点都查数据库即一秒之内查一次数据库，效率待测试
                 //libratedOK = new List<Coord3D>();
                 foreach (List<Coord3D> lst in screenSeg)
                 {

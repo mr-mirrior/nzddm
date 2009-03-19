@@ -579,7 +579,7 @@ namespace DM.Models
                 return;
             if( DeckControl.CreateDataMap(VisibleDeck) )
             {
-                Utils.MB.OK("数据图更新成功！");
+                //Utils.MB.OK("数据图更新成功！");
             }
             else
             {
