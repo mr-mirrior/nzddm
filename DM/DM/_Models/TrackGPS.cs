@@ -6,6 +6,7 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using DM.Geo;
+using DM.DMControl;
 
 namespace DM.Models
 {
@@ -698,7 +699,7 @@ namespace DM.Models
             }
 
         }
-        List<DB.LibrateInfo> lstLInfos=new List<DM.DB.LibrateInfo>();
+        
         /// <summary>
         /// 筛选击震力时间段
         /// </summary>
@@ -915,14 +916,24 @@ namespace DM.Models
                 sf.FormatFlags = StringFormatFlags.NoClip | StringFormatFlags.NoWrap;
                 rc.Offset(10, 3);
                 //写实时点的击震力状态。feiying 09.3.20
+                
+                //lstLInfos = DB.LibrateInfoDAO.Instance.getLastLibrateInfosOfthisCar(this.owner.ID, this.owner.Assignment.DTStart, end);
+                //DateTime dtnow=DB.DBCommon.getDate();
+                int i=0;
+                foreach (int id in VehicleControl.carIDs)
+                {
+                    if (id == owner.ID)
+                        break;
+                        i++;
+                }
+                DateTime dtnow =DB.DBCommon.getDate();
                 string libratedstring=string.Empty;
-                DateTime dtnow=DB.DBCommon.getDate();
-                if (lstLInfos.Count == 0)
+                if (VehicleControl.carLibratedStates[i] == -1 || !owner.Assignment.IsWorking()/*||this.owner.Assignment.DTEnd < lstLInfos.Last().Dt*/)
                     libratedstring = string.Empty;
-                else if (dtnow > lstLInfos.Last().Dt && (dtnow - lstLInfos.Last().Dt) > TimeSpan.FromSeconds(120))
+                else if (dtnow > VehicleControl.carLibratedTimes[i] && (dtnow - VehicleControl.carLibratedTimes[i]) > TimeSpan.FromSeconds(120))
                     libratedstring = "（未振动）";
-                else
-                    libratedstring = "（"+Forms.Warning.GetLibratedString(lstLInfos.Last().State)+"）";
+                else 
+                    libratedstring = "（"+Forms.Warning.GetLibratedString(VehicleControl.carLibratedStates[i])+"）";
 
                 string strInfo = string.Format("{0}", Owner.Info.CarName+libratedstring, lastpt.Plane.ToString());
                 string strVelocity = string.Format("{0:0.00} km/h", lastpt.V);

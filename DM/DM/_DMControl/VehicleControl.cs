@@ -13,10 +13,24 @@ namespace DM.DMControl
     {
         #region - 静态 -
         static List<DB.CarInfo> vehiclesInfo = new List<DM.DB.CarInfo>();
+        //最后一条击震力数据的字典 feiying 09.3.20
+        public static int[] carIDs ;
+        public static int[] carLibratedStates;
+        public static DateTime[] carLibratedTimes;
         public static void ReadVehicleInfo()
         {
             DB.CarInfoDAO dao = DB.CarInfoDAO.getInstance();
             vehiclesInfo = dao.getAllCarInfo();
+
+            carIDs=new int[vehiclesInfo.Count];
+            carLibratedStates= new int[carIDs.Length];
+            carLibratedTimes = new DateTime[carIDs.Length];
+            for (int i = 0; i < vehiclesInfo.Count;i++ )
+            {
+                carIDs[i] = vehiclesInfo[i].CarID;
+                carLibratedStates[i] = -1;
+                carLibratedTimes[i] = DateTime.MinValue;
+            }
         }
         public static DB.CarInfo FindVechicle(int id)
         {
