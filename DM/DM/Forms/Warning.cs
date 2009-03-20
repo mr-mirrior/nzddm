@@ -243,7 +243,7 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
         {
             if (warningType == WarningType.OVERSPEED)
             {
-                return "碾压超速！";
+                return "当前速度为：！";
             }
             else if (warningType == WarningType.OVERTHICKNESS)
             {
@@ -334,10 +334,9 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
                 {
                     return;
                 }
-                lb.Text = "告警：";
-                lbWarningType.Text = "碾压超速！";
-                proportion = (this.thisSpeed - this.maxSpeed) / this.maxSpeed * 100;
-                lbProportion.Text = proportion.ToString("0.00") + "%";
+                lb.Text = "超速警报：";
+                //proportion = (this.thisSpeed - this.maxSpeed) / this.maxSpeed * 100;
+                lbProportion.Text = this.thisSpeed.ToString("0.00") + "Km/h"; /*proportion.ToString("0.00") + "%";*/
 
                 string toolVehicle = "分区：" + this.blockName + ",高程：" + this.designZ.ToString() + ",仓面：" + this.deckName;
                 string toolProportion = "限速：" + this.maxSpeed.ToString("0.00") + "千米/小时,实际：" + this.thisSpeed.ToString("0.00") + "千米/小时";
@@ -352,7 +351,6 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
                 }
 
                 lb.Text = "碾压简报：";
-                lbWarningType.Text = "标准遍数百分比为";
                 proportion = (this.totalAreaRatio - this.shortRollerArea) /*/ totalAreaRatio*/ * 100;
                 lbProportion.Text = proportion.ToString("0.00") + "%";
 
