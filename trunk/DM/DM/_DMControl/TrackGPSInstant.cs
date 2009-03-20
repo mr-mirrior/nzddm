@@ -501,6 +501,14 @@ namespace DM.DMControl
                     warningLibrated = (LibratedError*)p;
                     if (warningLibrated == null)
                         return;
+                    for (int i = 0; i < VehicleControl.carIDs.Length;i++ )
+                    {
+                        if (VehicleControl.carIDs[i]==warningLibrated->CarID)
+                       {
+                           VehicleControl.carLibratedStates[i] = warningLibrated->SenseOrgan;
+                           VehicleControl.carLibratedTimes[i] = DB.DBCommon.getDate();
+                       }
+                    }
                     if (!Program.ISTJU)
                         return;
                     DB.TracePointDAO.getInstance().InsertOneOsense(warningLibrated->CarID.ToString(), warningLibrated->SenseOrgan.ToString(), DB.DBCommon.getDate().ToString());

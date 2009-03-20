@@ -13,6 +13,7 @@ namespace DM
     {
         static volatile bool exiting = false;
         public static bool ISTJU = false;//是否天津大学专用
+
         public static bool Exiting
         {
             get { return Program.exiting; }
