@@ -357,6 +357,7 @@ namespace DM.Models
             scrBoundary.Right = Math.Max(scrBoundary.Right, c.X);
             scrBoundary.Bottom = Math.Max(scrBoundary.Bottom, c.Y);
         }
+
         private void CreatePath(double offScrX, double offScrY)
         {
 //             lock(sync)
@@ -697,6 +698,7 @@ namespace DM.Models
             }
 
         }
+        List<DB.LibrateInfo> lstLInfos=new List<DM.DB.LibrateInfo>();
         /// <summary>
         /// 筛选击震力时间段
         /// </summary>
@@ -912,8 +914,17 @@ namespace DM.Models
                 sf.LineAlignment = StringAlignment.Near;
                 sf.FormatFlags = StringFormatFlags.NoClip | StringFormatFlags.NoWrap;
                 rc.Offset(10, 3);
+                //写实时点的击震力状态。feiying 09.3.20
+                string libratedstring=string.Empty;
+                DateTime dtnow=DB.DBCommon.getDate();
+                if (lstLInfos.Count == 0)
+                    libratedstring = string.Empty;
+                else if (dtnow > lstLInfos.Last().Dt && (dtnow - lstLInfos.Last().Dt) > TimeSpan.FromSeconds(120))
+                    libratedstring = "（未振动）";
+                else
+                    libratedstring = "（"+Forms.Warning.GetLibratedString(lstLInfos.Last().State)+"）";
 
-                string strInfo = string.Format("{0}", Owner.Info.CarName, lastpt.Plane.ToString());
+                string strInfo = string.Format("{0}", Owner.Info.CarName+libratedstring, lastpt.Plane.ToString());
                 string strVelocity = string.Format("{0:0.00} km/h", lastpt.V);
 
                 FontStyle fs = FontStyle.Regular;

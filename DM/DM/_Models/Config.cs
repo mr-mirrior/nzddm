@@ -31,6 +31,5 @@ namespace DM.Models
 
         public bool IS_OVERSPEED_VALID =true;
         public bool IS_LIBRATE_VALID = false;//振动不合格是否记录遍数
-
     }
 }

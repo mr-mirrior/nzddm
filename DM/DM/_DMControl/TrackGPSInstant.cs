@@ -292,7 +292,8 @@ namespace DM.DMControl
             {
                 GPSDATA* gps = (GPSDATA*)p;
                 TRACE(gps->ToString());
-
+                if (Program.ISTJU)
+                    DB.TracePointDAO.getInstance().InsertOneTP(gps->CarID.ToString(), gps->XYZ.x.ToString(), gps->XYZ.y.ToString(), gps->XYZ.z.ToString(),(gps->Speed*100).ToString(),gps->Time.ToString(),gps->Type.ToString());
                 e.msg = GPSMessage.GPSDATA;
                 e.gps = *gps;
             }
@@ -388,10 +389,12 @@ namespace DM.DMControl
             {
                 try
                 {
+
                     warningLibrated = (LibratedError*)p;
                     if (warningLibrated == null)
                         return;
-
+                    if (Program.ISTJU)
+                        DB.TracePointDAO.getInstance().InsertOneOsense(warningLibrated->CarID.ToString(), warningLibrated->SenseOrgan.ToString(), DB.DBCommon.getDate().ToString());
                     DateTime dt = DB.DBCommon.getDate();
                     Forms.Warning dlg = new DM.Forms.Warning();
                     dlg.WarningType = WarningType.LIBRATED;
@@ -472,6 +475,9 @@ namespace DM.DMControl
                 case GPSMessage.WARNLIBRATED:
                     OnWarningLibrated();
                     break;
+                case GPSMessage.COMMONLIBRATED:
+                    OnSaveLibrated();
+                    break;
             }
 
             try
@@ -482,6 +488,27 @@ namespace DM.DMControl
             {
                 Utils.MB.Warning("网络连接出现问题，窗口即将关闭。请重新运行客户端。");
                 Application.Exit();
+            }
+        }
+
+        unsafe private static void OnSaveLibrated()
+        {
+            LibratedError* warningLibrated = null;
+            fixed (byte* p = coords)
+            {
+                try
+                {
+                    warningLibrated = (LibratedError*)p;
+                    if (warningLibrated == null)
+                        return;
+                    if (!Program.ISTJU)
+                        return;
+                    DB.TracePointDAO.getInstance().InsertOneOsense(warningLibrated->CarID.ToString(), warningLibrated->SenseOrgan.ToString(), DB.DBCommon.getDate().ToString());
+                }
+                catch (Exception e)
+                {
+                    DB.DebugUtil.log(e);
+                }
             }
         }
         public static void Stop()
@@ -514,7 +541,8 @@ namespace DM.DMControl
         GPSDATA = 1,
         WARNINGSPEED = 2,
         WORKERROR = 3,
-        WARNLIBRATED=0xFF
+        WARNLIBRATED=0xFF,
+        COMMONLIBRATED=0xFE
     }
     public class GPSCoordEventArg : EventArgs
     {

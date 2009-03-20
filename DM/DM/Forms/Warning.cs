@@ -39,7 +39,7 @@ Normal：震动	//此值只适用于只有两种状态的碾压机*/
             get { return librateState; }
             set { librateState = value; }
         }
-        private string GetLibratedString(int state)
+        public static string GetLibratedString(int state)
         {
             switch (state)
             {
