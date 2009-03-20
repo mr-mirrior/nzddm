@@ -23,6 +23,64 @@ namespace DM.DB
         private /*const*/ string statusLimit = " and status not in ("+Models.Config.I.BASE_STATUS+") order by dttrace";
         //private const String statusLimit = " and status not in (0)";
         //private const String statusLimit = " and status not in (0,1)";
+        /// <summary>
+        /// 插入一条gps点
+        /// </summary>
+        /// <param name="p">按照数据库字段顺序</param>
+        /// <returns></returns>
+        public bool InsertOneTP(params string[] p)
+        {
+            try
+            {
+                string sqltxt = "insert ZTracePoint" + DBCommon.getDate().Year.ToString() + DBCommon.getDate().Month.ToString("00") + " values(" + p[0] + ",'" + p[1] + "','" + p[2] + "','" + p[3] + "'," + p[4] + ",'" + p[5] + "'," + p[6] + ")";
+                int i = DBConnection.executeUpdate(sqltxt);
+                if (i == 1)
+                    return true;
+                else
+                    return false;
+            }
+            catch (System.Exception e)
+            {
+                DebugUtil.log(e);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 插入一条击震力信息
+        /// </summary>
+        /// <param name="p">按照数据库字段顺序</param>
+        /// <returns></returns>
+        public bool InsertOneOsense(params string[] p)
+        {
+            try
+            {
+                string sqltxt = "insert SenseOrgan values(" + p[0] + "," + p[1] + ",'" + p[2]  + "')";
+                int i = DBConnection.executeUpdate(sqltxt);
+                if (i == 1)
+                    return true;
+                else
+                    return false;
+            }
+            catch (System.Exception e)
+            {
+                DebugUtil.log(e);
+                return false;
+            }
+            finally
+            {
+                //DBConnection.closeDataReader(reader);
+                //                 DBConnection.closeSqlConnection(conn);
+            }
+        }
+
+        //DBAgent.AddNewRecord(TableName, "CarID, X,Y,Z,V,DTTrace,Status", data.CarID.ToString(),
+        //                data.Longitude.ToString(),
+        //                data.Latitude.ToString(),
+        //                data.Altitude.ToString(),
+        //                ((int)((data.Speed) * 100)).ToString(),
+        //                "'" + DTTrace + "'",
+        //                data.WorkFlag.ToString());
 
         //取得某辆车最新的一点
 
