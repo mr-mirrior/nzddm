@@ -111,6 +111,9 @@ namespace DM.Models
         {
             lock (adding)
             {
+                /////////////////////////////////feiying 09.3.21 修改出数据图错误问题。待测试
+                if (pts.Count == 0)
+                    return;
                 origTP = new List<Coord3D>(pts);
                 filteredTP = new List<Coord3D>(origTP);
                 PreFilter(ref filteredTP);
