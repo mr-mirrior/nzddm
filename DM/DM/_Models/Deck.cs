@@ -632,6 +632,8 @@ namespace DM.Models
 
             return datamap;
         }
+
+        public string rolladdres = string.Empty;
         public static double[] AreaRatio(int[] areas, Deck dk)
         {
             if (areas == null || dk == null)
@@ -798,32 +800,32 @@ namespace DM.Models
                 {
                     if (i > okcount)
                         continue;
-                    newG.FillRectangle(bs[i], offset + i * multiple + w0 - w0 / 2.2f, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 / 2.2f, w0 / 2.2f);
-                    newG.DrawRectangle(Pens.Black, offset + i * multiple + w0 - w0 / 2.2f, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2, w0 / 2.2f, w0 / 2.2f);
+                    newG.FillRectangle(bs[i], offset + i * multiple + w0 - w0 / 2.2f, output.Height + newH*0.8f + output.Width / 6 * 0.5f * 0.5f * 2, w0 / 2.2f, w0 / 2.2f);
+                    newG.DrawRectangle(Pens.Black, offset + i * multiple + w0 - w0 / 2.2f, output.Height + newH * 0.8f + output.Width / 6 * 0.5f * 0.5f * 2, w0 / 2.2f, w0 / 2.2f);
                     if (i == 0)
                     {
-                        newG.DrawString("未碾压", ftString, /*bs[i]*/Brushes.Black, offset * 1.05f + w0, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
-                        newG.DrawString(area_ratio[i].ToString("0.00%"), ftScale, /*bs[i]*/Brushes.Black, offset * 1.05f + w0, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2 + w0 / 3.5f);
+                        newG.DrawString("未碾压", ftString, /*bs[i]*/Brushes.Black, offset * 1.05f + w0, output.Height + newH * 0.8f + output.Width / 6 * 0.5f * 0.5f * 2);
+                        newG.DrawString(area_ratio[i].ToString("0.00%"), ftScale, /*bs[i]*/Brushes.Black, offset * 1.05f + w0, output.Height + newH * 0.8f + output.Width / 6 * 0.5f * 0.5f * 2 + w0 / 3.5f);
                         continue;
                     }
-                    newG.DrawString(i.ToString() + "遍", ftString, /*bs[i]*/Brushes.Black, offset * 1.05f + ((i + 1) * multiple - w0), output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2);
-                    newG.DrawString(area_ratio[i].ToString("0.00%"), ftScale, /*bs[i]*/Brushes.Black, offset * 1.05f + ((i + 1) * multiple - w0), output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 2 + w0 / 3.5f);
+                    newG.DrawString(i.ToString() + "遍", ftString, /*bs[i]*/Brushes.Black, offset * 1.05f + ((i + 1) * multiple - w0), output.Height + newH * 0.8f + output.Width / 6 * 0.5f * 0.5f * 2);
+                    newG.DrawString(area_ratio[i].ToString("0.00%"), ftScale, /*bs[i]*/Brushes.Black, offset * 1.05f + ((i + 1) * multiple - w0), output.Height + newH * 0.8f + output.Width / 6 * 0.5f * 0.5f * 2 + w0 / 3.5f);
                 }
 
                 for (int i = 0; i < 6; i++)
                 {
                     if (i+6 > okcount)
-                        continue; 
-                    newG.FillRectangle(bs[6 + i], offset + i * multiple + w0 - w0 / 2.2f, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 / 2.2f, w0 / 2.2f);
-                    newG.DrawRectangle(Pens.Black, offset + i * multiple + w0 - w0 / 2.2f, output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 / 2.2f, w0 / 2.2f);
+                        continue;
+                    newG.FillRectangle(bs[6 + i], offset + i * multiple + w0 - w0 / 2.2f, output.Height + newH * 0.8f + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 / 2.2f, w0 / 2.2f);
+                    newG.DrawRectangle(Pens.Black, offset + i * multiple + w0 - w0 / 2.2f, output.Height + newH * 0.8f + output.Width / 6 * 0.5f * 0.5f * 3.5f, w0 / 2.2f, w0 / 2.2f);
 //                     if ((i + 6) == 11)
 //                     {
 //                         newG.DrawString("11遍及以上", ftString, /*bs[6 + i]*/Brushes.Black, offset * 1.05f + ((i + 1) * multiple - w0), output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
 //                         newG.DrawString(GetAreaScale(areas, i + 6).ToString("0.00%"), ftScale, /*bs[6 + i]*/Brushes.Black, offset * 1.05f + ((i + 1) * multiple - w0), output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f + w0 / 3.5f);
 //                         continue;
 //                     }
-                    newG.DrawString((6 + i).ToString() + "遍"+(((i+6)==okcount)?"及以上":""), ftString, /*bs[6 + i]*/Brushes.Black, offset * 1.05f + ((i + 1) * multiple - w0), output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f);
-                    newG.DrawString(area_ratio[6 + i].ToString("0.00%"), ftScale, /*bs[6 + i]*/Brushes.Black, offset * 1.05f + ((i + 1) * multiple - w0), output.Height + newH + output.Width / 6 * 0.5f * 0.5f * 3.5f + w0 / 3.5f);
+                    newG.DrawString((6 + i).ToString() + "遍" + (((i + 6) == okcount) ? "及以上" : ""), ftString, /*bs[6 + i]*/Brushes.Black, offset * 1.05f + ((i + 1) * multiple - w0), output.Height + newH * 0.8f + output.Width / 6 * 0.5f * 0.5f * 3.5f);
+                    newG.DrawString(area_ratio[6 + i].ToString("0.00%"), ftScale, /*bs[6 + i]*/Brushes.Black, offset * 1.05f + ((i + 1) * multiple - w0), output.Height + newH * 0.8f + output.Width / 6 * 0.5f * 0.5f * 3.5f + w0 / 3.5f);
                 }
 
                 //备注
@@ -993,8 +995,9 @@ namespace DM.Models
 
                 if (!datamap)
                 {
-                    string address=@"C:\OUTPUT\"+this.DeckInfo.SegmentName+@"\OUTPUT.png";
-                    bitMp.Save(address, System.Drawing.Imaging.ImageFormat.Png);
+                    rolladdres=@"C:\OUTPUT\"+this.DeckInfo.SegmentName+@"\"+this.Partition.Name+this.Elevation.Height.ToString("0.0")+this.ID.ToString()+"roll.png";
+                    bitMp.Save(rolladdres, System.Drawing.Imaging.ImageFormat.Png);
+                    rolladdres = this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "roll.png";
                 }
                 output.Dispose();
                 endG.Dispose();
@@ -1370,7 +1373,7 @@ namespace DM.Models
             //ElevationImage();
             #endregion
             //#if DEBUG
-            string address = @"C:\OUTPUT\" +this.DeckInfo.SegmentName+@"\"+ this.Name + @"_elevation.png";
+            string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0")+this.ID.ToString() + "thickness.png";
             bitMp.Save(address, System.Drawing.Imaging.ImageFormat.Png);
             //#else
             //            bitMp.Save(@"C:\output_elevation.png", System.Drawing.Imaging.ImageFormat.Png);
@@ -1752,7 +1755,7 @@ namespace DM.Models
             s = endG.MeasureString("轴", ftScale);
             endG.DrawString("轴(m)", ftScale, Brushes.Black, offset * 0.9f, topBlank - s.Height * 0.9f + 2 * factor);
             endG.DrawString("碾压轨迹图形报告", ftTitle, Brushes.Black, thisPf, thisSf);
-            string address = @"C:\OUTPUT\"+this.DeckInfo.SegmentName+@"\" + this.Name + @"_K.png";
+            string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name+this.Elevation.Height.ToString("0.0")+this.ID.ToString()+ "tracing.png";
             bitMp.Save(address, System.Drawing.Imaging.ImageFormat.Png);
 
             output.Dispose();

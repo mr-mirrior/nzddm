@@ -1663,7 +1663,7 @@ namespace DM.Views
             dlg.Finished = true;
             if (!result)
                 return;
-            System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\output\"+DM.Models.Deck.I.DeckInfo.SegmentName+@"\output.png");
+            System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\output\"+DM.Models.Deck.I.DeckInfo.SegmentName+@"\"+Models.Deck.I.rolladdres);
             if ( result && fi.Exists )
                 Utils.Sys.SysUtils.StartProgram(fi.FullName, null);
         }

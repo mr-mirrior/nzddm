@@ -82,8 +82,8 @@ namespace DM.DB
         /// </summary>
         public string ReadSegmentRemark(int blockid, Double designz, Int32 segmentid)
         {
-           string sqlTxt = "select remark from segment"+
-               "'  where blockid = " + blockid +
+           string sqlTxt = "select remark from Segment"+
+               "  where blockid = " + blockid +
                " and designz=" + designz +
                " and segmentid=" + segmentid;
             try
