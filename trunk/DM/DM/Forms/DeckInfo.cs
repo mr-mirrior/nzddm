@@ -108,7 +108,7 @@ namespace DM.Forms
 #endif
             cbSpeedUnit.SelectedIndex = 1;
             if (deck.DesignRollCount == 0)
-                cbLibrate.SelectedIndex = 1;
+                cbLibrate.SelectedIndex = 2;
             else
                 cbLibrate.SelectedIndex = deck.LibrateState;
             lbBlockname.Text = BlockName;
