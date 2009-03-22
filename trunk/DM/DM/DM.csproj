@@ -90,6 +90,12 @@
     <Compile Include="Forms\OverBlock.Designer.cs">
       <DependentUpon>OverBlock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\VehicleHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\VehicleHistory.Designer.cs">
+      <DependentUpon>VehicleHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Warning.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -345,6 +351,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ToolsWindow.resx">
       <DependentUpon>ToolsWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\VehicleHistory.resx">
+      <DependentUpon>VehicleHistory.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Waiting.resx">
