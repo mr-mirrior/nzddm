@@ -29,7 +29,6 @@ namespace DM.Views
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             this.SetStyle(ControlStyles.UserPaint, true);
             this.DoubleBuffered = true;
-
             if (IsPreview)
                 return;
             this.AutoScroll = false;
@@ -1651,10 +1650,15 @@ namespace DM.Views
         {
             if (layer.VisibleDeck == null)
                 return;
-            lock (updateLock)
+//#if DEBUG
+            if (layer.VisibleDeck.State== DM.DB.SegmentWorkState.END)
             {
-            layer.CreateDataMap();
+                lock (updateLock)
+                {
+                    layer.CreateDataMap();
+                }
             }
+//#endif
             bool result;
             lock (updateLock)
             {
@@ -1820,5 +1824,9 @@ namespace DM.Views
             MyRefresh();
         }
 
+        private void miLookHistory_Click(object sender, EventArgs e)
+        {
+            layer.DeckControl.LookVehicleHistory(layer.VisibleDeck);
+        }
     }
 }

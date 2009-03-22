@@ -315,7 +315,7 @@ namespace DM.DB
 
         //取得当前舱面已经分配的car
         //select * from carinfo where DTEnd is null and DTStart is not null and blockid=? and designlayerid=? and segmentid=?;
-        public List<CarInfo> getCarInfosInThisSegment_Distribute(Int32 blockid, Double designZ, Int32 segmentid)
+        public List<CarInfo> getCarInfosInThisSegment_Distributed(Int32 blockid, Double designZ, Int32 segmentid)
         {
             List<CarInfo> carinfos = new List<CarInfo>();
             SqlConnection conn = null;

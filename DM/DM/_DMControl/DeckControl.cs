@@ -223,6 +223,20 @@ namespace DM.DMControl
             }
             return dks;
         }
+
+        /// <summary>
+        /// 查看仓面车辆分配历史
+        /// </summary>
+        /// <param name="deck">要查看的仓面</param>
+        /// <returns></returns>
+        public bool LookVehicleHistory(Deck deck)
+        {
+
+            return true;
+        }
+
+
+
         public bool ModifyDeck(Deck deck)
         {
 //             DB.SegmentDAO dao = DB.SegmentDAO.getInstance();

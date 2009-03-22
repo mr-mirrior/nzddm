@@ -664,9 +664,9 @@ namespace DM.Models
             double oldRotate = layer.RotateDegree;
 
 #if !DEBUG
-            if (this.IsWorking||this.WorkState== DM.DB.SegmentWorkState.WAIT)
+            if (this.WorkState== DM.DB.SegmentWorkState.WAIT)//this.IsWorking||或结束关仓后
             {
-                Utils.MB.Warning("该仓面没有开仓或结束，无法生成图形报告。请关仓后再试一次。");
+                Utils.MB.Warning("该仓面没有开仓，无法生成图形报告。请再试一次。");
                 return false;
             }
 #endif
@@ -917,6 +917,8 @@ namespace DM.Models
                     + this.DateStart.Hour.ToString("00:") + this.DateStart.Minute.ToString("00:") + this.DateStart.Second.ToString("00");
                 string dateEndString = "结束：" + this.DateEnd.Year.ToString("00-") + this.DateEnd.Month.ToString("00-") + this.DateEnd.Day.ToString("00 ")
                     + this.DateEnd.Hour.ToString("00:") + this.DateEnd.Minute.ToString("00:") + this.DateEnd.Second.ToString("00");
+                if (this.State == DM.DB.SegmentWorkState.WORK)
+                    dateEndString = "结束：" + "尚未收仓";
                 string dateNow = DB.DBCommon.getDate().Year.ToString("00-") + DB.DBCommon.getDate().Month.ToString("00-") + DB.DBCommon.getDate().Day.ToString("00 ")
                     + DB.DBCommon.getDate().Hour.ToString("00:") + DB.DBCommon.getDate().Minute.ToString("00:") + DB.DBCommon.getDate().Second.ToString("00");
 

@@ -42,9 +42,12 @@
             this.miDataMap = new System.Windows.Forms.ToolStripMenuItem();
             this.miProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.miAssignment = new System.Windows.Forms.ToolStripMenuItem();
+            this.miLookHistory = new System.Windows.Forms.ToolStripMenuItem();
             this.miStartDeck = new System.Windows.Forms.ToolStripMenuItem();
             this.miEndDeck = new System.Windows.Forms.ToolStripMenuItem();
             this.miDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.tmiNotRolling = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuDeck = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miDeckName = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,8 +57,6 @@
             this.miCancel = new System.Windows.Forms.ToolStripMenuItem();
             this.测试TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tpp = new System.Windows.Forms.ToolTip(this.components);
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.tmiNotRolling = new System.Windows.Forms.ToolStripMenuItem();
             视图VToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             设置SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             仓面操作ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -141,7 +142,8 @@
             // 
             设置SToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miProperties,
-            this.miAssignment});
+            this.miAssignment,
+            this.miLookHistory});
             设置SToolStripMenuItem.Name = "设置SToolStripMenuItem";
             设置SToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             设置SToolStripMenuItem.Text = "设置(&S)";
@@ -161,6 +163,13 @@
             this.miAssignment.Size = new System.Drawing.Size(168, 22);
             this.miAssignment.Text = "车辆派遣(&V)";
             this.miAssignment.Click += new System.EventHandler(this.miVehicle_Click);
+            // 
+            // miLookHistory
+            // 
+            this.miLookHistory.Name = "miLookHistory";
+            this.miLookHistory.Size = new System.Drawing.Size(168, 22);
+            this.miLookHistory.Text = "车辆派遣历史(&L)";
+            this.miLookHistory.Click += new System.EventHandler(this.miLookHistory_Click);
             // 
             // 仓面操作ToolStripMenuItem
             // 
@@ -196,6 +205,19 @@
             this.miDelete.Size = new System.Drawing.Size(222, 22);
             this.miDelete.Text = "删除仓面(&D)";
             this.miDelete.Click += new System.EventHandler(this.miDelete_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(219, 6);
+            // 
+            // tmiNotRolling
+            // 
+            this.tmiNotRolling.Name = "tmiNotRolling";
+            this.tmiNotRolling.ShortcutKeyDisplayString = "Ctrl+F10";
+            this.tmiNotRolling.Size = new System.Drawing.Size(222, 22);
+            this.tmiNotRolling.Text = "排除碾压区域(&E)";
+            this.tmiNotRolling.Click += new System.EventHandler(this.tmiNotRolling_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -267,19 +289,6 @@
             this.tpp.UseAnimation = false;
             this.tpp.UseFading = false;
             // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(219, 6);
-            // 
-            // tmiNotRolling
-            // 
-            this.tmiNotRolling.Name = "tmiNotRolling";
-            this.tmiNotRolling.ShortcutKeyDisplayString = "Ctrl+F10";
-            this.tmiNotRolling.Size = new System.Drawing.Size(222, 22);
-            this.tmiNotRolling.Text = "排除碾压区域(&E)";
-            this.tmiNotRolling.Click += new System.EventHandler(this.tmiNotRolling_Click);
-            // 
             // LayerView
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -329,5 +338,6 @@
         private System.Windows.Forms.ToolStripMenuItem 测试TToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem tmiNotRolling;
+        private System.Windows.Forms.ToolStripMenuItem miLookHistory;
     }
 }
