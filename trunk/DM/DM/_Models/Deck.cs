@@ -1258,6 +1258,8 @@ namespace DM.Models
                    + this.DateStart.Hour.ToString("00:") + this.DateStart.Minute.ToString("00:") + this.DateStart.Second.ToString("00");
             string dateEndString = "结束：" + this.DateEnd.Year.ToString("00-") + this.DateEnd.Month.ToString("00-") + this.DateEnd.Day.ToString("00 ")
                 + this.DateEnd.Hour.ToString("00:") + this.DateEnd.Minute.ToString("00:") + this.DateEnd.Second.ToString("00");
+            if (this.State == DM.DB.SegmentWorkState.WORK)
+                dateEndString = "结束：" + "尚未收仓";
             string dateNow = DB.DBCommon.getDate().Year.ToString("00-") + DB.DBCommon.getDate().Month.ToString("00-") + DB.DBCommon.getDate().Day.ToString("00 ")
                 + DB.DBCommon.getDate().Hour.ToString("00:") + DB.DBCommon.getDate().Minute.ToString("00:") + DB.DBCommon.getDate().Second.ToString("00");
 
@@ -1678,6 +1680,8 @@ namespace DM.Models
                   + this.DateStart.Hour.ToString("00:") + this.DateStart.Minute.ToString("00:") + this.DateStart.Second.ToString("00");
             string dateEndString = "结束：" + this.DateEnd.Year.ToString("00-") + this.DateEnd.Month.ToString("00-") + this.DateEnd.Day.ToString("00 ")
                 + this.DateEnd.Hour.ToString("00:") + this.DateEnd.Minute.ToString("00:") + this.DateEnd.Second.ToString("00");
+            if (this.State == DM.DB.SegmentWorkState.WORK)
+                dateEndString = "结束：" + "尚未收仓";
             string dateNow = DB.DBCommon.getDate().Year.ToString("00-") + DB.DBCommon.getDate().Month.ToString("00-") + DB.DBCommon.getDate().Day.ToString("00 ")
                 + DB.DBCommon.getDate().Hour.ToString("00:") + DB.DBCommon.getDate().Minute.ToString("00:") + DB.DBCommon.getDate().Second.ToString("00");
 

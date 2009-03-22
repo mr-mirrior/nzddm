@@ -871,10 +871,11 @@ namespace DM.Models
                         else
                             g.DrawPath(p, gpTracking[i]);
                     }
-                Pen pl = new Pen(Brushes.Red, size);
+                ///////////////////////////////////////////////////////////feiying 09.3.22
+                using (Pen p1 = new Pen(Color.Red, size))
                 foreach (GraphicsPath path in libratedTracking)
                 {
-                    g.DrawPath(pl, path);
+                    g.DrawPath(p1,path);
                 }
             }
         }
