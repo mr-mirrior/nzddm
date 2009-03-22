@@ -97,7 +97,6 @@
             // 
             // lstVehicle
             // 
-            this.lstVehicle.CheckBoxes = true;
             this.lstVehicle.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.CarName,
             this.DTStart,

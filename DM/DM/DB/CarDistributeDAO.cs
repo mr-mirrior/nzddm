@@ -315,24 +315,34 @@ namespace DM.DB
 
         //取得当前舱面已经分配的car
         //select * from carinfo where DTEnd is null and DTStart is not null and blockid=? and designlayerid=? and segmentid=?;
-        public List<CarInfo> getCarInfosInThisSegment_Distributed(Int32 blockid, Double designZ, Int32 segmentid)
+        public List<CarDistribute> getCarInfosInThisSegment_Distributed(Int32 blockid, Double designZ, Int32 segmentid)
         {
-            List<CarInfo> carinfos = new List<CarInfo>();
+            List<CarDistribute> carinfos = new List<CarDistribute>();
             SqlConnection conn = null;
             SqlDataReader reader = null;
             String sqlTxt = "select * from cardistribute where blockid=" + blockid +
                 " and segmentid=" + segmentid +
                 " and designZ=" + designZ;
-            List<CarInfo> all = CarInfoDAO.getInstance().getAllCarInfo();
+            //List<CarInfo> all = CarInfoDAO.getInstance().getAllCarInfo();
             try
             {
                 conn = DBConnection.getSqlConnection();
                 reader = DBConnection.executeQuery(conn, sqlTxt);
                 while (reader.Read())
                 {
-                    Int32 carID = (Convert.ToInt32(reader["carid"]));
-                    CarInfo carinfo = CarInfoDAO.getInstance().getCarInfo(all, carID);
-                    carinfos.Add(carinfo);
+                    CarDistribute dis = new CarDistribute();
+                    dis.Carid = (int)reader["CarID"];
+                    if (reader["DTStart"] == DBNull.Value)
+                        dis.DTStart = DateTime.MinValue;
+                    else
+                        dis.DTStart = (DateTime)reader["DTStart"];
+
+                    if (reader["DTEnd"] == DBNull.Value)
+                        dis.DTEnd = DateTime.MinValue;
+                    else
+                        dis.DTEnd = (DateTime)reader["DTEnd"];
+
+                    carinfos.Add(dis);
                 }
                 return carinfos;
             }

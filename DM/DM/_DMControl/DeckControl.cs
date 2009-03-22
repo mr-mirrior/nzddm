@@ -231,7 +231,9 @@ namespace DM.DMControl
         /// <returns></returns>
         public bool LookVehicleHistory(Deck deck)
         {
-
+            DM.Forms.VehicleHistory dlg = new DM.Forms.VehicleHistory();
+            dlg.Deck = deck;
+            dlg.ShowDialog();
             return true;
         }
 
