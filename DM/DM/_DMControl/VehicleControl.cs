@@ -178,14 +178,14 @@ namespace DM.DMControl
                 Color.Indigo,//Purple,//Purple,
                 Color.GreenYellow,//Goldenrod,//Goldenrod,
                 Color.SeaGreen,//YellowGreen,//Yellow
-                Color.IndianRed,//SeaGreen,
+                Color.DarkTurquoise,//SeaGreen,
                 Color.LimeGreen,//Brown,//FromArgb(0xFFC125),
                 Color.Magenta,//Tomato,//FromArgb(0x40E0D0),
                 Color.Olive,//Silver,//FromArgb(0x0000FF),
                 Color.Orange,//PaleGoldenrod,//FromArgb(0x8B636C),
                 Color.Tomato,//Orchid,//FromArgb(0xEE0000),
                 Color.SteelBlue,//Orange,//(0xFFE4B5),
-                Color.DarkTurquoise//PapayaWhip//.FromArgb(0x000000)
+                Color.Pink//PapayaWhip//.FromArgb(0x000000)
             };
 
             List<Vehicle> vs = new List<Vehicle>();
