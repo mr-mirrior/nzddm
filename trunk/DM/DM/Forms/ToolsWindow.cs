@@ -415,6 +415,7 @@ namespace DM.Forms
             {
                 btnDeckRect.Enabled = false;
                 btnDeckPoly.Enabled = false;
+                btnInputCoord.Enabled = false;
                 btnDeckRect.ForeColor = Color.Gray;
                 btnDeckPoly.ForeColor = Color.Gray;
             }

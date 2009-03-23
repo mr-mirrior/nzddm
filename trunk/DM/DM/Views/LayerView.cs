@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using DM.Geo;
 using System.Runtime.InteropServices;
+using DM.Models;
 
 namespace DM.Views
 {
@@ -908,6 +909,7 @@ namespace DM.Views
                 this.Refresh();
             else
                 MyRefresh();
+            
             //IsDirty = true;
             //Refresh();
 //             try
@@ -931,8 +933,11 @@ namespace DM.Views
 //             }
 //         }
         object updateLock = new object();
+        //int i = 0;
         public void UpdateGraphics()
         {
+            //System.Diagnostics.Debug.Print(i++.ToString());
+            //TrackGPS.WAITFINISHED =false;
             lock(updateLock)
             {
                 double oldzoom = layer.Zoom;
@@ -956,8 +961,10 @@ namespace DM.Views
 
                 MyScrollX = (int)(pt.X * zoom / oldzoom);
                 MyScrollY = (int)(pt.Y * zoom / oldzoom);
+                
             }
             RequestPaint();
+            //TrackGPS.WAITFINISHED = true;
         }
         #region - 漫游 -
         private void RoamFree()
@@ -1648,6 +1655,8 @@ namespace DM.Views
         Forms.Waiting dlg = new DM.Forms.Waiting();
         private void ReportOK()
         {
+            //TrackGPS.WAITFINISHED = false;
+            //TrackGPS.hasReadCar.Clear();
             if (layer.VisibleDeck == null)
                 return;
 //#if DEBUG
@@ -1670,6 +1679,7 @@ namespace DM.Views
             System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\output\"+DM.Models.Deck.I.DeckInfo.SegmentName+@"\"+Models.Deck.I.rolladdres);
             if ( result && fi.Exists )
                 Utils.Sys.SysUtils.StartProgram(fi.FullName, null);
+            //TrackGPS.WAITFINISHED = true;
         }
         private void tsReport_Click(object sender, EventArgs e)
         {
@@ -1734,6 +1744,7 @@ namespace DM.Views
         private void miActive_Click(object sender, EventArgs e)
         {
             isMenuDeckOn = false;
+            //TrackGPS.WAITFINISHED = false;
             layer.SetActiveDeck();
         }
 

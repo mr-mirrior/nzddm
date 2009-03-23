@@ -279,11 +279,11 @@ namespace DM.Models
             BorderShapeII shape = new BorderShapeII(copy);
             BorderShapeII cutShape = new BorderShapeII(scrCut.vertex);
             shape.Intersect(cutShape);
-            if (shape.IsEmpty)
-            {
-                Utils.MB.Warning("你输入的仓面顶点坐标不全在该层范围内。请检查后重新输入！");
-                return null;
-            }
+            //if (shape.IsEmpty)
+            //{
+            //    Utils.MB.Warning("你输入的仓面顶点坐标不全在该层范围内。请检查后重新输入！");
+            //    return null;
+            //}
             Polygon result = new Polygon();
             result.Vertex = shape.Data;
 
