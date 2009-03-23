@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.ckAllPart = new System.Windows.Forms.CheckBox();
-            this.vistaButton2 = new DM.Utils.VistaButton();
+            this.btnInputCoord = new DM.Utils.VistaButton();
             this.vistaButton1 = new DM.Utils.VistaButton();
             this.btnZuoan = new DM.Utils.VistaButton();
             this.btnYouan = new DM.Utils.VistaButton();
@@ -81,23 +81,23 @@
             this.ckAllPart.Visible = false;
             this.ckAllPart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.cbPartitions_MouseMove);
             // 
-            // vistaButton2
+            // btnInputCoord
             // 
-            this.vistaButton2.BackColor = System.Drawing.Color.White;
-            this.vistaButton2.ButtonColor = System.Drawing.Color.MidnightBlue;
-            this.vistaButton2.ButtonText = "输入坐标";
-            this.vistaButton2.CornerRadius = 4;
-            this.vistaButton2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.vistaButton2.GlowColor = System.Drawing.Color.White;
-            this.vistaButton2.HighlightColor = System.Drawing.Color.Silver;
-            this.vistaButton2.ImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.vistaButton2.Location = new System.Drawing.Point(7, 244);
-            this.vistaButton2.Margin = new System.Windows.Forms.Padding(0);
-            this.vistaButton2.Name = "vistaButton2";
-            this.vistaButton2.Size = new System.Drawing.Size(36, 36);
-            this.vistaButton2.TabIndex = 36;
-            this.toolTip1.SetToolTip(this.vistaButton2, "分仓");
-            this.vistaButton2.Click += new System.EventHandler(this.vistaButton2_Click);
+            this.btnInputCoord.BackColor = System.Drawing.Color.White;
+            this.btnInputCoord.ButtonColor = System.Drawing.Color.MidnightBlue;
+            this.btnInputCoord.ButtonText = "输入坐标";
+            this.btnInputCoord.CornerRadius = 4;
+            this.btnInputCoord.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnInputCoord.GlowColor = System.Drawing.Color.White;
+            this.btnInputCoord.HighlightColor = System.Drawing.Color.Silver;
+            this.btnInputCoord.ImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnInputCoord.Location = new System.Drawing.Point(7, 244);
+            this.btnInputCoord.Margin = new System.Windows.Forms.Padding(0);
+            this.btnInputCoord.Name = "btnInputCoord";
+            this.btnInputCoord.Size = new System.Drawing.Size(36, 36);
+            this.btnInputCoord.TabIndex = 36;
+            this.toolTip1.SetToolTip(this.btnInputCoord, "分仓");
+            this.btnInputCoord.Click += new System.EventHandler(this.vistaButton2_Click);
             // 
             // vistaButton1
             // 
@@ -510,7 +510,7 @@
             this.BackColor = System.Drawing.Color.Lavender;
             this.ClientSize = new System.Drawing.Size(88, 524);
             this.ControlBox = false;
-            this.Controls.Add(this.vistaButton2);
+            this.Controls.Add(this.btnInputCoord);
             this.Controls.Add(this.cbMode);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
@@ -595,7 +595,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ComboBox cbMode;
-        private DM.Utils.VistaButton vistaButton2;
+        private DM.Utils.VistaButton btnInputCoord;
 
     }
 }

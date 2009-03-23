@@ -39,6 +39,8 @@ namespace DM.Models
                 libratedTracking.Clear();
                 libratedOKTracking.Clear();
                 screenSegLibrated.Clear();
+                //hasReadCar.Clear();
+                //alltimes.Clear();
             }
             screenSeg.Clear();
             screenSegFiltered.Clear();
@@ -107,6 +109,8 @@ namespace DM.Models
         List<bool> gpLibrated = new List<bool>();
         List<GraphicsPath> libratedTracking = new List<GraphicsPath>();
         List<GraphicsPath> libratedOKTracking = new List<GraphicsPath>();
+        static List<DB.CarDistribute> hasReadCar = new List<DB.CarDistribute>(); //已经读过库的车
+        static List<List<Timeslice>> alltimes = new List<List<Timeslice>>();
         public void SetTracking(List<Coord3D> pts, double offScrX, double offScrY)
         {
             lock (adding)
@@ -362,8 +366,11 @@ namespace DM.Models
             scrBoundary.Bottom = Math.Max(scrBoundary.Bottom, c.Y);
         }
 
+        bool isFirst = true;
+       
         private void CreatePath(double offScrX, double offScrY)
         {
+            isFirst = true;
 //             lock(sync)
 //             {
                 if (filteredSeg.Count == 0)
@@ -377,6 +384,8 @@ namespace DM.Models
                 gpLibrated.Clear();
                 libratedOKTracking.Clear();
                 screenSegLibrated.Clear();
+                //hasReadCar.Clear();
+                //alltimes.Clear();
 
                 screenSeg = new List<List<Coord3D>>(filteredSeg);
                 for (int i = 0; i < filteredSeg.Count; i++)
@@ -397,7 +406,30 @@ namespace DM.Models
                 }
                 RectangleF rc = new RectangleF();
                //筛选击震力不合格点  feiying 09.3.19
-                List<Timeslice> times = FiterLibrated();  //现在是每个点都查数据库即一秒之内查一次数据库，效率待测试
+                List<Timeslice> times=new List<Timeslice>();
+                int carindex=0;
+               //一个车只读一次库  
+                foreach (DB.CarDistribute id in hasReadCar)
+                {
+                    if(id.DTStart.Equals(owner.Assignment.DTStart)&&id.Carid==owner.Assignment.Carid)
+                    {
+                        isFirst = false;
+                        break;
+                    }
+                    carindex++;
+                }
+                
+                if (isFirst)
+                {
+                    times = FiterLibrated();
+                    hasReadCar.Add(owner.Assignment);
+                    alltimes.Add(times);
+                    carindex = -1;
+                }
+
+                if (carindex != -1)
+                    times = alltimes[carindex];
+
                 //libratedOK = new List<Coord3D>();
                 foreach (List<Coord3D> lst in screenSeg)
                 {
@@ -409,23 +441,37 @@ namespace DM.Models
                     List<List<Coord3D>> libratedNOlst = new List<List<Coord3D>>();//存放所有振动不合格段
                     List<Coord3D> libratedOK = new List<Coord3D>();//存放所有筛选过后振动合格的点
                     List<List<Coord3D>> libratedOKlst = new List<List<Coord3D>>();//存放所有筛选过后振动合格的点
+                    
                     bool overspeeding = (lst[0].V >= owner.Owner.DeckInfo.MaxSpeed);
                     onelist.Add(lst[0]);
                     lstoflst.Add(onelist);
+                    bool isRight = false;
                     bool isbreak = false;
                     bool hasNOlibrated = false;//第一个不合格list开关量
-                    if (times.Count > 0)
+
+                    int index = GetCarIDIndex(owner.ID);
+                    DateTime when = lst[0].When;
+                    if (when < VehicleControl.carLibratedTimes[index] /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
                     {
-                        for (int j = 0; j < times.Count; j++)
+                        if (times.Count > 0)
                         {
-                            if (lst[0].When < times[j].DtEnd && lst[0].When > times[j].DtStart)
+                            for (int j = 0; j < times.Count; j++)
                             {
+                                if (when < times[j].DtEnd && when > times[j].DtStart)
+                                {
                                     libratedNO.Add(lst[0]);
                                     hasNOlibrated = true;
                                     isbreak = true;
+                                    break;
+                                }
+                            }
+                            if (!isbreak)
+                            {
+                                libratedOK.Add(lst[0]);
+                                libratedOKlst.Add(libratedOK);
                             }
                         }
-                        if (!isbreak)
+                        else
                         {
                             libratedOK.Add(lst[0]);
                             libratedOKlst.Add(libratedOK);
@@ -433,9 +479,19 @@ namespace DM.Models
                     }
                     else
                     {
-                        libratedOK.Add(lst[0]);
-                        libratedOKlst.Add(libratedOK);
+                        if (VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
+                        {
+                            isRight = true;
+                            libratedOK.Add(lst[0]);
+                            libratedOKlst.Add(libratedOK);
+                        }
+                        else
+                        {
+                            libratedNO.Add(lst[0]);
+                            libratedNOlst.Add(libratedNO);
+                        }
                     }
+
 
                     isbreak = false;
                     hasNOlibrated = false;
@@ -443,35 +499,69 @@ namespace DM.Models
 
                     for (int i = 1; i < lst.Count; i++)
                     {
-                        //筛选各个时间片内的点集合
-                        if(times.Count>0)
+                        when=lst[i].When;
+                        if ( when< VehicleControl.carLibratedTimes[index] /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
                         {
-                            for (int j = 0; j < times.Count; j++)
+                            if (times.Count > 0)
                             {
-                                if (lst[i].When < times[j].DtEnd && lst[i].When > times[j].DtStart)
+                                for (int j = 0; j < times.Count; j++)
                                 {
-                                    if (lst[i].When - lst[i - 1].When < TimeSpan.FromSeconds(Config.I.LIBRATE_Secends))
+                                    if (when< times[j].DtEnd && when > times[j].DtStart)
                                     {
-                                        libratedNO.Add(lst[i]);
-                                        hasNOlibrated = true;
-                                        isbreak = true;
-                                    }
-                                    else
-                                    {
-                                        libratedNOlst.Add(libratedNO);
-                                        libratedNO = new List<Coord3D>();
-                                        libratedNO.Add(lst[i]);
-                                        libratedNOlst.Add(libratedNO);
-                                        isbreak = true;
+                                        if (when - lst[i - 1].When < TimeSpan.FromSeconds(Config.I.LIBRATE_Secends))
+                                        {
+                                            libratedNO.Add(lst[i]);
+                                            hasNOlibrated = true;
+                                            isbreak = true;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            libratedNOlst.Add(libratedNO);
+                                            libratedNO = new List<Coord3D>();
+                                            libratedNO.Add(lst[i]);
+                                            libratedNOlst.Add(libratedNO);
+                                            isbreak = true;
+                                            break;
+                                        }
                                     }
                                 }
+                                if (!isbreak)
+                                {
+                                    libratedOK.Add(lst[i]);
+                                }
                             }
-                            if (!isbreak)
-                            libratedOK.Add(lst[i]);
+                            else
+                            {
+                                libratedOK.Add(lst[i]);
+                            }
                         }
                         else
                         {
-                            libratedOK.Add(lst[i]);
+                            if (VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index] == -1)
+                            {
+                                if (isRight)
+                                    libratedOK.Add(lst[i]);
+                                else
+                                {
+                                    libratedOK = new List<Coord3D>();
+                                    libratedOK.Add(lst[i]);
+                                    libratedOKlst.Add(libratedOK);
+                                }
+                                isRight = true;
+                            }
+                            else
+                            {
+                                if (!isRight)
+                                    libratedNO.Add(lst[i]);
+                                else
+                                {
+                                    libratedNO = new List<Coord3D>();
+                                    libratedNO.Add(lst[i]);
+                                    libratedNOlst.Add(libratedNO);
+                                }
+                                isRight = false;
+                            }
                         }
                         isbreak = false; 
 
@@ -702,7 +792,19 @@ namespace DM.Models
             }
 
         }
-        
+        //获得参数车辆id的索引
+        int GetCarIDIndex(int carid)
+        {
+            int k = 0;
+            foreach (int id in VehicleControl.carIDs)
+            {
+                if (id == owner.ID)
+                    break;
+                k++;
+            }
+            return k;
+        }
+
         /// <summary>
         /// 筛选击震力时间段
         /// </summary>
@@ -739,30 +841,44 @@ namespace DM.Models
                 }
                 times.Add(time);
             }
+
+
             List<Timeslice> Timeslices = new List<Timeslice>();
-            //if (times.Count < 2)////////////////筛选连接不合格的时间片
-            return times;
-           //else
-           //{
-           //    for (int i = 0; i < times.Count;)
-           //    {
-           //        Timeslice thistime = times[i];
-           //        for (int j = i+1; j < times.Count;j++ )
-           //        {
-           //            if (times[j].DtStart == thistime.DtEnd)
-           //            {
-           //                thistime.DtEnd = times[j].DtEnd;
-           //            }
-           //            else
-           //            {
-           //                Timeslices.Add(thistime);
-           //                i = j+1;
-           //                break;
-           //            }
-           //        }
-           //    }
-           //    return Timeslices;
-           //}
+            if (times.Count < 2)////////////////筛选连接不合格的时间片
+                return times;
+            else
+            {
+                for (int i = 0; i < times.Count; )
+                {
+                    Timeslice thistime = times[i];
+                    for (int j = i + 1; j < times.Count; j++)
+                    {
+                        if (times[j].DtStart == thistime.DtEnd)
+                        {
+                            thistime.DtEnd = times[j].DtEnd;
+                            if (j == times.Count - 1)
+                            {
+                                if (Timeslices.Count == 0)
+                                {
+                                    Timeslices.Add(thistime);
+                                    i = j + 1;
+                                }
+                                else
+                                {
+                                    i = j + 1;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Timeslices.Add(thistime);
+                            i = j + 1;
+                            break;
+                        }
+                    }
+                }
+                return Timeslices;
+            }
         }
         private float WidthPen()
         {
@@ -923,13 +1039,7 @@ namespace DM.Models
                 
                 //lstLInfos = DB.LibrateInfoDAO.Instance.getLastLibrateInfosOfthisCar(this.owner.ID, this.owner.Assignment.DTStart, end);
                 //DateTime dtnow=DB.DBCommon.getDate();
-                int i=0;
-                foreach (int id in VehicleControl.carIDs)
-                {
-                    if (id == owner.ID)
-                        break;
-                        i++;
-                }
+                int i=GetCarIDIndex(owner.ID);
                 DateTime dtnow =DB.DBCommon.getDate();
                 string libratedstring=string.Empty;
                 if (VehicleControl.carLibratedStates[i] == -1 || !owner.Assignment.IsWorking()/*||this.owner.Assignment.DTEnd < lstLInfos.Last().Dt*/)

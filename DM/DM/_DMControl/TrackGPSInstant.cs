@@ -493,6 +493,7 @@ namespace DM.DMControl
 
         unsafe private static void OnSaveLibrated()
         {
+            //DM.Models.TrackGPS.hasReadCar.Clear();//清空列表重新查库
             LibratedError* warningLibrated = null;
             fixed (byte* p = coords)
             {
@@ -503,7 +504,7 @@ namespace DM.DMControl
                         return;
                     for (int i = 0; i < VehicleControl.carIDs.Length;i++ )
                     {
-                        if (VehicleControl.carIDs[i]==warningLibrated->CarID)
+                       if (VehicleControl.carIDs[i]==warningLibrated->CarID)
                        {
                            VehicleControl.carLibratedStates[i] = warningLibrated->SenseOrgan;
                            VehicleControl.carLibratedTimes[i] = DB.DBCommon.getDate();

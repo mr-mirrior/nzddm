@@ -90,7 +90,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(463, 55);
             this.label6.TabIndex = 19;
-            this.label6.Text = "坐标输入方法：形如x11,y11;x12,y12;x13y13，即逗号隔离某一点的坝横坐标与坝纵坐标，分号隔离两个控制点。，标点请使用英文半角输入法！";
+            this.label6.Text = "坐标输入方法：形如x11,y11;x12,y12;x13,y13，即逗号隔离某一点的坝横坐标与坝纵坐标，分号隔离两个控制点。标点请使用英文半角输入法！";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DeckCoordInput

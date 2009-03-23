@@ -29,7 +29,7 @@ namespace DM.DMControl
             {
                 carIDs[i] = vehiclesInfo[i].CarID;
                 carLibratedStates[i] = -1;
-                carLibratedTimes[i] = DateTime.MinValue;
+                carLibratedTimes[i] = DB.DBCommon.getDate();
             }
         }
         public static DB.CarInfo FindVechicle(int id)
