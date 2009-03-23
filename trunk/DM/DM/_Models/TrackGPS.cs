@@ -62,7 +62,7 @@ namespace DM.Models
         List<List<Coord3D>> segmentedTP = new List<List<Coord3D>>();   // 分段的坐标，施工坐标，未段内筛选
 
         List<List<Coord3D>> filteredSeg = new List<List<Coord3D>>();    // 经过段内筛选的分段坐标，施工坐标
-
+        public static DateTime SetTime = DateTime.MinValue;
         List<List<Coord3D>> screenSeg = new List<List<Coord3D>>();     // 经过2次筛选的屏幕坐标
         List<List<Coord3D>> screenSegFiltered = new List<List<Coord3D>>();     // 经过2次筛选的屏幕坐标
         List<List<Coord3D>> screenSegLibrated = new List<List<Coord3D>>(); //经过筛选振动的屏幕坐标
@@ -451,7 +451,7 @@ namespace DM.Models
 
                     int index = GetCarIDIndex(owner.ID);
                     DateTime when = lst[0].When;
-                    if (when < VehicleControl.carLibratedTimes[index] /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
+                    if (when < SetTime /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
                     {
                         if (times.Count > 0)
                         {
@@ -482,11 +482,14 @@ namespace DM.Models
                         if (VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
                         {
                             isRight = true;
+                            libratedOK = new List<Coord3D>();
                             libratedOK.Add(lst[0]);
                             libratedOKlst.Add(libratedOK);
                         }
                         else
                         {
+                            isRight = false;
+                            libratedNO = new List<Coord3D>();
                             libratedNO.Add(lst[0]);
                             libratedNOlst.Add(libratedNO);
                         }
@@ -500,7 +503,7 @@ namespace DM.Models
                     for (int i = 1; i < lst.Count; i++)
                     {
                         when=lst[i].When;
-                        if ( when< VehicleControl.carLibratedTimes[index] /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
+                        if ( when< SetTime /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
                         {
                             if (times.Count > 0)
                             {
@@ -851,6 +854,7 @@ namespace DM.Models
                 for (int i = 0; i < times.Count; )
                 {
                     Timeslice thistime = times[i];
+                    if (i == times.Count - 1) { Timeslices.Add(thistime); break; } 
                     for (int j = i + 1; j < times.Count; j++)
                     {
                         if (times[j].DtStart == thistime.DtEnd)
