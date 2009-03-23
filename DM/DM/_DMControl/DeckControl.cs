@@ -591,6 +591,7 @@ namespace DM.DMControl
                     UnvisibleDeck(dk);
                 }
             }
+            TrackGPS.SetTime = DB.DBCommon.getDate();
             UpdateGraphics();
             ReportRolling(tobesetvisible);
             tobesetvisible = null;

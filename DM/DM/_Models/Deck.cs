@@ -962,10 +962,10 @@ namespace DM.Models
                 endG.DrawString(dateEndString, ftWord, Brushes.Black, thisPf, thisSf);
                 //输出分区，高程，名称，时间
                 string allString = this.Partition.Name + "分区   " + this.deckInfo.DesignZ.ToString()+"米高程   " + this.deckInfo.SegmentName + "仓面" + pl.ActualArea.ToString("（0.00 米²）");
-                fa = 50f;
+                fa = 20f;
                 ftTime = new Font("微软雅黑", fa * factor);
                 s = newG.MeasureString(allString, ftTime);
-                while (s.Height > topBlank * 0.29f || s.Width > (bitMp.Width * 0.98f - newG.MeasureString(dateEndString, ftWord).Width - offset * 2))
+                while (s.Height > topBlank * 0.29f || s.Width > (bitMp.Width * 0.98f - newG.MeasureString(dateEndString, ftWord).Width - offset * 3))
                 {
                     fa = fa - 0.1f;
                     ftTime = new Font("微软雅黑", fa * factor);
@@ -1329,7 +1329,7 @@ namespace DM.Models
             fa = 50f;
             ftTime = new Font("微软雅黑", fa * factor);
             s = newG.MeasureString(allString, ftTime);
-            while (s.Height > topBlank * 0.29f || s.Width > (bitMp.Width * 0.98f - newG.MeasureString(dateEndString, ftWord).Width - offset * 2))
+            while (s.Height > topBlank * 0.29f || s.Width > (bitMp.Width * 0.98f - newG.MeasureString(dateEndString, ftWord).Width - offset * 3))
             {
                 fa = fa - 0.1f;
                 ftTime = new Font("微软雅黑", fa * factor);
@@ -1731,7 +1731,7 @@ namespace DM.Models
             fa = 50f;
             ftTime = new Font("微软雅黑", fa * factor);
             s = newG.MeasureString(allString, ftTime);
-            while (s.Height > topBlank * 0.29f || s.Width > (bitMp.Width * 0.98f - newG.MeasureString(dateEndString, ftWord).Width - offset * 2))
+            while (s.Height > topBlank * 0.29f || s.Width > (bitMp.Width * 0.98f - newG.MeasureString(dateEndString, ftWord).Width - offset * 3))
             {
                 fa = fa - 0.1f;
                 ftTime = new Font("微软雅黑", fa * factor);
