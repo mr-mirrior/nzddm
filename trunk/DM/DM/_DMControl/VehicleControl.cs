@@ -170,22 +170,23 @@ namespace DM.DMControl
         private List<Vehicle> Translate(List<DB.CarDistribute> lst)
         {
             Color[] cls = new Color[]{
-                Color.Blue,//Navy,//.Navy, 
-                Color.DodgerBlue,//LightGreen,//LightSeaGreen,
-                Color.CornflowerBlue,//DarkGreen,//DarkGreen, 
-                Color.DarkTurquoise,//Black,//Black, 
-                Color.SteelBlue,//OrangeRed,//OrangeRed, 
-                Color.Teal,//Purple,//Purple,
-                Color.Green,//Goldenrod,//Goldenrod,
-                Color.YellowGreen,//YellowGreen,//Yellow
-                Color.DarkSlateGray,//SeaGreen,
-                Color.Navy,//Brown,//FromArgb(0xFFC125),
-                Color.Olive,//Tomato,//FromArgb(0x40E0D0),
-                Color.DarkOliveGreen,//Silver,//FromArgb(0x0000FF),
-                Color.Goldenrod,//PaleGoldenrod,//FromArgb(0x8B636C),
-                Color.Indigo,//Orchid,//FromArgb(0xEE0000),
-                Color.SlateBlue,//Orange,//(0xFFE4B5),
-                Color.LimeGreen//PapayaWhip//.FromArgb(0x000000)
+                Color.Blue,
+                Color.DarkSlateGray,
+                Color.Navy,
+                Color.DarkTurquoise,
+                Color.SlateBlue,
+                Color.DarkOliveGreen,
+                Color.Green,
+                Color.YellowGreen,
+                Color.DodgerBlue,
+                Color.CornflowerBlue,
+                Color.Olive,
+                Color.Teal,
+                Color.Goldenrod,
+                Color.Indigo,
+                Color.SteelBlue,
+                Color.LimeGreen
+
             };
 
             List<Vehicle> vs = new List<Vehicle>();
