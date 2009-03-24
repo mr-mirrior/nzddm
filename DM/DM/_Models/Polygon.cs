@@ -57,6 +57,7 @@ namespace DM.Models
         public void UpdateBoundary()
         {
             List<Coord> copy = new List<Coord>(vertex);
+            if (copy.Count == 0) return;
             copy.Sort(Coord.XGreater);
 
             float xmin = copy.First().XF;
@@ -275,7 +276,8 @@ namespace DM.Models
 //         }
         public Polygon CutByOfEarth(Polygon scrCut)
         {
-            List<Coord> copy = new List<Coord>(this.vertex);
+            //PartitionDirectory p = new PartitionDirectory(@"C:\"+this.vertex);
+            List<Coord> copy = new List<Coord>(this.Vertex);
             BorderShapeII shape = new BorderShapeII(copy);
             BorderShapeII cutShape = new BorderShapeII(scrCut.vertex);
             shape.Intersect(cutShape);
