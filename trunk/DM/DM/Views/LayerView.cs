@@ -1384,23 +1384,13 @@ namespace DM.Views
             if (DM.DMControl.LoginControl.loginResult == DM.DB.LoginResult.VIEW)
             {
                 this.miProperties.Enabled = false;
-            }
-            if (DM.DMControl.LoginControl.loginResult == DM.DB.LoginResult.VIEW)
-            {
                 this.miAssignment.Enabled = false;
-            }
-            if (DM.DMControl.LoginControl.loginResult == DM.DB.LoginResult.VIEW)
-            {
                 this.miStartDeck.Enabled = false;
-            }
-            if (DM.DMControl.LoginControl.loginResult == DM.DB.LoginResult.VIEW)
-            {
                 this.miEndDeck.Enabled = false;
-            }
-            if (DM.DMControl.LoginControl.loginResult == DM.DB.LoginResult.VIEW)
-            {
                 this.miDelete.Enabled = false;
+                this.tmiNotRolling.Enabled = false;
             }
+
 #if !DEBUG
             if (layer.CurrentDeck.WorkState != DM.DB.SegmentWorkState.WAIT)
             {

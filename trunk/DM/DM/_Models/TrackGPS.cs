@@ -109,8 +109,8 @@ namespace DM.Models
         List<bool> gpLibrated = new List<bool>();
         List<GraphicsPath> libratedTracking = new List<GraphicsPath>();
         List<GraphicsPath> libratedOKTracking = new List<GraphicsPath>();
-        static List<DB.CarDistribute> hasReadCar = new List<DB.CarDistribute>(); //已经读过库的车
-        static List<List<Timeslice>> alltimes = new List<List<Timeslice>>();
+        public static List<DB.CarDistribute> hasReadCar = new List<DB.CarDistribute>(); //已经读过库的车
+        public static List<List<Timeslice>> alltimes = new List<List<Timeslice>>();
         public void SetTracking(List<Coord3D> pts, double offScrX, double offScrY)
         {
             lock (adding)
@@ -770,7 +770,7 @@ namespace DM.Models
         }
 
         //时间片结构体
-        struct Timeslice
+        public struct Timeslice
         {
             DateTime dtStart;
 
@@ -862,21 +862,14 @@ namespace DM.Models
                             thistime.DtEnd = times[j].DtEnd;
                             if (j == times.Count - 1)
                             {
-                                if (Timeslices.Count == 0)
-                                {
-                                    Timeslices.Add(thistime);
-                                    i = j + 1;
-                                }
-                                else
-                                {
-                                    i = j + 1;
-                                }
+                                Timeslices.Add(thistime);
+                                i = j;
                             }
                         }
                         else
                         {
                             Timeslices.Add(thistime);
-                            i = j + 1;
+                            i = j;
                             break;
                         }
                     }

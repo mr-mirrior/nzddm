@@ -171,21 +171,21 @@ namespace DM.DMControl
         {
             Color[] cls = new Color[]{
                 Color.Blue,//Navy,//.Navy, 
-                Color.Brown,//LightGreen,//LightSeaGreen,
-                Color.Cyan,//DarkGreen,//DarkGreen, 
-                Color.DarkViolet,//Black,//Black, 
-                Color.SpringGreen,//OrangeRed,//OrangeRed, 
-                Color.Indigo,//Purple,//Purple,
-                Color.GreenYellow,//Goldenrod,//Goldenrod,
-                Color.SeaGreen,//YellowGreen,//Yellow
-                Color.DarkTurquoise,//SeaGreen,
-                Color.LimeGreen,//Brown,//FromArgb(0xFFC125),
-                Color.Magenta,//Tomato,//FromArgb(0x40E0D0),
-                Color.Olive,//Silver,//FromArgb(0x0000FF),
-                Color.Orange,//PaleGoldenrod,//FromArgb(0x8B636C),
-                Color.Tomato,//Orchid,//FromArgb(0xEE0000),
-                Color.SteelBlue,//Orange,//(0xFFE4B5),
-                Color.Pink//PapayaWhip//.FromArgb(0x000000)
+                Color.DodgerBlue,//LightGreen,//LightSeaGreen,
+                Color.CornflowerBlue,//DarkGreen,//DarkGreen, 
+                Color.DarkTurquoise,//Black,//Black, 
+                Color.SteelBlue,//OrangeRed,//OrangeRed, 
+                Color.Teal,//Purple,//Purple,
+                Color.Green,//Goldenrod,//Goldenrod,
+                Color.YellowGreen,//YellowGreen,//Yellow
+                Color.DarkSlateGray,//SeaGreen,
+                Color.Navy,//Brown,//FromArgb(0xFFC125),
+                Color.Olive,//Tomato,//FromArgb(0x40E0D0),
+                Color.DarkOliveGreen,//Silver,//FromArgb(0x0000FF),
+                Color.Goldenrod,//PaleGoldenrod,//FromArgb(0x8B636C),
+                Color.Indigo,//Orchid,//FromArgb(0xEE0000),
+                Color.SlateBlue,//Orange,//(0xFFE4B5),
+                Color.LimeGreen//PapayaWhip//.FromArgb(0x000000)
             };
 
             List<Vehicle> vs = new List<Vehicle>();

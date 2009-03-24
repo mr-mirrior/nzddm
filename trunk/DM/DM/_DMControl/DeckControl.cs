@@ -592,6 +592,8 @@ namespace DM.DMControl
                 }
             }
             TrackGPS.SetTime = DB.DBCommon.getDate();
+            TrackGPS.hasReadCar.Clear();
+            TrackGPS.alltimes.Clear();
             UpdateGraphics();
             ReportRolling(tobesetvisible);
             tobesetvisible = null;
