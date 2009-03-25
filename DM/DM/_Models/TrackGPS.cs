@@ -630,17 +630,6 @@ namespace DM.Models
                             gpOverspeed.Add(lstoflst[i].Last().V >= owner.Owner.DeckInfo.MaxSpeed);
                         }
                     using (Pen p = WidthPen(Color.Black))
-                        for (int i = 0; i < libratedNOlst.Count; i++)
-                        {
-                            if (libratedNOlst[i].Count < 2)
-                                continue;
-                            PointF[] pf = Geo.DamUtils.Translate(libratedNOlst[i]);
-                            GraphicsPath path = new GraphicsPath();
-                            path.AddLines(pf);
-                            rc = RectangleF.Union(rc, path.GetBounds(new Matrix(), p));
-                            libratedTracking.Add(path);
-                        }
-                    using (Pen p = WidthPen(Color.Black))
                         for (int i = 0; i < libratedOKlst.Count; i++)
                         {
                             if (libratedOKlst[i].Count < 2)
@@ -652,6 +641,18 @@ namespace DM.Models
                             screenSegLibrated.Add(libratedOKlst[i]);
                             libratedOKTracking.Add(path);
                         }
+                    using (Pen p = WidthPen(Color.Black))
+                        for (int i = 0; i < libratedNOlst.Count; i++)
+                        {
+                            if (libratedNOlst[i].Count < 2)
+                                continue;
+                            PointF[] pf = Geo.DamUtils.Translate(libratedNOlst[i]);
+                            GraphicsPath path = new GraphicsPath();
+                            path.AddLines(pf);
+                            rc = RectangleF.Union(rc, path.GetBounds(new Matrix(), p));
+                            libratedTracking.Add(path);
+                        }
+                   
                     //取出振动合格的点列表放入screenSegLibrated
                 }
                
@@ -814,7 +815,7 @@ namespace DM.Models
             int k = 0;
             foreach (int id in VehicleControl.carIDs)
             {
-                if (id == owner.ID)
+                if (id == carid)
                     break;
                 k++;
             }
