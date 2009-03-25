@@ -430,7 +430,8 @@ namespace DM.Models
                 if (carindex != -1)
                     times = alltimes[carindex];
 
-                //libratedOK = new List<Coord3D>();
+
+                
                 foreach (List<Coord3D> lst in screenSeg)
                 {
                     // 筛选超速点
@@ -445,11 +446,13 @@ namespace DM.Models
                     bool overspeeding = (lst[0].V >= owner.Owner.DeckInfo.MaxSpeed);
                     onelist.Add(lst[0]);
                     lstoflst.Add(onelist);
-                    bool isRight = false;
-                    bool isbreak = false;
-                    bool hasNOlibrated = false;//第一个不合格list开关量
 
                     int index = GetCarIDIndex(owner.ID);
+                    bool isRight = VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState || VehicleControl.carLibratedStates[index] == -1;
+                    bool isbreak = false;
+                    bool hasNOlibrated = false;//第一个不合格list开关量
+                    bool BFWHEN = false;//实时和数据库点交替开关
+                    
                     DateTime when = lst[0].When;
                     if (when < SetTime /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
                     {
@@ -481,17 +484,16 @@ namespace DM.Models
                     {
                         if (VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
                         {
-                            isRight = true;
                             libratedOK = new List<Coord3D>();
                             libratedOK.Add(lst[0]);
                             libratedOKlst.Add(libratedOK);
                         }
                         else
                         {
-                            isRight = false;
                             libratedNO = new List<Coord3D>();
                             libratedNO.Add(lst[0]);
                             libratedNOlst.Add(libratedNO);
+                            hasNOlibrated = false;
                         }
                     }
 
@@ -538,11 +540,17 @@ namespace DM.Models
                             {
                                 libratedOK.Add(lst[i]);
                             }
+                            BFWHEN = true;
                         }
                         else
                         {
                             if (VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index] == -1)
                             {
+                                if (BFWHEN)
+                                {
+                                    libratedOK = new List<Coord3D>();
+                                    BFWHEN = false;
+                                }
                                 if (isRight)
                                     libratedOK.Add(lst[i]);
                                 else
@@ -555,6 +563,11 @@ namespace DM.Models
                             }
                             else
                             {
+                                if (BFWHEN)
+                                {
+                                    libratedNO = new List<Coord3D>();
+                                    BFWHEN = false;
+                                }
                                 if (!isRight)
                                     libratedNO.Add(lst[i]);
                                 else
