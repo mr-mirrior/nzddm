@@ -1825,5 +1825,10 @@ namespace DM.Views
         {
             layer.DeckControl.LookVehicleHistory(layer.VisibleDeck);
         }
+
+        private void 生成压实厚度图TToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Image image=
+        }
     }
 }
