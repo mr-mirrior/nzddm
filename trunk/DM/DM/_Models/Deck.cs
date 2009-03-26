@@ -1005,18 +1005,19 @@ namespace DM.Models
                 endG.Dispose();
                 newG.Dispose();
             }
-            //finally
+
+            if (State == DM.DB.SegmentWorkState.END)
             {
                 Bitmap bmp = CreateElevationImage();
-                if( bmp != null )
+                if (bmp != null)
                     bmp.Dispose();
 
                 this.DrawPathMap();
-
+            }
                 layer.RotateDegree = oldRotate;
                 layer.Zoom = oldZoom;
                 layer.CreateScreen();
-            }
+            
 
             return true;
         }

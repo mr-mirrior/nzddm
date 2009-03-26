@@ -1645,11 +1645,8 @@ namespace DM.Views
         Forms.Waiting dlg = new DM.Forms.Waiting();
         private void ReportOK()
         {
-            //TrackGPS.WAITFINISHED = false;
-            //TrackGPS.hasReadCar.Clear();
             if (layer.VisibleDeck == null)
                 return;
-//#if DEBUG
             if (layer.VisibleDeck.State== DM.DB.SegmentWorkState.END)
             {
                 lock (updateLock)
@@ -1657,7 +1654,6 @@ namespace DM.Views
                     layer.CreateDataMap();
                 }
             }
-//#endif
             bool result;
             lock (updateLock)
             {
