@@ -116,6 +116,13 @@
       <DependentUpon>RoundPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\Sys\SysUtils.cs" />
+    <Compile Include="Utils\ThicknessImage\BitAccess.cs" />
+    <Compile Include="Utils\ThicknessImage\Coordinate.cs" />
+    <Compile Include="Utils\ThicknessImage\DAO.cs" />
+    <Compile Include="Utils\ThicknessImage\DataMap.cs" />
+    <Compile Include="Utils\ThicknessImage\DataMapManager.cs" />
+    <Compile Include="Utils\ThicknessImage\PieChart.cs" />
+    <Compile Include="Utils\ThicknessImage\Pixel.cs" />
     <Compile Include="_DMControl\DeckControl.cs" />
     <Compile Include="_DMControl\LayerControl.cs" />
     <Compile Include="_DMControl\LoginControl.cs" />
@@ -380,11 +387,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DM21.ico" />
+    <Content Include="Utils\ThicknessImage\副本 DataMapManager.txt" />
     <None Include="SETUP\DM2.iss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="Utils\ThicknessImage\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -57,6 +57,7 @@
             this.miCancel = new System.Windows.Forms.ToolStripMenuItem();
             this.测试TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tpp = new System.Windows.Forms.ToolTip(this.components);
+            this.生成压实厚度图TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             视图VToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             设置SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             仓面操作ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,7 +74,8 @@
             this.miArrows,
             this.toolStripMenuItem3,
             this.toolStripMenuItem2,
-            this.miDataMap});
+            this.miDataMap,
+            this.生成压实厚度图TToolStripMenuItem});
             视图VToolStripMenuItem.Name = "视图VToolStripMenuItem";
             视图VToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             视图VToolStripMenuItem.Text = "视图(&V)";
@@ -289,6 +291,13 @@
             this.tpp.UseAnimation = false;
             this.tpp.UseFading = false;
             // 
+            // 生成压实厚度图TToolStripMenuItem
+            // 
+            this.生成压实厚度图TToolStripMenuItem.Name = "生成压实厚度图TToolStripMenuItem";
+            this.生成压实厚度图TToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.生成压实厚度图TToolStripMenuItem.Text = "生成压实厚度图(&T)";
+            this.生成压实厚度图TToolStripMenuItem.Click += new System.EventHandler(this.生成压实厚度图TToolStripMenuItem_Click);
+            // 
             // LayerView
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -339,5 +348,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem tmiNotRolling;
         private System.Windows.Forms.ToolStripMenuItem miLookHistory;
+        private System.Windows.Forms.ToolStripMenuItem 生成压实厚度图TToolStripMenuItem;
     }
 }

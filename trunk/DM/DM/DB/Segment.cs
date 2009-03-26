@@ -19,6 +19,13 @@ namespace DM.DB
             return partitionID == this.BlockID && elevation == this.DesignZ && sID == this.SegmentID;
         }
 
+        byte[] datamap;
+
+        public byte[] Datamap
+        {
+            get { return datamap; }
+            set { datamap = value; }
+        }
         public Int32 SegmentID
         {
             get { return segmentID; }
