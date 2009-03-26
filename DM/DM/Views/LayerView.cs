@@ -1847,9 +1847,9 @@ namespace DM.Views
                     di.Create();
                 }
 
-                image.Save(@"C:\OUTPUT\" + layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.DeckInfo.BlockName + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thicknessYu.png");
+                image.Save(@"C:\OUTPUT\" +  layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thicknessYu.png");
                 image.Dispose();
-                System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\OUTPUT\" + layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.DeckInfo.BlockName + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thicknessYu.png");
+                System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\OUTPUT\" + layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thicknessYu.png");
                 if (fi.Exists)
                     Utils.Sys.SysUtils.StartProgram(fi.FullName, null);
             }
