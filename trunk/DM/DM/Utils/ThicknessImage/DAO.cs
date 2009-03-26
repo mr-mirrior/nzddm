@@ -35,7 +35,7 @@ namespace DM.DB.datamap
                 reader = DBConnection.executeQuery(connection, sqlTxt);
                 if (reader.Read())
                 {
-                    return float.Parse(reader["designz"].ToString());
+                    return double.Parse(reader["designz"].ToString());
                 }
                 else
                 {

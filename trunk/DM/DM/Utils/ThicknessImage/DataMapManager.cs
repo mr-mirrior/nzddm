@@ -285,17 +285,29 @@ namespace DM.DB.datamap
             }
         }
 //标题
+        string dateStartString = "开始：" + segment.StartDate.Year.ToString("00-") + segment.StartDate.Month.ToString("00-") + segment.StartDate.Day.ToString("00 ")
+       + segment.StartDate.Hour.ToString("00:") + segment.StartDate.Minute.ToString("00:") + segment.StartDate.Second.ToString("00");
+        string dateEndString = "结束：" + segment.EndDate.Year.ToString("00-") + segment.EndDate.Month.ToString("00-") + segment.EndDate.Day.ToString("00 ")
+            + segment.EndDate.Hour.ToString("00:") + segment.EndDate.Minute.ToString("00:") + segment.EndDate.Second.ToString("00");
         Font titlefont = new Font("微软雅黑", 24f);
         Point titlep = new Point(10, 10);
         String title = "碾压厚度图形报告";
         String sub_title = "分区   "+segment.BlockID+"     仓面名称   "+segment.SegmentName+"      高程   "+segment.DesignZ+"m";
-        g.DrawString(title, titlefont, hb, titlep);
+        StringFormat fmt = new StringFormat();
+        fmt.Alignment = StringAlignment.Center;
+        fmt.LineAlignment = StringAlignment.Near;
+        g.DrawString(title, titlefont, hb,new RectangleF(0,10,map.Width,map.Height-10) ,fmt);
         g.DrawLine(Pens.Black,new Point(left_top.X, titlep.Y + titlefont.Height + 3), new Point(right_top.X, titlep.Y + titlefont.Height + 3));
         g.DrawString(sub_title, f,hb, new Point(left_top.X, titlep.Y + titlefont.Height + 5));
-        String startd = segment.StartDate.ToString();
-        String endd = segment.EndDate.ToString();
-        g.DrawString("开始时间:" + startd, f, hb, new Point(right_top.X-30, titlep.Y + titlefont.Height + 5+ f.Height));
-        g.DrawString("结束时间:" + endd, f, hb, new Point(right_top.X - 30, titlep.Y + titlefont.Height + 5 + f.Height * 2));
+        //String startd = segment.StartDate.ToString();
+        //String endd = segment.EndDate.ToString();
+        g.DrawString(dateStartString, f, hb, new Point(right_top.X-95, titlep.Y + titlefont.Height + 5+ f.Height));
+        g.DrawString(dateEndString, f, hb, new Point(right_top.X - 95, titlep.Y + titlefont.Height + 5 + f.Height * 2));
+        DateTime date = DB.DBCommon.getDate();
+        string dateloading = "出图时间：" + date.ToString();
+        fmt.LineAlignment = StringAlignment.Far;
+        fmt.Alignment = StringAlignment.Far;
+        g.DrawString(dateloading, f, hb, new RectangleF(0, 0, map.Width-20, map.Height - 10), fmt);
 //原点,平均值，标准差
         Point left_bottom_dam = screenToDam(dam_origin,left_bottom);//右下角点的大把坐标
         Point yuandian = new Point(left_bottom.X-20, left_bottom.Y + 2);
@@ -333,7 +345,7 @@ namespace DM.DB.datamap
                 //最小值
             g.DrawString("最小值:"+min.ToString()+"m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X,juxingjianbian.Y+25));
                 //最大值
-            g.DrawString("最大值:"+max.ToString()+"m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X+juxingjianbian_width, juxingjianbian.Y + 25));
+            g.DrawString("最大值:"+max.ToString()+"m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X+juxingjianbian_width-25, juxingjianbian.Y + 25));
                 //中间值
             g.DrawString((min+(max-min)/2).ToString() + "m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X + juxingjianbian_width/2, juxingjianbian.Y + 25));
         
