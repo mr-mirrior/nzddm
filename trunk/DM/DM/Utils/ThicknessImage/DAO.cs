@@ -23,7 +23,7 @@ namespace DM.DB.datamap
         }
 
         //得到当前高程的上一个高程
-        public float getLastDesignZ(int blockid, double designz)
+        public double getLastDesignZ(int blockid, double designz)
         {
             List<Segment> segments = new List<Segment>();
             SqlConnection connection = null;
@@ -42,7 +42,7 @@ namespace DM.DB.datamap
                     return -1;
                 }
             }
-            catch
+            catch 
             {
                 return -1;
             }
@@ -53,7 +53,7 @@ namespace DM.DB.datamap
             }
         }
 
-        public Segment getSegment(Int32 blockID, float designZ, Int32 segmentid)
+        public Segment getSegment(Int32 blockID, double designZ, Int32 segmentid)
         {
            
             Segment segment = null;
@@ -163,7 +163,7 @@ namespace DM.DB.datamap
             return segment;
         }
 
-        public byte[] getDatamap(int blockid, float designz, int segmentid)
+        public byte[] getDatamap(int blockid, double designz, int segmentid)
         {
             string sqltext = string.Format(
                 "select DATAMAP from SEGMENT where (BLOCKID ={0}) and (DESIGNZ={1}) and (SEGMENTID={2})",

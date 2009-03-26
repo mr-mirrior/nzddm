@@ -1828,7 +1828,32 @@ namespace DM.Views
 
         private void 生成压实厚度图TToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //Image image=
+                dlg.Dispose();
+                dlg = new DM.Forms.Waiting();
+                dlg.Start(this, "正在计算，请稍候……", ReportThicknest, 1000);
+        }
+
+        private void ReportThicknest()
+        {
+            
+            Image image = DB.datamap.DataMapManager.draw(layer.VisibleDeck.DeckInfo.BlockID, layer.VisibleDeck.DeckInfo.DesignZ, layer.VisibleDeck.DeckInfo.SegmentID);
+            if (image == null)
+                Utils.MB.Warning("此仓面或者此仓面的下层仓面没有生成数据图，请确认这两个仓面都已在关仓状态出过图形报告！");
+            else
+            {
+                System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(@"C:\OUTPUT\" + layer.VisibleDeck.DeckInfo.SegmentName);
+                if (!di.Exists)
+                {
+                    di.Create();
+                }
+
+                image.Save(@"C:\OUTPUT\" + layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.DeckInfo.BlockName + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thicknessYu.png");
+                image.Dispose();
+                System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\OUTPUT\" + layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.DeckInfo.BlockName + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thicknessYu.png");
+                if (fi.Exists)
+                    Utils.Sys.SysUtils.StartProgram(fi.FullName, null);
+            }
+            dlg.Finished = true;
         }
     }
 }

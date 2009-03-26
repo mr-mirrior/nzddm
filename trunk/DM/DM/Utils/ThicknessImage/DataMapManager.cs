@@ -23,15 +23,19 @@ namespace DM.DB.datamap
     static int map_right = 80;//右侧
     static int map_top = 160;//上侧
 
-    public static Bitmap draw(int blockid, float designz, int segmentid)
+    public static Bitmap draw(int blockid, double designz, int segmentid)
     {
 //从数据库中读出本仓面,和本仓面上一层的所有仓面信息.
         Segment segment = DAO.getInstance().getSegment(blockid, designz, segmentid);
         if (segment == null)
             return null;
         //得到上一层的所有仓面信息
-        float lastDesignz = DAO.getInstance().getLastDesignZ(blockid, designz);        
+        double lastDesignz = DAO.getInstance().getLastDesignZ(blockid, designz);        
         List<Segment> segments = SegmentDAO.getInstance().getSegments(blockid, lastDesignz);
+        if (segments.Count==0)
+        {
+            return null;
+        }
         //将上一层所有仓面的数据图读出来
         for (int ii = 0; ii < segments.Count; ii++)
         {
