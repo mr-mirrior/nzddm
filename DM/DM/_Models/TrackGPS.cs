@@ -451,7 +451,7 @@ namespace DM.Models
                     bool isRight = VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState || VehicleControl.carLibratedStates[index] == -1;
                     bool isbreak = false;
                     bool hasNOlibrated = false;//第一个不合格list开关量
-                    bool BFWHEN = false;//实时和数据库点交替开关
+                    //bool BFWHEN = false;//实时和数据库点交替开关
                     
                     DateTime when = lst[0].When;
                     if (when < SetTime /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
@@ -540,17 +540,17 @@ namespace DM.Models
                             {
                                 libratedOK.Add(lst[i]);
                             }
-                            BFWHEN = true;
+                            //BFWHEN = true;
                         }
                         else
                         {
                             if (VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index] == -1)
                             {
-                                if (BFWHEN)
-                                {
-                                    libratedOK = new List<Coord3D>();
-                                    BFWHEN = false;
-                                }
+                                //if (BFWHEN)
+                                //{
+                                //    libratedOK = new List<Coord3D>();
+                                //    BFWHEN = false;
+                                //}
                                 if (isRight)
                                     libratedOK.Add(lst[i]);
                                 else
@@ -563,11 +563,11 @@ namespace DM.Models
                             }
                             else
                             {
-                                if (BFWHEN)
-                                {
-                                    libratedNO = new List<Coord3D>();
-                                    BFWHEN = false;
-                                }
+                                //if (BFWHEN)
+                                //{
+                                //    libratedNO = new List<Coord3D>();
+                                //    BFWHEN = false;
+                                //}
                                 if (!isRight)
                                     libratedNO.Add(lst[i]);
                                 else

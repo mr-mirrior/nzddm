@@ -591,7 +591,7 @@ namespace DM.DMControl
                     UnvisibleDeck(dk);
                 }
             }
-            TrackGPS.SetTime = DB.DBCommon.getDate();
+            TrackGPS.SetTime = DB.DBCommon.getDate()-TimeSpan.FromSeconds(2);
             TrackGPS.hasReadCar.Clear();
             TrackGPS.alltimes.Clear();
             UpdateGraphics();
