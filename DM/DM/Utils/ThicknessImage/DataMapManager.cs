@@ -154,8 +154,8 @@ namespace DM.DB.datamap
         double standard_deviation_designz = Math.Sqrt(deviation);
 
 //初始化
-        int hengxian = (left_bottom.Y - left_top.Y) / (grid * SCREEN_ONEMETER);
-        int shuxian = (right_bottom.X - left_bottom.X) / (grid * SCREEN_ONEMETER);
+        int hengxian = (left_bottom.Y - left_top.Y) / (grid * SCREEN_ONEMETER)+1;
+        int shuxian = (right_bottom.X - left_bottom.X) / (grid * SCREEN_ONEMETER)+1;
         double[,] sum_grid = new double[hengxian,shuxian];//存储大网格的厚度和
         int[,] count_grid = new int[hengxian, shuxian];//存储每个大网格包含的可用小网格数
 //最关键的部分.填形状
@@ -281,6 +281,10 @@ namespace DM.DB.datamap
         {
             Point start = new Point(left_bottom.X, left_bottom.Y - i * grid * SCREEN_ONEMETER);
             Point end = new Point(right_bottom.X+putongjiachang, right_bottom.Y - i * grid * SCREEN_ONEMETER);
+            //把横线限制在仓面之内
+            if (start.Y < left_top.Y)
+                break;
+            
             g.DrawLine(pen, start, end);
             Point stringPoint = new Point(start.X - 50, start.Y);
             g.DrawString( ""+(left_bottom_dam.Y-grid*i), f, hb, stringPoint);
@@ -290,11 +294,13 @@ namespace DM.DB.datamap
         {
             Point start = new Point(left_bottom.X + i * grid * SCREEN_ONEMETER, left_bottom.Y);
             Point end = new Point(left_top.X + i * grid * SCREEN_ONEMETER, left_top.Y-putongjiachang);
+            //把纵线限制在仓面之内
+            if(end.Y>right_top.Y)
+                break;
             g.DrawLine(pen, start, end);
             Point stringPoint = new Point(start.X, yuandian.Y);
             g.DrawString(""+(left_bottom_dam.X+grid*i) , f, hb, stringPoint);
         }
-
 //数值们
         //统计数值
         double max_value = double.MinValue;//大网格最大值
@@ -340,7 +346,9 @@ namespace DM.DB.datamap
                     //double b = (average - min_value) / (max_value - min_value) * 255;
                     //double g = (average - min_value) / (max_value - min_value) * 255;
                     color = Color.FromArgb(alpha,255, (int)cl, (int)cl);
-
+                    //限制在仓面里
+                    if (y_m < left_top.Y || x_n + SCREEN_ONEMETER * grid > right_top.X)
+                        continue;
                     g.FillRectangle(new SolidBrush(color),new Rectangle( new Point(x_n, y_m), new Size(SCREEN_ONEMETER * grid, SCREEN_ONEMETER * grid)));
                     g.DrawString(average.ToString("N", nfi) + "cm", f, new SolidBrush(Color.Black), new Point(x_n, y_m));
                 }
@@ -348,7 +356,7 @@ namespace DM.DB.datamap
         }
 //标题
         string dateStartString = "开始：" + segment.StartDate.Year.ToString("00-") + segment.StartDate.Month.ToString("00-") + segment.StartDate.Day.ToString("00 ")
-       + segment.StartDate.Hour.ToString("00:") + segment.StartDate.Minute.ToString("00:") + segment.StartDate.Second.ToString("00");
++ segment.StartDate.Hour.ToString("00:") + segment.StartDate.Minute.ToString("00:") + segment.StartDate.Second.ToString("00");
         string dateEndString = "结束：" + segment.EndDate.Year.ToString("00-") + segment.EndDate.Month.ToString("00-") + segment.EndDate.Day.ToString("00 ")
             + segment.EndDate.Hour.ToString("00:") + segment.EndDate.Minute.ToString("00:") + segment.EndDate.Second.ToString("00");
         Font titlefont = new Font("微软雅黑", 24f);
@@ -359,13 +367,13 @@ namespace DM.DB.datamap
         fmt.Alignment = StringAlignment.Center;
         fmt.LineAlignment = StringAlignment.Near;
         g.DrawString(title, titlefont, hb, new RectangleF(0, 10, map.Width, map.Height - 10), fmt);
-        g.DrawLine(Pens.Black,new Point(left_top.X, titlep.Y + titlefont.Height + 3), new Point(right_top.X, titlep.Y + titlefont.Height + 3));
-        g.DrawString(sub_title, f,hb, new Point(left_top.X, titlep.Y + titlefont.Height + 5));
+        g.DrawLine(Pens.Black, new Point(left_top.X, titlep.Y + titlefont.Height + 3), new Point(right_top.X, titlep.Y + titlefont.Height + 3));
+        g.DrawString(sub_title, f, hb, new Point(left_top.X, titlep.Y + titlefont.Height + 5));
         //DateTime date = DB.DBCommon.getDate();
         //string dateloading = "出图时间：" + date.ToString();
         //String startd = segment.StartDate.ToString();
         //String endd = segment.EndDate.ToString();
-        g.DrawString(dateStartString, f, hb, new Point(right_top.X-100, titlep.Y + titlefont.Height + 5+ f.Height));
+        g.DrawString(dateStartString, f, hb, new Point(right_top.X - 100, titlep.Y + titlefont.Height + 5 + f.Height));
         g.DrawString(dateEndString, f, hb, new Point(right_top.X - 100, titlep.Y + titlefont.Height + 5 + f.Height * 2));
 //坝
         Point right_bottom_dam = screenToDam(dam_origin, right_bottom);
