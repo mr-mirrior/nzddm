@@ -30,7 +30,9 @@ namespace DM.DB.datamap
         if (segment == null)
             return null;
         //得到上一层的所有仓面信息
-        double lastDesignz = DAO.getInstance().getLastDesignZ(blockid, designz);        
+        DateTime dtend = segment.EndDate;
+
+        double lastDesignz = DAO.getInstance().getLastDesignZ(blockid, designz, dtend.ToString());           
         List<Segment> segments = SegmentDAO.getInstance().getSegments(blockid, lastDesignz);
         //将上一层所有仓面的数据图读出来
         if (segments.Count==0)
@@ -74,7 +76,7 @@ namespace DM.DB.datamap
         //大坝坐标下本仓面外切矩形的高度
         int segment_dam_height = screen_points[bottom_index].Y - screen_points[top_index].Y;
         //定义出图像大小
-        Bitmap map = new Bitmap(segment_dam_width +map_left+map_right,segment_dam_height +map_top+map_bottom);
+        Bitmap map = new Bitmap(segment_dam_width+map_left+map_right,segment_dam_height +map_top+map_bottom);
         Graphics g = Graphics.FromImage(map);
         g.SmoothingMode = SmoothingMode.HighQuality;
         g.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -103,6 +105,9 @@ namespace DM.DB.datamap
         int m = 0;//列号
         List<float> difference_s = new List<float>();//存储厚度们
         List<float> designz_s = new List<float>();//存储高程们
+
+        double designdepth = segment.DesignDepth;
+
         for (i = 0; i < y; i++)
         {
             c_y += WIDTH;//y值加
@@ -118,6 +123,12 @@ namespace DM.DB.datamap
                     if (lastp != null && lastp.getRollthickness() != 0 && lastp.getRollcount() != 255)
                     {//
                         difference = this_designz - lastp.getRollthickness();
+
+                        if (difference<0||difference>2*designdepth)
+                        {
+                            continue;
+                        }
+
                         if (max < difference) { max = difference; };
                         if (min > difference) { min = difference; };
                         sum += difference;
@@ -158,23 +169,24 @@ namespace DM.DB.datamap
         int shuxian = (right_bottom.X - left_bottom.X) / (grid * SCREEN_ONEMETER)+1;
         double[,] sum_grid = new double[hengxian,shuxian];//存储大网格的厚度和
         int[,] count_grid = new int[hengxian, shuxian];//存储每个大网格包含的可用小网格数
+        Color[,] gridcolor = new Color[hengxian, shuxian];//存储每个大网格的颜色
 //最关键的部分.填形状
         Color color = Color.Black;
-        float red;
-        float blue;
-        float green;
+        //float red;
+        //float blue;
+        //float green;
 
         //for (int thisy = left_top.Y; thisy <= left_bottom.Y;thisy+= (SCREEN_ONEMETER / 2) )
-        for (int thisy = left_bottom.Y; thisy >= left_top.Y; thisy -= (SCREEN_ONEMETER / 2))//从屏幕坐标的最大y开始画
+        for (int thisy = left_bottom.Y - (SCREEN_ONEMETER / 2); thisy >= left_top.Y - (SCREEN_ONEMETER / 2); thisy -= (SCREEN_ONEMETER / 2))//从屏幕坐标的最大y开始画
         {
             for (int thisx = left_top.X; thisx <= right_top.X; thisx += (SCREEN_ONEMETER / 2))
             {
 
-//第一种实现方式,先判断该屏幕坐标点在不在屏幕坐标系下的仓面内.如果在,转换成大地坐标来找.
-                
+                //第一种实现方式,先判断该屏幕坐标点在不在屏幕坐标系下的仓面内.如果在,转换成大地坐标来找.
+
                 //将屏幕坐标转换为大坝坐标
                 Point screen_point = new Point(thisx, thisy);
-                if (inThisSegment(screen_point,screen_points.ToArray()))
+                if (inThisSegment(screen_point, screen_points.ToArray()))
                 {
                     //屏幕转大坝
                     Point dam_point = screenToDam(dam_origin, screen_point);
@@ -184,7 +196,7 @@ namespace DM.DB.datamap
                     Point row_column = getRowColumn_Earth(vertex, earth_point);
                     //取得该行列上的数据
                     Pixel pixel = dm.getPixel(row_column.X, row_column.Y);
-                    if (pixel.getRollcount() != 255 && pixel.getRollthickness() != 0)//是否为仓面上的点
+                    if (pixel != null && pixel.getRollcount() != 255 && pixel.getRollthickness() != 0)//是否为仓面上的点
                     {
                         Pixel lastpixel = getPixel("" + earth_point.getX(), "" + earth_point.getY(), segments);
                         if (lastpixel != null && lastpixel.getRollthickness() != 0 && lastpixel.getRollcount() != 255)
@@ -192,117 +204,37 @@ namespace DM.DB.datamap
                             difference = pixel.getRollthickness() - lastpixel.getRollthickness();
 
                             int zong = (screen_point.X - left_bottom.X) / (grid * SCREEN_ONEMETER);//所在的列
-                            int heng = (right_bottom.Y - screen_point.Y ) / (grid * SCREEN_ONEMETER);
+                            int heng = (right_bottom.Y - SCREEN_ONEMETER / 2 - screen_point.Y) / (grid * SCREEN_ONEMETER);
 
-                            sum_grid[heng,zong] += difference;
-                            count_grid[heng,zong] += 1;
-                            int alpha = 150;
+                            sum_grid[heng, zong] += difference;
+                            count_grid[heng, zong] += 1;
+                           // int alpha = 150;
                             //根据不同厚度值.体现不同的颜色
-                            red = (difference - min) / (max - min) * 255;
-                            blue = (difference - min) / (max - min) * 255;
-                            green = (difference - min) / (max - min) * 255;
-                            color = Color.FromArgb(alpha,(int)red, (int)green, (int)blue);
-                            color = g.GetNearestColor(color);
+                           // red = (difference - min) / (max - min) * 255;
+                           // blue = (difference - min) / (max - min) * 255;
+                           // green = (difference - min) / (max - min) * 255;
+                           // color = Color.FromArgb(alpha, (int)red, (int)green, (int)blue);
+                           // color = g.GetNearestColor(color);
                         }
-                        else
+                       /* else
                         {
                             color = Color.White;
-                        }
+                        }*/
                     }
-                    else
+                    /*else
                     {
                         color = Color.White;
-                    }
-                    g.FillRectangle(new SolidBrush(color), thisx+2, thisy, SCREEN_ONEMETER / 2, SCREEN_ONEMETER / 2);
+                    }*/
+                    //g.FillRectangle(new SolidBrush(color), thisx + 2, thisy, SCREEN_ONEMETER / 2, SCREEN_ONEMETER / 2);
                 }
-                
-//(未测试)  第二种实现方式,直接将屏幕坐标点,转换成大地坐标.直接去找.
-                /*Point dam_point = screenToDam(dam_origin,screen_point);
-                Coordinate earth_point = damToEarth(dam_point);
-                //先判断这点是不是在仓面里面
-                if (inThisSegment(vertex, "" + earth_point.getX(), "" + earth_point.getY()))
-                {
-                    Point row_column = getRowColumn_Earth(vertex, earth_point);
-                    Pixel pixel = dm.getPixel(row_column.X, row_column.Y);
-
-                    if (pixel.getRollcount() != 255 && pixel.getRollthickness() != 0)//是否为仓面上的点
-                    {
-                        Pixel lastpixel = getPixel("" + earth_point.getX(), "" + earth_point.getY(), segments);
-                        if (lastpixel != null && lastpixel.getRollthickness() != 0 && lastpixel.getRollcount() != 255)
-                        {//
-                            difference = pixel.getRollthickness() - lastpixel.getRollthickness();
-                            //根据不同厚度值.体现不同的颜色
-                            red = (difference - min) / (max - min) * 255;
-                            blue = (difference - min) / (max - min) * 255;
-                            green = (difference - min) / (max - min) * 255;
-                            color = Color.FromArgb((int)red, (int)green, (int)blue); ;
-                        }
-                        else
-                        {
-                            color = Color.White;
-                        }
-                    }
-                    else
-                    {
-                        color = Color.White;
-                    }
-                }
-                else
-                {
-                    color = Color.Black;
-                }
-                g.FillRectangle(new SolidBrush(color),thisx, thisy, SCREEN_ONEMETER/2, SCREEN_ONEMETER/2);
-*/
             }
         }
+                
+//分析出大网格的均值,然后计算出颜色
 
-//纵轴
-       
-        //一个带箭头的pen
-        Pen pen = new Pen(Color.Black, 2);
-//        pen.DashStyle = DashStyle.Dash;
-        pen.StartCap = LineCap.Flat;
-        pen.EndCap = LineCap.ArrowAnchor;
+        System.Globalization.NumberFormatInfo nfi = new System.Globalization.NumberFormatInfo();
+        nfi.NumberDecimalDigits = 2;
 
-        int jiachang = 20;
-        int putongjiachang = 10;
-        g.DrawLine(pen, left_bottom, new Point(left_top.X,left_top.Y-jiachang));        
-//横轴
-        g.DrawLine(pen, left_bottom, new Point(right_bottom.X+jiachang,right_bottom.Y));
-        HatchBrush hb = new HatchBrush(HatchStyle.SmallConfetti, Color.Black, Color.Black);
-        pen = new Pen(Color.Black, 1);
-        pen.DashStyle = DashStyle.Dash;
-//原点,平均值，标准差
-        Point left_bottom_dam = screenToDam(dam_origin, left_bottom);//右下角点的大把坐标
-        Point yuandian = new Point(left_bottom.X - 20, left_bottom.Y + 2);
-        g.DrawString("(" + left_bottom_dam.X + "," + left_bottom_dam.Y + ")", f, hb, yuandian);
-//横线们       
-        for (i = 1; i <= hengxian;i++ )
-        {
-            Point start = new Point(left_bottom.X, left_bottom.Y - i * grid * SCREEN_ONEMETER);
-            Point end = new Point(right_bottom.X+putongjiachang, right_bottom.Y - i * grid * SCREEN_ONEMETER);
-            //把横线限制在仓面之内
-            if (start.Y < left_top.Y)
-                break;
-            
-            g.DrawLine(pen, start, end);
-            Point stringPoint = new Point(start.X - 50, start.Y);
-            g.DrawString( ""+(left_bottom_dam.Y-grid*i), f, hb, stringPoint);
-        }
-//纵线们       
-        for (i = 1; i <= shuxian; i++)
-        {
-            Point start = new Point(left_bottom.X + i * grid * SCREEN_ONEMETER, left_bottom.Y);
-            Point end = new Point(left_top.X + i * grid * SCREEN_ONEMETER, left_top.Y-putongjiachang);
-            //把纵线限制在仓面之内
-            if(end.Y>right_top.Y)
-                break;
-            g.DrawLine(pen, start, end);
-            Point stringPoint = new Point(start.X, yuandian.Y);
-            g.DrawString(""+(left_bottom_dam.X+grid*i) , f, hb, stringPoint);
-        }
-//数值们
-        //统计数值
         double max_value = double.MinValue;//大网格最大值
         double min_value = double.MaxValue;//大网格最小值
         double sum_value = 0f;//大网格值总和
@@ -339,26 +271,182 @@ namespace DM.DB.datamap
                 if (count!=0)
                 {
                     double average = sum_grid[m, n] / count_grid[m, n]*100;
-                    System.Globalization.NumberFormatInfo nfi = new System.Globalization.NumberFormatInfo();
-                    nfi.NumberDecimalDigits = 2;
+                   
                     int alpha = 150;
                     double cl = (average - min_value) / (max_value - min_value) * 255;
                     //double b = (average - min_value) / (max_value - min_value) * 255;
                     //double g = (average - min_value) / (max_value - min_value) * 255;
-                    color = Color.FromArgb(alpha,255, (int)cl, (int)cl);
+                    color = Color.FromArgb(alpha,(int)cl, (int)cl, (int)cl);
                     //限制在仓面里
-                    if (y_m < left_top.Y || x_n + SCREEN_ONEMETER * grid > right_top.X)
-                        continue;
-                    g.FillRectangle(new SolidBrush(color),new Rectangle( new Point(x_n, y_m), new Size(SCREEN_ONEMETER * grid, SCREEN_ONEMETER * grid)));
-                    g.DrawString(average.ToString("N", nfi) + "cm", f, new SolidBrush(Color.Black), new Point(x_n, y_m));
+                    
+                    gridcolor[m,n] = color;
+                    //if (y_m < left_top.Y || x_n + SCREEN_ONEMETER * grid > right_top.X)
+                        //continue;
+
+                    //g.FillRectangle(new SolidBrush(color),new Rectangle( new Point(x_n, y_m), new Size(SCREEN_ONEMETER * grid, SCREEN_ONEMETER * grid)));
+                    //g.DrawString(average.ToString("N", nfi) + "cm", f, new SolidBrush(Color.Black), new Point(x_n, y_m));
                 }
             }
         }
+//给小网格上上大网格的颜色
+
+//         for (int thisy = left_bottom.Y - (SCREEN_ONEMETER / 2); thisy >= left_top.Y - (SCREEN_ONEMETER / 2); thisy -= (SCREEN_ONEMETER / 2))//从屏幕坐标的最大y开始画
+//         {
+//             for (int thisx = left_top.X; thisx <= right_top.X; thisx += (SCREEN_ONEMETER / 2))
+//             {
+// 
+// //第一种实现方式,先判断该屏幕坐标点在不在屏幕坐标系下的仓面内.如果在,转换成大地坐标来找.
+//                 
+//                 //将屏幕坐标转换为大坝坐标
+//                 Point screen_point = new Point(thisx, thisy);
+//                 if (inThisSegment(screen_point,screen_points.ToArray()))
+//                 {
+//                     //屏幕转大坝
+//                     Point dam_point = screenToDam(dam_origin, screen_point);
+//                     //大坝转大地
+//                     Coordinate earth_point = damToEarth(dam_point);
+//                     //取得大地坐标在数据图中的行列
+//                     Point row_column = getRowColumn_Earth(vertex, earth_point);
+//                     //取得该行列上的数据
+//                     Pixel pixel = dm.getPixel(row_column.X, row_column.Y);
+//                     if (pixel!=null&&pixel.getRollcount() != 255 && pixel.getRollthickness() != 0)//是否为仓面上的点
+//                     {
+//                         Pixel lastpixel = getPixel("" + earth_point.getX(), "" + earth_point.getY(), segments);
+//                         if (lastpixel != null && lastpixel.getRollthickness() != 0 && lastpixel.getRollcount() != 255)
+//                         {//                           
+//                             int zong = (screen_point.X - left_bottom.X) / (grid * SCREEN_ONEMETER);//所在的列
+//                             int heng = (right_bottom.Y-SCREEN_ONEMETER/2 - screen_point.Y ) / (grid * SCREEN_ONEMETER);
+//                             color = gridcolor[heng, zong];
+//                         }
+//                         else
+//                         {
+//                             if (lastpixel == null)
+//                             {
+//                                 int zong = (screen_point.X - left_bottom.X) / (grid * SCREEN_ONEMETER);//所在的列
+//                                 int heng = (right_bottom.Y - SCREEN_ONEMETER / 2 - screen_point.Y) / (grid * SCREEN_ONEMETER);
+//                                 color = gridcolor[heng, zong];
+//                             }
+//                             else
+//                             {
+//                                 color = Color.White;
+//                             }
+//                         }
+//                     }
+//                     else
+//                     {
+//                         if (pixel == null)
+//                         {
+//                             int zong = (screen_point.X - left_bottom.X) / (grid * SCREEN_ONEMETER);//所在的列
+//                             int heng = (right_bottom.Y - SCREEN_ONEMETER / 2 - screen_point.Y) / (grid * SCREEN_ONEMETER);
+//                             color = gridcolor[heng, zong];
+//                         }
+//                         else
+//                         {
+//                             color = Color.White;
+//                         }
+//                     }
+//                   //  g.FillRectangle(new SolidBrush(color), thisx+2, thisy, SCREEN_ONEMETER / 2, SCREEN_ONEMETER / 2);
+//                 }
+// 
+//             }
+//         }
+        
+
+//大网格上的数字们
+
+                        for (m = 0; m < hengxian; m++)
+                        {
+                            int y_m = left_bottom.Y - (m + 1) * (SCREEN_ONEMETER * grid);
+                            for (int n = 0; n < shuxian; n++)
+                            {
+                                int x_n = left_bottom.X + n * (SCREEN_ONEMETER * grid);
+                                int count = count_grid[m, n];
+                                if (count != 0)
+                                {
+                                    double average = sum_grid[m, n] / count_grid[m, n] * 100;
+                                    
+                                    int alpha = 150;
+                                    double cl = (average - min_value) / (max_value - min_value) * 255;
+                                    //double b = (average - min_value) / (max_value - min_value) * 255;
+                                    //double g = (average - min_value) / (max_value - min_value) * 255;
+                                    color = Color.FromArgb(alpha, (int)cl, (int)cl, (int)cl);
+                                    //限制在仓面里
+
+                                    gridcolor[m, n] = color;
+                                    //if (y_m < left_top.Y || x_n + SCREEN_ONEMETER * grid > right_top.X)
+                                    //continue;
+                                    int r_height = SCREEN_ONEMETER * grid;
+                                    int r_width = SCREEN_ONEMETER * grid;
+                                    int this_y_m = y_m;
+                                    int this_x_n = x_n;
+                                    if (y_m < left_top.Y ){
+                                        r_height = r_height - left_top.Y + y_m;
+                                        this_y_m = left_top.Y;
+                                    }   
+                                    if (x_n + SCREEN_ONEMETER * grid > right_top.X)
+                                    {
+                                        r_width = r_width - (x_n + SCREEN_ONEMETER * grid - right_top.X);
+                                    }                                    
+                                    g.FillRectangle(new SolidBrush(color),new Rectangle( new Point(this_x_n,this_y_m), new Size(r_width, r_height)));
+                                    //if (y_m < left_top.Y || x_n + SCREEN_ONEMETER * grid > right_top.X)
+                                        //continue;
+                                    g.DrawString(average.ToString("N", nfi) + "cm", f, new SolidBrush(Color.Black), new Point(this_x_n+10, this_y_m+10));
+                                }
+                            }
+                        }
+//纵轴
+       
+        //一个带箭头的pen
+        Pen pen = new Pen(Color.Black, 2);
+//        pen.DashStyle = DashStyle.Dash;
+        pen.StartCap = LineCap.Flat;
+        pen.EndCap = LineCap.ArrowAnchor;
+
+        int jiachang = 20;
+        int putongjiachang = 10;
+        g.DrawLine(pen, left_bottom, new Point(left_top.X,left_top.Y-jiachang));        
+//横轴
+        g.DrawLine(pen, left_bottom, new Point(right_bottom.X+jiachang,right_bottom.Y));
+        HatchBrush hb = new HatchBrush(HatchStyle.SmallConfetti, Color.Black, Color.Black);
+        pen = new Pen(Color.Black, 1);
+        pen.DashStyle = DashStyle.Dash;
+//原点
+        Point left_bottom_dam = screenToDam(dam_origin, left_bottom);//右下角点的大把坐标
+        Point yuandian = new Point(left_bottom.X - 20, left_bottom.Y + 2);
+        g.DrawString("(" + left_bottom_dam.X + "," + left_bottom_dam.Y + ")", f, hb, yuandian);
+//横线们       
+        for (i = 1; i <= hengxian;i++ )
+        {
+            Point start = new Point(left_bottom.X, left_bottom.Y - i * grid * SCREEN_ONEMETER);
+            Point end = new Point(right_bottom.X+putongjiachang, right_bottom.Y - i * grid * SCREEN_ONEMETER);
+            //把横线限制在仓面之内
+            if (start.Y < left_top.Y)
+                break;
+            
+            g.DrawLine(pen, start, end);
+            Point stringPoint = new Point(start.X - 50, start.Y);
+            if (i%2==1)
+            {
+                g.DrawString("" + (left_bottom_dam.Y - grid * i), f, hb, stringPoint);
+            }            
+        }
+//纵线们       
+        for (i = 1; i <= shuxian; i++)
+        {
+            Point start = new Point(left_bottom.X + i * grid * SCREEN_ONEMETER, left_bottom.Y);
+            Point end = new Point(left_top.X + i * grid * SCREEN_ONEMETER, left_top.Y-putongjiachang);
+            //把纵线限制在仓面之内
+            if(end.Y>right_top.Y)
+                break;
+            g.DrawLine(pen, start, end);
+            Point stringPoint = new Point(start.X, yuandian.Y);
+            if (i % 2 == 1)
+            {
+                g.DrawString("" + (left_bottom_dam.X + grid * i), f, hb, stringPoint);
+            }
+        }
+
 //标题
-        string dateStartString = "开始：" + segment.StartDate.Year.ToString("00-") + segment.StartDate.Month.ToString("00-") + segment.StartDate.Day.ToString("00 ")
-+ segment.StartDate.Hour.ToString("00:") + segment.StartDate.Minute.ToString("00:") + segment.StartDate.Second.ToString("00");
-        string dateEndString = "结束：" + segment.EndDate.Year.ToString("00-") + segment.EndDate.Month.ToString("00-") + segment.EndDate.Day.ToString("00 ")
-            + segment.EndDate.Hour.ToString("00:") + segment.EndDate.Minute.ToString("00:") + segment.EndDate.Second.ToString("00");
         Font titlefont = new Font("微软雅黑", 24f);
         Point titlep = new Point(10, 10);
         String title = "碾压厚度图形报告";
@@ -367,14 +455,12 @@ namespace DM.DB.datamap
         fmt.Alignment = StringAlignment.Center;
         fmt.LineAlignment = StringAlignment.Near;
         g.DrawString(title, titlefont, hb, new RectangleF(0, 10, map.Width, map.Height - 10), fmt);
-        g.DrawLine(Pens.Black, new Point(left_top.X, titlep.Y + titlefont.Height + 3), new Point(right_top.X, titlep.Y + titlefont.Height + 3));
-        g.DrawString(sub_title, f, hb, new Point(left_top.X, titlep.Y + titlefont.Height + 5));
-        //DateTime date = DB.DBCommon.getDate();
-        //string dateloading = "出图时间：" + date.ToString();
-        //String startd = segment.StartDate.ToString();
-        //String endd = segment.EndDate.ToString();
-        g.DrawString(dateStartString, f, hb, new Point(right_top.X - 100, titlep.Y + titlefont.Height + 5 + f.Height));
-        g.DrawString(dateEndString, f, hb, new Point(right_top.X - 100, titlep.Y + titlefont.Height + 5 + f.Height * 2));
+        g.DrawLine(Pens.Black,new Point(left_top.X, titlep.Y + titlefont.Height + 3), new Point(right_top.X, titlep.Y + titlefont.Height + 3));
+        g.DrawString(sub_title, f,hb, new Point(left_top.X, titlep.Y + titlefont.Height + 5));
+        String startd = segment.StartDate.ToString();
+        String endd = segment.EndDate.ToString();
+        g.DrawString("开始时间:" + startd, f, hb, new Point(right_top.X-100, titlep.Y + titlefont.Height + 5+ f.Height));
+        g.DrawString("结束时间:" + endd, f, hb, new Point(right_top.X - 100, titlep.Y + titlefont.Height + 5 + f.Height * 2));
 //坝
         Point right_bottom_dam = screenToDam(dam_origin, right_bottom);
         Point youxia = new Point(yuandian.X + jiachang + 20 + right_bottom.X - left_bottom.X , right_bottom.Y - 10);
@@ -388,14 +474,14 @@ namespace DM.DB.datamap
 //图例
              
             //三角指示
-            int sanjiao =  25;
-            int sanjiao_height = 15;
-            PointF[] points = new PointF[3];
-            points[0] = new PointF(left_bottom.X+sanjiao,left_bottom.Y+sanjiao+sanjiao_height);//左下
-            points[1] = new PointF(right_bottom.X - sanjiao, right_bottom.Y + sanjiao);//右上
-            points[2] = new PointF(right_bottom.X - sanjiao, right_bottom.Y + sanjiao+sanjiao_height);//右下
-            g.FillPolygon(Brushes.Gray, points);
-            g.DrawPolygon(Pens.Black, points);
+             int sanjiao =  25;
+             int sanjiao_height = 15;
+             PointF[] points = new PointF[3];
+             points[0] = new PointF(left_bottom.X+sanjiao,left_bottom.Y+sanjiao+sanjiao_height);//左下
+             points[1] = new PointF(right_bottom.X - sanjiao, right_bottom.Y + sanjiao);//右上
+             points[2] = new PointF(right_bottom.X - sanjiao, right_bottom.Y + sanjiao+sanjiao_height);//右下
+//             g.FillPolygon(Brushes.Gray, points);
+//             g.DrawPolygon(Pens.Black, points);
             //矩形渐变            
             PointF juxingjianbian = new PointF(points[0].X, points[0].Y + 10);
             float juxingjianbian_width = points[2].X-points[0].X;
@@ -407,19 +493,25 @@ namespace DM.DB.datamap
             g.DrawRectangle(Pens.Black,Rectangle.Round(r));
             g.FillRectangle(b,r);
             //矩形渐变
-            juxingjianbian = new PointF(points[0].X, points[0].Y + 10 +juxingjianbian_height+4);          
+            /*juxingjianbian = new PointF(points[0].X, points[0].Y + 10 +juxingjianbian_height+4);          
             r = new RectangleF(juxingjianbian, new SizeF(juxingjianbian_width, juxingjianbian_height));
             from = Color.FromArgb(180, 255, 0, 0);
             to = Color.FromArgb(180, 255, 255, 255);
             b = new LinearGradientBrush(r, from, to, 0f);
             g.DrawRectangle(Pens.Black, Rectangle.Round(r));
-            g.FillRectangle(b, r);
+            g.FillRectangle(b, r);*/
             //文字
                 //最小值
-            g.DrawString("最小值:" + min.ToString() + "m     最大值:" + max.ToString() + "m     厚度均值:" + average_difference + "m    厚度标准差:" + standard_deviation + "     高程均值:" + average_designz + "m    高程标准差:" + standard_deviation_designz, f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X, juxingjianbian.Y + 25));
+            g.DrawString("最小值:" + min.ToString("N", nfi) + "m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X-25, juxingjianbian.Y + 25));
                 //最大值
-            //g.DrawString("最大值:"+max.ToString()+"m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X+juxingjianbian_width, juxingjianbian.Y + 25));
+            g.DrawString("最大值:"+max.ToString("N", nfi)+"m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X+juxingjianbian_width-25, juxingjianbian.Y + 25));
                 //中间值
+            fmt.Alignment = StringAlignment.Center;
+            fmt.LineAlignment = StringAlignment.Center;
+            g.DrawString("厚度均值:" + average_difference.ToString("N", nfi) + "m    厚度标准差:" + standard_deviation.ToString("N", nfi) + "     高程均值:" + average_designz.ToString("N", nfi) + "m    高程标准差:" + standard_deviation_designz.ToString("N", nfi), f, new SolidBrush(Color.Black),new RectangleF(juxingjianbian.X,juxingjianbian.Y-20,juxingjianbian_width,juxingjianbian_height) ,fmt);/*new PointF(juxingjianbian.X, juxingjianbian.Y + 25 + 25)*/
+            //更新数据库字段
+            string elevations = average_difference.ToString("N", nfi) + "," + standard_deviation.ToString("N", nfi) + "," + average_designz.ToString("N", nfi) + "," + standard_deviation_designz.ToString("N", nfi);
+            DAO.updateElevations(blockid,designz,segmentid,elevations);
             //g.DrawString((min+(max-min)/2).ToString() + "m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X + juxingjianbian_width/2, juxingjianbian.Y + 25));
                 //间隔
             //float jiange_y = juxingjianbian.Y + 25;

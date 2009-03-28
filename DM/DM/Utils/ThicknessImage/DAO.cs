@@ -22,27 +22,48 @@ namespace DM.DB.datamap
             return myInstance;
         }
 
+        public static bool updateElevations(int blockid,double designz,int segmentid,string elevations){
+
+            string sqlTxt = "update segment set elevations = '"+ elevations +
+                "' where blockid=" + blockid + " and segmentid=" + segmentid +
+                " and designz=" + designz ;
+            try
+            {
+                int updateCount = DBConnection.executeUpdate(sqlTxt);
+                if (updateCount <= 0)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception exp)
+            {
+                DebugUtil.log(exp);
+                return false;
+            }
+        }
+
         //得到当前高程的上一个高程
-        public double getLastDesignZ(int blockid, double designz)
+        public double getLastDesignZ(int blockid, double designz,String dtend)
         {
             List<Segment> segments = new List<Segment>();
             SqlConnection connection = null;
             SqlDataReader reader = null;
-            String sqlTxt = "select top 1 * from segment where blockid=" + blockid + " and designz < '" + designz + "' order by designz desc";
+            String sqlTxt = "select top 1 * from segment where blockid=" + blockid + " and designz < '" + (designz.ToString()) + "' and dtend <'"+ dtend +"' order by dtend desc";
             try
             {
                 connection = DBConnection.getSqlConnection();
                 reader = DBConnection.executeQuery(connection, sqlTxt);
                 if (reader.Read())
                 {
-                    return double.Parse(reader["designz"].ToString());
+                    return Double.Parse(reader["designz"].ToString());
                 }
                 else
                 {
                     return -1;
                 }
             }
-            catch 
+            catch
             {
                 return -1;
             }
@@ -151,14 +172,14 @@ namespace DM.DB.datamap
             segment.SegmentID = (int)(reader["SEGMENTID"]);
             segment.WorkState = (DB.SegmentWorkState)(workState);
             segment.DesignZ = (double)(reader["DESIGNZ"]);
-            segment.Vertext = vertex;
+            //segment.Vertex = vertex;
             segment.StartDate = (startdate);
             segment.EndDate = (enddate);
             segment.SegmentName = (segmentname);
             segment.StartZ = startZ;
             segment.POP = (double)reader["POP"];
             segment.DesignDepth = (double)reader["DESIGNDEPTH"];
-            //segment.Vertex = vertex;
+            segment.Vertext = vertex;
 
             return segment;
         }

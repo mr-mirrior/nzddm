@@ -46,6 +46,9 @@ namespace DM.DB.datamap
         public Pixel getPixel(int x, int y)
         {
             int begin_offset = (y * width + x) * 5 + 8;
+            if(begin_offset>bytesData.Length){//不知道为何会出现这种情况.待研究
+                return null;
+            }
             int rollcount = BitAccess.READ_byte(bytesData, begin_offset);
             float rollthickness = BitAccess.READ_C_float(bytesData, begin_offset + 1);
 
