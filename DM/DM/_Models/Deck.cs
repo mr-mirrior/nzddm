@@ -997,8 +997,12 @@ namespace DM.Models
 
                 if (!datamap)
                 {
-                    rolladdres=@"C:\OUTPUT\"+this.DeckInfo.SegmentName+@"\"+this.Partition.Name+this.Elevation.Height.ToString("0.0")+this.ID.ToString()+"roll.png";
+                    rolladdres = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "roll.png";
+#if DEBUG
+                    bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "roll.png");
+#else
                     bitMp.Save(rolladdres, System.Drawing.Imaging.ImageFormat.Png);
+#endif
                     rolladdres = this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "roll.png";
                 }
                 output.Dispose();
@@ -1378,8 +1382,13 @@ namespace DM.Models
             //ElevationImage();
             #endregion
             //#if DEBUG
-            string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0")+this.ID.ToString() + "thickness.png";
-            bitMp.Save(address, System.Drawing.Imaging.ImageFormat.Png);
+
+            string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0")+this.ID.ToString() + "Elevation.png";
+#if DEBUG
+            bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "Elevation.png");
+#else
+            bitMp.Save(rolladdres, System.Drawing.Imaging.ImageFormat.Png);
+#endif
             //#else
             //            bitMp.Save(@"C:\output_elevation.png", System.Drawing.Imaging.ImageFormat.Png);
             //#endif
@@ -1763,7 +1772,12 @@ namespace DM.Models
             endG.DrawString("轴(m)", ftScale, Brushes.Black, offset * 0.9f, topBlank - s.Height * 0.9f + 2 * factor);
             endG.DrawString("碾压轨迹图形报告", ftTitle, Brushes.Black, thisPf, thisSf);
             string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name+this.Elevation.Height.ToString("0.0")+this.ID.ToString()+ "tracing.png";
-            bitMp.Save(address, System.Drawing.Imaging.ImageFormat.Png);
+
+#if DEBUG
+            bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "tracing.png");
+#else
+            bitMp.Save(rolladdres, System.Drawing.Imaging.ImageFormat.Png);
+#endif
 
             output.Dispose();
             g.Dispose();

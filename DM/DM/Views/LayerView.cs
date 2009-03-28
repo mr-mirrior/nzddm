@@ -1664,7 +1664,11 @@ namespace DM.Views
                 return;
             System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\output\"+DM.Models.Deck.I.DeckInfo.SegmentName+@"\"+Models.Deck.I.rolladdres);
             if ( result && fi.Exists )
+#if !DEBUG
                 Utils.Sys.SysUtils.StartProgram(fi.FullName, null);
+#else
+                Utils.Sys.SysUtils.StartProgram(@"C:\output\" + Models.Deck.I.rolladdres, null);
+#endif
             //TrackGPS.WAITFINISHED = true;
         }
         private void tsReport_Click(object sender, EventArgs e)
@@ -1846,12 +1850,19 @@ namespace DM.Views
                 {
                     di.Create();
                 }
-
-                image.Save(@"C:\OUTPUT\" +  layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thicknessYu.png");
+#if DEBUG
+                image.Save(@"C:\OUTPUT\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thickness.png");
+#else
+                image.Save(@"C:\OUTPUT\" +  layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thickness.png");
+#endif
                 image.Dispose();
-                System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\OUTPUT\" + layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thicknessYu.png");
+                System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\OUTPUT\" + layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thickness.png");
                 if (fi.Exists)
-                    Utils.Sys.SysUtils.StartProgram(fi.FullName, null);
+#if !DEBUG
+                Utils.Sys.SysUtils.StartProgram(fi.FullName, null);
+#else
+                    Utils.Sys.SysUtils.StartProgram(@"C:\OUTPUT\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thickness.png", null);
+#endif
             }
             dlg.Finished = true;
         }
