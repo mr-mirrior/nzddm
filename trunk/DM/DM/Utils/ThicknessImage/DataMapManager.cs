@@ -450,13 +450,14 @@ namespace DM.DB.datamap
         Font titlefont = new Font("微软雅黑", 24f);
         Point titlep = new Point(10, 10);
         String title = "碾压厚度图形报告";
-        String sub_title = "分区   "+segment.BlockID+"     仓面名称   "+segment.SegmentName+"      高程   "+segment.DesignZ+"m";
+
+        String sub_title = "分区   " + Models.Partition.GetName(segment.BlockID)+ "     仓面名称   " + segment.SegmentName + "      高程   " + segment.DesignZ + "m";
         StringFormat fmt = new StringFormat();
         fmt.Alignment = StringAlignment.Center;
         fmt.LineAlignment = StringAlignment.Near;
         g.DrawString(title, titlefont, hb, new RectangleF(0, 10, map.Width, map.Height - 10), fmt);
         g.DrawLine(Pens.Black,new Point(left_top.X, titlep.Y + titlefont.Height + 3), new Point(right_top.X, titlep.Y + titlefont.Height + 3));
-        g.DrawString(sub_title, f,hb, new Point(left_top.X, titlep.Y + titlefont.Height + 5));
+        g.DrawString(sub_title, f, hb, new RectangleF(0,62, map.Width, map.Height - 62), fmt);
         String startd = segment.StartDate.ToString();
         String endd = segment.EndDate.ToString();
         g.DrawString("开始时间:" + startd, f, hb, new Point(right_top.X-100, titlep.Y + titlefont.Height + 5+ f.Height));
