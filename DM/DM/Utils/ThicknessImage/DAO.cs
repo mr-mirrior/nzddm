@@ -49,7 +49,7 @@ namespace DM.DB.datamap
             List<Segment> segments = new List<Segment>();
             SqlConnection connection = null;
             SqlDataReader reader = null;
-            String sqlTxt = "select top 1 * from segment where blockid=" + blockid + " and designz < '" + (designz.ToString()) + "' and dtend <'"+ dtend +"' order by dtend desc";
+            String sqlTxt = "select top 1 * from segment where blockid=" + blockid + " and designz < '" + (designz.ToString()) + "' and dtend <'"+ dtend +"'and workstate=2 order by dtend desc";
             try
             {
                 connection = DBConnection.getSqlConnection();
@@ -172,8 +172,8 @@ namespace DM.DB.datamap
             segment.SegmentID = (int)(reader["SEGMENTID"]);
             segment.WorkState = (DB.SegmentWorkState)(workState);
             segment.DesignZ = (double)(reader["DESIGNZ"]);
-            //segment.Vertex = vertex;
-            segment.StartDate = (startdate);
+            //segment.BlockName=
+            segment.StartDate = (DateTime)(startdate);
             segment.EndDate = (enddate);
             segment.SegmentName = (segmentname);
             segment.StartZ = startZ;

@@ -13,7 +13,7 @@ namespace DM.Models
     /// </summary>
     public class Partition
     {
-        private Partition() {}
+        private Partition() { }
         public Partition(int ID, string NAME, string DESCR) { id = ID; name = NAME; description = DESCR; }
         public Partition(string n) { id = 0; name = n; description = ""; }
 
@@ -23,6 +23,38 @@ namespace DM.Models
         public string Name { get { return name; } set { name = value; } }
         string description;
         public string Description { get { return description; } set { description = value; } }
+        public static string GetName(int id)
+        {
+            switch (id)
+            {
+                case 10:
+                    return "EU";
+                case 11:
+                    return "ED";
+                case 12:
+                    return "RU1";
+                case 13:
+                    return "RU2";
+                case 14:
+                    return "RU3";
+                case 15:
+                    return "RD1";
+                case 16:
+                    return "RD2";
+                case 17:
+                    return "RD3";
+                case 18:
+                    return "FU";
+                case 19:
+                    return "FD";
+                case 29:
+                    return "RU4";
+                case 35:
+                    return "EJ";
+                default:
+                    return "测试区";
+            }
+        }
         public override bool Equals(object obj)
         {
             if (obj.GetType() == typeof(Partition))
@@ -30,13 +62,13 @@ namespace DM.Models
                 Partition p = (Partition)obj;
                 return name.Equals(p.name, StringComparison.OrdinalIgnoreCase);
             }
-            if( obj.GetType() == typeof(string))
+            if (obj.GetType() == typeof(string))
             {
                 return name.Equals(obj as string, StringComparison.OrdinalIgnoreCase);
             }
             return false;
         }
-        public bool IsEmpty() {  return name == null;  }
+        public bool IsEmpty() { return name == null; }
         /*
          10	EU	心墙上部	NULL	NULL
         11	ED	心墙下部	NULL	NULL
@@ -54,28 +86,28 @@ namespace DM.Models
         35	EJ	接触粘土区	NULL	NULL
         36 yingdi 业主营地门前 NULL NULL
          */
-//         public int ID
-//         {
-//             get
-//             {
-//                 switch (name)
-//                 {
-//                     case "EU": return 10;
-//                     case "ED": return 11;
-//                     case "RU1": return 12;
-//                     case "RU2": return 13;
-//                     case "RU3": return 14;
-//                     case "RD1": return 15;
-//                     case "RD2": return 16;
-//                     case "RD3": return 17;
-//                     case "FU": return 18;
-//                     case "FD": return 19;
-//                     case "RU4": return 29;
-//                     case "EJ": return 35;
-//                     default: return 0;
-//                 }
-//             }
-//         }
+        //         public int ID
+        //         {
+        //             get
+        //             {
+        //                 switch (name)
+        //                 {
+        //                     case "EU": return 10;
+        //                     case "ED": return 11;
+        //                     case "RU1": return 12;
+        //                     case "RU2": return 13;
+        //                     case "RU3": return 14;
+        //                     case "RD1": return 15;
+        //                     case "RD2": return 16;
+        //                     case "RD3": return 17;
+        //                     case "FU": return 18;
+        //                     case "FD": return 19;
+        //                     case "RU4": return 29;
+        //                     case "EJ": return 35;
+        //                     default: return 0;
+        //                 }
+        //             }
+        //         }
         public override int GetHashCode()
         {
             return base.GetHashCode();
@@ -123,7 +155,7 @@ namespace DM.Models
     //////////////////////////////////////////////////////////////////////////////////
     public class PartitionDirectory
     {
-        public PartitionDirectory() {}
+        public PartitionDirectory() { }
         public PartitionDirectory(string fullpath) { name = fullpath; heights.Search(fullpath); }
         string name = "";
 
@@ -142,8 +174,8 @@ namespace DM.Models
         const string ALT_ROOT = "DAMDATA";
         List<PartitionDirectory> dirs = new List<PartitionDirectory>();
         public List<PartitionDirectory> Directories { get { return dirs; } set { dirs = value; } }
-//         string rt = ROOT;
-//         public string Root { get { return rt; } set { rt = value; } }
+        //         string rt = ROOT;
+        //         public string Root { get { return rt; } set { rt = value; } }
         public PartitionDirectories()
         {
         }
@@ -164,7 +196,7 @@ namespace DM.Models
         public bool Search(string root)
         {
             DirectoryInfo di = new DirectoryInfo("Cache");
-            if( di.Exists)
+            if (di.Exists)
             {
                 if (ReadFromCache())
                     return true;
@@ -176,7 +208,7 @@ namespace DM.Models
             if (!di.Exists)
             {
                 di = new DirectoryInfo(ALT_ROOT);
-                if( !di.Exists )
+                if (!di.Exists)
                     return false;
             }
 

@@ -1387,7 +1387,7 @@ namespace DM.Models
 #if DEBUG
             bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "Elevation.png");
 #else
-            bitMp.Save(rolladdres, System.Drawing.Imaging.ImageFormat.Png);
+            bitMp.Save(address, System.Drawing.Imaging.ImageFormat.Png);
 #endif
             //#else
             //            bitMp.Save(@"C:\output_elevation.png", System.Drawing.Imaging.ImageFormat.Png);
@@ -1776,7 +1776,7 @@ namespace DM.Models
 #if DEBUG
             bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "tracing.png");
 #else
-            bitMp.Save(rolladdres, System.Drawing.Imaging.ImageFormat.Png);
+            bitMp.Save(address, System.Drawing.Imaging.ImageFormat.Png);
 #endif
 
             output.Dispose();
