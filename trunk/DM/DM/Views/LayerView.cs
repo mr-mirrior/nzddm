@@ -1663,12 +1663,15 @@ namespace DM.Views
             if (!result)
                 return;
             System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\output\"+DM.Models.Deck.I.DeckInfo.SegmentName+@"\"+Models.Deck.I.rolladdres);
-            if ( result && fi.Exists )
-#if !DEBUG
+            if ( result)
+            {
+ #if !DEBUG
                 Utils.Sys.SysUtils.StartProgram(fi.FullName, null);
 #else
                 Utils.Sys.SysUtils.StartProgram(@"C:\output\" + Models.Deck.I.rolladdres, null);
 #endif
+            }
+
             //TrackGPS.WAITFINISHED = true;
         }
         private void tsReport_Click(object sender, EventArgs e)
