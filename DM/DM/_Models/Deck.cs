@@ -561,6 +561,8 @@ namespace DM.Models
             int[] areas = null;
             Bitmap roll = CreateRollCountImage(out areas);
             Bitmap elev = ElevationImage(out lo, out hi);
+
+            roll.Save(@"C:\pngroll.png");
 //             roll.Save(@"C:\roll.png", System.Drawing.Imaging.ImageFormat.Png);
 //             elev.Save(@"C:\elev.png", System.Drawing.Imaging.ImageFormat.Png);
             isDatamap = false;
@@ -616,6 +618,8 @@ namespace DM.Models
                         }
                         *((float*)p) = elevation;
                         p += sizeof(float);
+                        //if (count != -1 && elevation == 0)
+                        //    elevation = 1;
                     }
                     rp += dataRoll.Stride;
                     ep += dataElev.Stride;
@@ -1244,7 +1248,6 @@ namespace DM.Models
                     //newG.DrawString(elevationValue.ToString("0.0"), ftValue, Brushes.White, recValue, sf);
                     Utils.Graph.OutGlow.DrawOutglowText(newG, elevationValue.ToString("0.00"), ftValue, recValue, sf, Brushes.Black, Brushes.White);
                 }
-
             }
 
             GraphicsState gs = newG.Save();
