@@ -35,7 +35,7 @@ namespace DM.DB.datamap
         double lastDesignz = DAO.getInstance().getLastDesignZ(blockid, designz, dtend.ToString());           
         List<Segment> segments = SegmentDAO.getInstance().getSegments(blockid, lastDesignz);
         //将上一层所有仓面的数据图读出来
-        if (segments.Count==0)
+        if (segments==null||segments.Count==0)
         {
             return null;
         }
@@ -57,7 +57,7 @@ namespace DM.DB.datamap
 
 //通过vertex得到大坝坐标系的边界点
         List<Point> dam_points = getSegmentVertex_DAM(vertex);
-//大把坐标系下的外切矩阵的原点,把屏幕坐标转换成大坝坐标会用到
+//大坝坐标系下的外切矩阵的原点,把屏幕坐标转换成大坝坐标会用到
         Point dam_origin = getOrigin(dam_points.ToArray());
 //转换成相对这组坐标的原点的“新点”也相当于屏幕坐标
         List<Point> screen_points = getRelatively(dam_points);
@@ -70,7 +70,7 @@ namespace DM.DB.datamap
         Point left_top = new Point(screen_points[left_index].X, screen_points[top_index].Y);
         Point left_bottom = new Point(screen_points[left_index].X, screen_points[bottom_index].Y);
         Point right_top = new Point(screen_points[right_index].X, screen_points[top_index].Y);
-        Point right_bottom = new Point(screen_points[right_index].X, screen_points[bottom_index].Y);        
+        Point right_bottom = new Point(screen_points[right_index].X, screen_points[bottom_index].Y);
         //大坝坐标下本仓面外切矩形的宽度
         int segment_dam_width = screen_points[right_index].X - screen_points[left_index].X;
         //大坝坐标下本仓面外切矩形的高度
@@ -140,7 +140,7 @@ namespace DM.DB.datamap
                     if (max_designz < this_designz) { max_designz = this_designz; };
                     if (min_designz > this_designz) { min_designz = this_designz; };
                     sum_designz += this_designz;
-                    designz_s.Add(this_designz);                        
+                    designz_s.Add(this_designz);
                 }
             }
         }
@@ -239,8 +239,11 @@ namespace DM.DB.datamap
                 
 //分析出大网格的均值,然后计算出颜色
 
-        System.Globalization.NumberFormatInfo nfi = new System.Globalization.NumberFormatInfo();
-        nfi.NumberDecimalDigits = 2;
+        System.Globalization.NumberFormatInfo centimeter = new System.Globalization.NumberFormatInfo();
+        centimeter.NumberDecimalDigits = 2;
+
+        System.Globalization.NumberFormatInfo meter = new System.Globalization.NumberFormatInfo();
+        centimeter.NumberDecimalDigits = 2;
 
         double max_value = double.MinValue;//大网格最大值
         double min_value = double.MaxValue;//大网格最小值
@@ -397,7 +400,7 @@ namespace DM.DB.datamap
                                     g.FillRectangle(new SolidBrush(color),new Rectangle( new Point(this_x_n,this_y_m), new Size(r_width, r_height)));
                                     //if (y_m < left_top.Y || x_n + SCREEN_ONEMETER * grid > right_top.X)
                                         //continue;
-                                    g.DrawString(average.ToString("N", nfi) + "cm", f, new SolidBrush(Color.Black), new Point(this_x_n+10, this_y_m+10));
+                                    g.DrawString((int)average + "cm", f, new SolidBrush(Color.Black), new Point(this_x_n+10, this_y_m+10));
                                 }
                             }
                         }
@@ -420,7 +423,7 @@ namespace DM.DB.datamap
 //原点
         Point left_bottom_dam = screenToDam(dam_origin, left_bottom);//右下角点的大把坐标
         Point yuandian = new Point(left_bottom.X - 20, left_bottom.Y + 2);
-        g.DrawString("(" + left_bottom_dam.X + "," + left_bottom_dam.Y + ")", f, hb, yuandian);
+        g.DrawString("(" + left_bottom_dam.X + "," + (left_bottom_dam.Y*-1) + ")", f, hb, yuandian);
 //横线们       
         for (i = 1; i <= hengxian;i++ )
         {
@@ -434,7 +437,7 @@ namespace DM.DB.datamap
             Point stringPoint = new Point(start.X - 50, start.Y);
             if (i%2==1)
             {
-                g.DrawString("" + (left_bottom_dam.Y - grid * i), f, hb, stringPoint);
+                g.DrawString("" + ((left_bottom_dam.Y - grid * i)*(-1)), f, hb, stringPoint);
             }            
         }
 //纵线们       
@@ -456,7 +459,7 @@ namespace DM.DB.datamap
 //标题
         Font titlefont = new Font("微软雅黑", 24f);
         Point titlep = new Point(10, 10);
-        String title = "碾压厚度图形报告";
+        String title = "压实厚度图形报告";
 
         String sub_title = "分区   " + Models.Partition.GetName(segment.BlockID)+ "     仓面名称   " + segment.SegmentName + "      高程   " + segment.DesignZ + "m";
         StringFormat fmt = new StringFormat();
@@ -480,7 +483,6 @@ namespace DM.DB.datamap
         g.DrawString("轴(m)", f, hb, zuoshang);
         //g.DrawString("("+left_top_dam.X+","+left_top_dam.Y+")", f, hb, new Point(yuandian.X-40 , left_top.Y-jiachang-10));
 //图例
-             
             //三角指示
              int sanjiao =  25;
              int sanjiao_height = 15;
@@ -510,15 +512,15 @@ namespace DM.DB.datamap
             g.FillRectangle(b, r);*/
             //文字
                 //最小值
-            g.DrawString("最小值:" + min.ToString("N", nfi) + "m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X-25, juxingjianbian.Y + 25));
+            g.DrawString("最小值:" + min.ToString("N", centimeter) + "m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X-25, juxingjianbian.Y + 25));
                 //最大值
-            g.DrawString("最大值:"+max.ToString("N", nfi)+"m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X+juxingjianbian_width-25, juxingjianbian.Y + 25));
+            g.DrawString("最大值:"+max.ToString("N", centimeter)+"m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X+juxingjianbian_width-25, juxingjianbian.Y + 25));
                 //中间值
             fmt.Alignment = StringAlignment.Center;
             fmt.LineAlignment = StringAlignment.Center;
-            g.DrawString("厚度均值:" + average_difference.ToString("N", nfi) + "m    厚度标准差:" + standard_deviation.ToString("N", nfi) + "m     高程均值:" + average_designz.ToString("N", nfi) + "m    高程标准差:" + standard_deviation_designz.ToString("N", nfi)+"m", f, new SolidBrush(Color.Black),new RectangleF(juxingjianbian.X,juxingjianbian.Y-20,juxingjianbian_width,juxingjianbian_height) ,fmt);/*new PointF(juxingjianbian.X, juxingjianbian.Y + 25 + 25)*/
+            g.DrawString("厚度均值:" + average_difference.ToString("N", centimeter) + "m    厚度标准差:" + standard_deviation.ToString("N", centimeter) + "m     高程均值:" + average_designz.ToString("N", centimeter) + "m    高程标准差:" + standard_deviation_designz.ToString("N", centimeter)+"m", f, new SolidBrush(Color.Black),new RectangleF(juxingjianbian.X,juxingjianbian.Y-20,juxingjianbian_width,juxingjianbian_height) ,fmt);/*new PointF(juxingjianbian.X, juxingjianbian.Y + 25 + 25)*/
             //更新数据库字段
-            string elevations = average_difference.ToString("N", nfi) + "," + standard_deviation.ToString("N", nfi) + "," + average_designz.ToString("N", nfi) + "," + standard_deviation_designz.ToString("N", nfi);
+            string elevations = average_difference.ToString("N", centimeter) + "," + standard_deviation.ToString("N", centimeter) + "," + average_designz.ToString("N", centimeter) + "," + standard_deviation_designz.ToString("N", centimeter);
             DAO.updateElevations(blockid,designz,segmentid,elevations);
             //g.DrawString((min+(max-min)/2).ToString() + "m", f, new SolidBrush(Color.Black), new PointF(juxingjianbian.X + juxingjianbian_width/2, juxingjianbian.Y + 25));
                 //间隔
@@ -568,13 +570,18 @@ namespace DM.DB.datamap
                 float y_ = float.Parse(y);
                 Coordinate origin = getOriginOfCoordinate(vertex);
                 int m = (int)((x_ - origin.getX()) / WIDTH);
-                int n = (int)((y_ - origin.getY()) / WIDTH);
+                int n = (int)((y_-0.25 - origin.getY()) / WIDTH);
                 if (m > 0 && n > 0)
                 {
                     byte[] bytes = segment.Datamap;
-                    Pixel p = (new DataMap(bytes)).getPixel(m, n);
-                    p.setSegmentid(segment.SegmentID);
-                    return p;
+                    DataMap dmap = new DataMap(bytes);
+                    if (m<dmap.getWidth()&&n<dmap.getHeight())
+                    {
+                        Pixel p = dmap.getPixel(m, n);
+                        p.setSegmentid(segment.SegmentID);
+                        return p;
+                    }
+                    
                 }
                 else
                 {
@@ -719,7 +726,7 @@ namespace DM.DB.datamap
             double thisy = float.Parse(xy[1]) * (-1);
             Coordinate c = earthToDam(new Coordinate(thisx, thisy));
 
-            cs.Add(new Point((int)c.getX(),(int)c.getY()));
+            cs.Add(new Point((int)c.getX(),-(int)c.getY()));
         }
         return cs;
     }
@@ -734,8 +741,8 @@ namespace DM.DB.datamap
     //将大把坐标转换成大地坐标
     static Coordinate damToEarth(Point p)
     {
-        double x = -cos * p.X + sin * p.Y + 50212.59;
-        double y = -sin * p.X - cos * p.Y + 8447;
+        double x = -cos * p.X + sin * (-p.Y) + 50212.59;
+        double y = -sin * p.X - cos * (-p.Y) + 8447;
         return new Coordinate(x, y);
     }
     //得到这一堆点最左的点在这个数组中的下标,最小的X
