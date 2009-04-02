@@ -1386,7 +1386,7 @@ namespace DM.Models
             #endregion
             //#if DEBUG
 
-            string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0")+this.ID.ToString() + "Elevation.png";
+            string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0")+this.ID.ToString() + "elevation.png";
 #if DEBUG
             bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "Elevation.png");
 #else

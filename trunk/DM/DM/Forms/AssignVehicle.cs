@@ -238,7 +238,11 @@ namespace DM.Forms
                 "强制停止车辆", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-
+                    if (DB.CarDistributeDAO.getInstance().getCarInfosInThisSegment_inuse(deck.BlockID, deck.DesignZ, deck.SegmentID).Count == 1)
+                    {
+                        Utils.MB.Warning("不能在工作仓面中结束唯一工作的车辆，请关仓！");
+                        return;
+                    }
                     ListViewItem item = lstVehicle.SelectedItems[0];
                     item.Tag = CarDistribute_Status.FREE;
                      c.Tag = CarDistribute_Status.FREE;

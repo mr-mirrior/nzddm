@@ -119,12 +119,13 @@ namespace DM.DB.datamap
                 this_designz = p.getRollthickness();
                 if (p.getRollcount() != 255 && this_designz != 0)//是否为仓面上的点
                 {
-                    lastp = DataMapManager.getPixel("" + c_x, "" + c_y, segments);//得到上一点的数据
+                    //找本网格中心点对应的下一层 + (c_x + SCREEN_ONEMETER * WIDTH / 2)
+                    lastp = DataMapManager.getPixel("" + (c_x + SCREEN_ONEMETER * WIDTH / 2), "" +(c_y+SCREEN_ONEMETER*WIDTH/2), segments);//得到上一点的数据
                     if (lastp != null && lastp.getRollthickness() != 0 && lastp.getRollcount() != 255)
                     {//
                         difference = this_designz - lastp.getRollthickness();
 
-                        if (difference<0||difference>2*designdepth)
+                        if (difference<0||difference>1.5*designdepth)
                         {
                             continue;
                         }
@@ -198,10 +199,16 @@ namespace DM.DB.datamap
                     Pixel pixel = dm.getPixel(row_column.X, row_column.Y);
                     if (pixel != null && pixel.getRollcount() != 255 && pixel.getRollthickness() != 0)//是否为仓面上的点
                     {
-                        Pixel lastpixel = getPixel("" + earth_point.getX(), "" + earth_point.getY(), segments);
+                        //找本网格中心点对应的下一层
+                        Pixel lastpixel = getPixel("" + (earth_point.getX() + SCREEN_ONEMETER * WIDTH / 2), "" + (earth_point.getY() + SCREEN_ONEMETER * WIDTH / 2), segments);
                         if (lastpixel != null && lastpixel.getRollthickness() != 0 && lastpixel.getRollcount() != 255)
                         {//
                             difference = pixel.getRollthickness() - lastpixel.getRollthickness();
+
+                            if (difference < 0 || difference > 1.5 * designdepth)
+                            {
+                                continue;
+                            }
 
                             int zong = (screen_point.X - left_bottom.X) / (grid * SCREEN_ONEMETER);//所在的列
                             int heng = (right_bottom.Y - SCREEN_ONEMETER / 2 - screen_point.Y) / (grid * SCREEN_ONEMETER);
@@ -509,7 +516,7 @@ namespace DM.DB.datamap
                 //中间值
             fmt.Alignment = StringAlignment.Center;
             fmt.LineAlignment = StringAlignment.Center;
-            g.DrawString("厚度均值:" + average_difference.ToString("N", nfi) + "m    厚度标准差:" + standard_deviation.ToString("N", nfi) + "     高程均值:" + average_designz.ToString("N", nfi) + "m    高程标准差:" + standard_deviation_designz.ToString("N", nfi), f, new SolidBrush(Color.Black),new RectangleF(juxingjianbian.X,juxingjianbian.Y-20,juxingjianbian_width,juxingjianbian_height) ,fmt);/*new PointF(juxingjianbian.X, juxingjianbian.Y + 25 + 25)*/
+            g.DrawString("厚度均值:" + average_difference.ToString("N", nfi) + "m    厚度标准差:" + standard_deviation.ToString("N", nfi) + "m     高程均值:" + average_designz.ToString("N", nfi) + "m    高程标准差:" + standard_deviation_designz.ToString("N", nfi)+"m", f, new SolidBrush(Color.Black),new RectangleF(juxingjianbian.X,juxingjianbian.Y-20,juxingjianbian_width,juxingjianbian_height) ,fmt);/*new PointF(juxingjianbian.X, juxingjianbian.Y + 25 + 25)*/
             //更新数据库字段
             string elevations = average_difference.ToString("N", nfi) + "," + standard_deviation.ToString("N", nfi) + "," + average_designz.ToString("N", nfi) + "," + standard_deviation_designz.ToString("N", nfi);
             DAO.updateElevations(blockid,designz,segmentid,elevations);
