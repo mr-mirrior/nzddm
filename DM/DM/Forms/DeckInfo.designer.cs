@@ -261,8 +261,9 @@
             this.cbLibrate.FormattingEnabled = true;
             this.cbLibrate.Items.AddRange(new object[] {
             "不振",
-            "高频低振",
-            "低频高振"});
+            "常规振动",
+            "低频高振",
+            "高频低振"});
             this.cbLibrate.Location = new System.Drawing.Point(302, 54);
             this.cbLibrate.Name = "cbLibrate";
             this.cbLibrate.Size = new System.Drawing.Size(135, 25);
@@ -273,9 +274,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(298, 25);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(68, 17);
+            this.label9.Size = new System.Drawing.Size(104, 17);
             this.label9.TabIndex = 44;
-            this.label9.Text = "振动级别：";
+            this.label9.Text = "请选择振动级别：";
             // 
             // cbSpeedUnit
             // 

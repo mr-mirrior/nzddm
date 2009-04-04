@@ -293,7 +293,7 @@ namespace DM.DMControl
                 GPSDATA* gps = (GPSDATA*)p;
                 TRACE(gps->ToString());
                 if (Program.ISTJU)
-                    DB.TracePointDAO.getInstance().InsertOneTP(gps->CarID.ToString(), gps->XYZ.x.ToString(), gps->XYZ.y.ToString(), gps->XYZ.z.ToString(),(gps->Speed*100).ToString(),gps->Time.ToString(),gps->Type.ToString());
+                    DB.TracePointDAO.getInstance().InsertOneTP(gps->CarID.ToString(), gps->XYZ.x.ToString(), gps->XYZ.y.ToString(), gps->XYZ.z.ToString(),(gps->Speed*100).ToString(),gps->Time.ToString(),((int)(gps->WorkFlag&0x01)).ToString());
                 e.msg = GPSMessage.GPSDATA;
                 e.gps = *gps;
             }
