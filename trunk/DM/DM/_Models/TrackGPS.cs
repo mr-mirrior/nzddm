@@ -408,6 +408,9 @@ namespace DM.Models
                //筛选击震力不合格点  feiying 09.3.19
                 List<Timeslice> times=new List<Timeslice>();
                 int carindex=0;
+                bool ISCOMMAND = false;
+                if (owner.Owner.DeckInfo.LibrateState == 3)
+                    ISCOMMAND = true;
                //一个车只读一次库  
                 foreach (DB.CarDistribute id in hasReadCar)
                 {
@@ -482,7 +485,13 @@ namespace DM.Models
                     }
                     else
                     {
-                        if (VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
+                        if (!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
+                        {
+                            libratedOK = new List<Coord3D>();
+                            libratedOK.Add(lst[0]);
+                            libratedOKlst.Add(libratedOK);
+                        }
+                        else if (ISCOMMAND && VehicleControl.carLibratedStates[index] == 2 || VehicleControl.carLibratedStates[index] == 1 || VehicleControl.carLibratedStates[index] == -1)
                         {
                             libratedOK = new List<Coord3D>();
                             libratedOK.Add(lst[0]);
@@ -544,13 +553,20 @@ namespace DM.Models
                         }
                         else
                         {
-                            if (VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index] == -1)
+                            if (!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index] == -1)
                             {
-                                //if (BFWHEN)
-                                //{
-                                //    libratedOK = new List<Coord3D>();
-                                //    BFWHEN = false;
-                                //}
+                                if (isRight)
+                                    libratedOK.Add(lst[i]);
+                                else
+                                {
+                                    libratedOK = new List<Coord3D>();
+                                    libratedOK.Add(lst[i]);
+                                    libratedOKlst.Add(libratedOK);
+                                }
+                                isRight = true;
+                            }
+                            else if (ISCOMMAND && VehicleControl.carLibratedStates[index] == 2 || VehicleControl.carLibratedStates[index] == 1 || VehicleControl.carLibratedStates[index] == -1)
+                            {
                                 if (isRight)
                                     libratedOK.Add(lst[i]);
                                 else
@@ -563,11 +579,6 @@ namespace DM.Models
                             }
                             else
                             {
-                                //if (BFWHEN)
-                                //{
-                                //    libratedNO = new List<Coord3D>();
-                                //    BFWHEN = false;
-                                //}
                                 if (!isRight)
                                     libratedNO.Add(lst[i]);
                                 else
