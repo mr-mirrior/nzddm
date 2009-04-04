@@ -174,7 +174,7 @@ namespace DM.DB
             return WorkState == SegmentWorkState.END;
         }
 
-        int librateState;
+        int librateState=-1;
 
         public int LibrateState
         {

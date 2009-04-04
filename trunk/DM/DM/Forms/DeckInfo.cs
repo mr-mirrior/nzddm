@@ -107,10 +107,10 @@ namespace DM.Forms
             }
 #endif
             cbSpeedUnit.SelectedIndex = 1;
-            if (isWorking||deck.WorkState== SegmentWorkState.END)
-                cbLibrate.SelectedIndex = deck.LibrateState;
-            else
-                cbLibrate.SelectedIndex = 2;
+            //if (isWorking||deck.WorkState== SegmentWorkState.END)
+                cbLibrate.SelectedIndex = GetValueIdx(deck.LibrateState);
+            //else
+            //    cbLibrate.SelectedIndex = 2;
             lbBlockname.Text = BlockName;
             lbPastion.Text = deck.DesignZ.ToString();
             this.tbDeckName.Text = deck.SegmentName;
@@ -126,6 +126,40 @@ namespace DM.Forms
             this.Close();
         }
 
+        private  int GetIdxValue(int idx)
+        {
+            switch (idx)
+            {
+            case 0:
+                    return 0;
+            case 1:
+                    return 3;
+            case 2:
+                    return 2;
+            case 3:
+                    return 1;
+                default:
+                    return -1;
+            }
+        }
+
+        private int GetValueIdx(int idx)
+        {
+            switch (idx)
+            {
+                case 0:
+                    return 0;
+                case 3:
+                    return 1;
+                case 2:
+                    return 2;
+                case 1:
+                    return 3;
+                default:
+                    return -1;
+            }
+        }
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (tbDeckName.Text.Equals(""))
@@ -135,6 +169,10 @@ namespace DM.Forms
             else if (tbDesignRollCount.Text.Equals("") || Convert.ToSingle(tbDesignRollCount.Text)==0f || Convert.ToSingle(txErrorParam.Text)==0 || txErrorParam.Text.Equals("") || Convert.ToSingle(tbMaxSpeed.Text)==0 || tbMaxSpeed.Text.Equals("") || txDesignDepth.Text.Equals("") || Convert.ToSingle(txDesignDepth.Text)==0 || txStartZ.Text.Equals("") || Convert.ToSingle(txStartZ.Text)==0)
             {
                 MessageBox.Show("输入数值信息不能为0或为空！");
+            }
+            else if (cbLibrate.SelectedIndex<0)
+            {
+                MessageBox.Show("请选择仓面的击震力状态！");
             }
             else
             {
@@ -155,41 +193,12 @@ namespace DM.Forms
                     deck.StartZ = Convert.ToDouble(txStartZ.Text);
                     deck.DesignDepth = Convert.ToDouble(txDesignDepth.Text);
                     deck.SegmentName = tbDeckName.Text;
-                    deck.LibrateState = cbLibrate.SelectedIndex;
+                    deck.LibrateState = GetIdxValue(cbLibrate.SelectedIndex);
                 }
                 else
                 {
                     this.DialogResult = DialogResult.No;
                 }
-                //    //输入相关仓面信息
-
-
-                //    foreach (Segment segment in Segments)
-                //    {
-                //        if (segment==Segmentdao.getSegment(deck.BlockID,deck.DesignZ,deck.SegmentID))
-                //        {
-
-                //        }
-                //        else
-                //        {
-
-                //        }
-                //    }
-                //    //if (!tbDeckName.Text.Equals(""))
-                //    //{
-                //    //    DBConnection.getSqlConnection().Open();
-                //    //    DBConnection.executeUpdate("update Segment set SegmentName=" + "'" + tbDeckName.Text + "'" + "," + "DesignRollCount=" + Convert.ToInt32(tbDesignRollCount.Text) + "," + "MaxSpeed=" + MaxSpeedValue + "," + "ErrorParam=" + Convert.ToDouble(txErrorParam.Text) + "," + "StratZ=" + Convert.ToDouble(txStartZ.Text) + "," + "SpreadZ=" + Convert.ToDouble(txSpreadZ.Text) + "where SegmentID=" + segmentID+" and blockid="+blockID+" and DesignZ="+designZ);
-                //    //}
-                //    //else
-                //    //{
-                //    //    DBConnection.getSqlConnection().Open();
-                //    //    DBConnection.executeUpdate("insert Segment(blockid,DesignZ,SegmentID,SegmentName,DesignRollCount,MaxSpeed,ErrorParam,startZ,SpreadZ) values(" + blockID + "," + designZ + "," + segmentID + "," + "'" + tbDeckName.Text + "'" + "," + Convert.ToInt32(tbDesignRollCount.Text) + "," + MaxSpeedValue + "," + Convert.ToDouble(txErrorParam.Text) + "," + Convert.ToDouble(txStartZ.Text) + "," + Convert.ToDouble(txSpreadZ.Text) + ")");
-                //    //}
-                //}
-                //else
-                //{
-
-                //}
             }
         }
 
