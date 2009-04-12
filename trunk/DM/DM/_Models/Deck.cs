@@ -1002,9 +1002,15 @@ namespace DM.Models
                 if (!datamap)
                 {
                     rolladdres = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "roll.png";
+                   
 #if DEBUG
                     bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "roll.png");
 #else
+                    DirectoryInfo dd = new DirectoryInfo(@"C:\OUTPUT\" + this.DeckInfo.SegmentName);
+                    if (!dd.Exists)
+                    {
+                        dd.Create();
+                    }
                     bitMp.Save(rolladdres, System.Drawing.Imaging.ImageFormat.Png);
 #endif
                     rolladdres = this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "roll.png";

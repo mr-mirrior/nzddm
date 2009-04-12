@@ -1647,7 +1647,7 @@ namespace DM.Views
         {
             if (layer.VisibleDeck == null)
                 return;
-            if (layer.VisibleDeck.State== DM.DB.SegmentWorkState.END)
+            if (layer.VisibleDeck.State == DM.DB.SegmentWorkState.END)
             {
                 lock (updateLock)
                 {
