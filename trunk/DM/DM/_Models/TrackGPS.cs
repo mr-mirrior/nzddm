@@ -367,9 +367,12 @@ namespace DM.Models
         }
 
         bool isFirst = true;
-       
+        bool ISCOMMAND = false;
+
         private void CreatePath(double offScrX, double offScrY)
         {
+            if (owner.Owner.DeckInfo.LibrateState == 3)
+                ISCOMMAND = true;
             isFirst = true;
 //             lock(sync)
 //             {
@@ -408,9 +411,7 @@ namespace DM.Models
                //筛选击震力不合格点  feiying 09.3.19
                 List<Timeslice> times=new List<Timeslice>();
                 int carindex=0;
-                bool ISCOMMAND = false;
-                if (owner.Owner.DeckInfo.LibrateState == 3)
-                    ISCOMMAND = true;
+
                //一个车只读一次库  
                 foreach (DB.CarDistribute id in hasReadCar)
                 {
@@ -852,7 +853,7 @@ namespace DM.Models
 
             for (int i = 0; i < lstLInfos.Count;i++ )
             {
-                if (lstLInfos[i].State!=this.owner.Owner.DeckInfo.LibrateState)
+                if (!ISCOMMAND&&lstLInfos[i].State!=this.owner.Owner.DeckInfo.LibrateState)
                 {
                     time.LibratedState = lstLInfos[i].State;
                     time = new Timeslice();
@@ -866,8 +867,24 @@ namespace DM.Models
                         else
                             time.DtEnd = this.owner.Assignment.DTEnd;
                     }
+                    times.Add(time);
                 }
-                times.Add(time);
+                else if (ISCOMMAND && lstLInfos[i].State == 0 || lstLInfos[i].State == 3)
+                {
+                    time.LibratedState = lstLInfos[i].State;
+                    time = new Timeslice();
+                    time.DtStart = lstLInfos[i].Dt;
+                    if ((i + 1) < lstLInfos.Count)
+                        time.DtEnd = lstLInfos[i + 1].Dt;
+                    else
+                    {
+                        if (this.owner.Assignment.DTEnd == DateTime.MinValue)
+                            time.DtEnd = DB.DBCommon.getDate();
+                        else
+                            time.DtEnd = this.owner.Assignment.DTEnd;
+                    }
+                    times.Add(time);
+                }
             }
 
 
