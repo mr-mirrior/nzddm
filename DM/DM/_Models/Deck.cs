@@ -668,7 +668,7 @@ namespace DM.Models
             double oldRotate = layer.RotateDegree;
 
 #if !DEBUG
-            if (this.WorkState== DM.DB.SegmentWorkState.WAIT)//this.IsWorking||或结束关仓后
+            if (WorkState== DM.DB.SegmentWorkState.WAIT)//this.IsWorking||或结束关仓后
             {
                 Utils.MB.Warning("该仓面没有开仓，无法生成图形报告。请再试一次。");
                 return false;

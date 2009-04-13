@@ -20,7 +20,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-;Source: ".\DM.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\bin\release\HVMRuntm.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\bin\release\DM.exe"; DestDir: "{app}"; Flags: ignoreversion
 source: "TrackPoint.wav"; destdir:"{app}"; flags: ignoreversion
 ;Source: ".\TrackingExp.txt"; DestDir: "{app}"; Flags: ignoreversion
