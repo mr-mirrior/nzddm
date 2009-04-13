@@ -1844,6 +1844,7 @@ namespace DM.Views
         {
             
             Image image = DB.datamap.DataMapManager.draw(layer.VisibleDeck.DeckInfo.BlockID, layer.VisibleDeck.DeckInfo.DesignZ, layer.VisibleDeck.DeckInfo.SegmentID)[0];
+            Image image2 = DB.datamap.DataMapManager.draw(layer.VisibleDeck.DeckInfo.BlockID, layer.VisibleDeck.DeckInfo.DesignZ, layer.VisibleDeck.DeckInfo.SegmentID)[1];
             if (image == null)
                 Utils.MB.Warning("此仓面或者此仓面的下层仓面没有生成数据图，请确认这两个仓面都已在关仓状态出过图形报告！");
             else
@@ -1855,10 +1856,13 @@ namespace DM.Views
                 }
 #if DEBUG
                 image.Save(@"C:\OUTPUT\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thickness.png");
+                image2.Save(@"C:\OUTPUT\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "elevation_img.png");
 #else
                 image.Save(@"C:\OUTPUT\" +  layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thickness.png");
+                image.Save(@"C:\OUTPUT\" +  layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "elevation_img.png");
 #endif
                 image.Dispose();
+                image2.Dispose();
                 System.IO.FileInfo fi = new System.IO.FileInfo(@"C:\OUTPUT\" + layer.VisibleDeck.DeckInfo.SegmentName + @"\" + layer.VisibleDeck.Partition.Name + layer.VisibleDeck.Elevation.Height.ToString("0.0") + layer.VisibleDeck.ID.ToString() + "thickness.png");
                 if (fi.Exists)
 #if !DEBUG

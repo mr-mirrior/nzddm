@@ -40,6 +40,7 @@
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.miDataMap = new System.Windows.Forms.ToolStripMenuItem();
+            this.生成压实厚度图TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.miAssignment = new System.Windows.Forms.ToolStripMenuItem();
             this.miLookHistory = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +58,6 @@
             this.miCancel = new System.Windows.Forms.ToolStripMenuItem();
             this.测试TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tpp = new System.Windows.Forms.ToolTip(this.components);
-            this.生成压实厚度图TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             视图VToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             设置SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             仓面操作ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,7 +84,7 @@
             // 
             this.miSkeleton.Name = "miSkeleton";
             this.miSkeleton.ShortcutKeyDisplayString = "F5";
-            this.miSkeleton.Size = new System.Drawing.Size(185, 22);
+            this.miSkeleton.Size = new System.Drawing.Size(223, 22);
             this.miSkeleton.Text = "轨迹(&S)";
             this.miSkeleton.Click += new System.EventHandler(this.miSkeleton_Click);
             // 
@@ -92,7 +92,7 @@
             // 
             this.miRollingCount.Name = "miRollingCount";
             this.miRollingCount.ShortcutKeyDisplayString = "F6";
-            this.miRollingCount.Size = new System.Drawing.Size(185, 22);
+            this.miRollingCount.Size = new System.Drawing.Size(223, 22);
             this.miRollingCount.Text = "碾压遍数(&R)";
             this.miRollingCount.Click += new System.EventHandler(this.miRollingCount_Click);
             // 
@@ -100,7 +100,7 @@
             // 
             this.miOverspeed.Name = "miOverspeed";
             this.miOverspeed.ShortcutKeyDisplayString = "F7";
-            this.miOverspeed.Size = new System.Drawing.Size(185, 22);
+            this.miOverspeed.Size = new System.Drawing.Size(223, 22);
             this.miOverspeed.Text = "超速指示(&O)";
             this.miOverspeed.Click += new System.EventHandler(this.miOverspeed_Click);
             // 
@@ -108,27 +108,27 @@
             // 
             this.miVehicleInfo.Name = "miVehicleInfo";
             this.miVehicleInfo.ShortcutKeyDisplayString = "F8";
-            this.miVehicleInfo.Size = new System.Drawing.Size(185, 22);
+            this.miVehicleInfo.Size = new System.Drawing.Size(223, 22);
             this.miVehicleInfo.Text = "碾压机信息(&V)";
             this.miVehicleInfo.Click += new System.EventHandler(this.miVehicleInfo_Click);
             // 
             // miArrows
             // 
             this.miArrows.Name = "miArrows";
-            this.miArrows.Size = new System.Drawing.Size(185, 22);
+            this.miArrows.Size = new System.Drawing.Size(223, 22);
             this.miArrows.Text = "轨迹箭头(&W)";
             this.miArrows.Click += new System.EventHandler(this.miArrows_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(182, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(220, 6);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.ShortcutKeyDisplayString = "F9";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(185, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(223, 22);
             this.toolStripMenuItem2.Text = "生成图形报告(&R)";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.tsReport_Click);
             // 
@@ -136,9 +136,16 @@
             // 
             this.miDataMap.Name = "miDataMap";
             this.miDataMap.ShortcutKeyDisplayString = "";
-            this.miDataMap.Size = new System.Drawing.Size(185, 22);
+            this.miDataMap.Size = new System.Drawing.Size(223, 22);
             this.miDataMap.Text = "生成数据图(&D)";
             this.miDataMap.Click += new System.EventHandler(this.miDataMap_Click);
+            // 
+            // 生成压实厚度图TToolStripMenuItem
+            // 
+            this.生成压实厚度图TToolStripMenuItem.Name = "生成压实厚度图TToolStripMenuItem";
+            this.生成压实厚度图TToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.生成压实厚度图TToolStripMenuItem.Text = "生成压实厚度（高程）图(&T)";
+            this.生成压实厚度图TToolStripMenuItem.Click += new System.EventHandler(this.生成压实厚度图TToolStripMenuItem_Click);
             // 
             // 设置SToolStripMenuItem
             // 
@@ -290,13 +297,6 @@
             this.tpp.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tpp.UseAnimation = false;
             this.tpp.UseFading = false;
-            // 
-            // 生成压实厚度图TToolStripMenuItem
-            // 
-            this.生成压实厚度图TToolStripMenuItem.Name = "生成压实厚度图TToolStripMenuItem";
-            this.生成压实厚度图TToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.生成压实厚度图TToolStripMenuItem.Text = "生成压实厚度图(&T)";
-            this.生成压实厚度图TToolStripMenuItem.Click += new System.EventHandler(this.生成压实厚度图TToolStripMenuItem_Click);
             // 
             // LayerView
             // 
