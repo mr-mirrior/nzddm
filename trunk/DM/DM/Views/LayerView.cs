@@ -1843,8 +1843,8 @@ namespace DM.Views
         private void ReportThicknest()
         {
             Bitmap[] bp=DB.datamap.DataMapManager.draw(layer.VisibleDeck.DeckInfo.BlockID, layer.VisibleDeck.DeckInfo.DesignZ, layer.VisibleDeck.DeckInfo.SegmentID);
-            Image image = bp[0];
-            Image image2 = bp[1];
+            Image image = (Image)bp[0];
+            Image image2 = (Image)bp[1];
             if (bp==null)
                 Utils.MB.Warning("此仓面或者此仓面的下层仓面没有生成数据图，请确认这两个仓面都已在关仓状态出过图形报告！");
             else
