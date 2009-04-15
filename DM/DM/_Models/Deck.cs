@@ -1001,7 +1001,7 @@ namespace DM.Models
 
                 if (!datamap)
                 {
-                    rolladdres = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "roll.png";
+                    rolladdres = @"C:\OUTPUT\" + this.DeckInfo.SegmentName.Trim() + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "roll.png";
                    
 #if DEBUG
                     bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "roll.png");
@@ -1011,7 +1011,7 @@ namespace DM.Models
                     {
                         dd.Create();
                     }
-                    bitMp.Save(rolladdres, System.Drawing.Imaging.ImageFormat.Png);
+                    bitMp.Save(rolladdres);
 #endif
                     rolladdres = this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "roll.png";
                 }
@@ -1780,7 +1780,7 @@ namespace DM.Models
             s = endG.MeasureString("轴", ftScale);
             endG.DrawString("轴(m)", ftScale, Brushes.Black, offset * 0.9f, topBlank - s.Height * 0.9f + 2 * factor);
             endG.DrawString("碾压轨迹图形报告", ftTitle, Brushes.Black, thisPf, thisSf);
-            string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name+this.Elevation.Height.ToString("0.0")+this.ID.ToString()+ "tracing.png";
+            string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName.Trim() + @"\" + this.Partition.Name+this.Elevation.Height.ToString("0.0")+this.ID.ToString()+ "tracing.png";
 
 #if DEBUG
             bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "tracing.png");
