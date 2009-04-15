@@ -199,8 +199,8 @@ namespace DM.DB.datamap
 
                             sum_designz += this_designz;
                             designz_s.Add(this_designz);
-                            double this_average = sum_designz / designz_s.Count;
-                            DebugUtil.fileLog("" + designz_s.Count + "\t" + this_designz + "\t" + sum_designz + "\t" + this_average);
+                            //double this_average = sum_designz / designz_s.Count;
+                            //DebugUtil.fileLog("" + designz_s.Count + "\t" + this_designz + "\t" + sum_designz + "\t" + this_average);
                         }
                     }
                     c_x += WIDTH;//x值加
@@ -223,18 +223,15 @@ namespace DM.DB.datamap
             double average_designz = sum_designz / designz_s.Count;//平均厚度
 
 
-            float test = 0;
-
-
             deviation = 0f;//方差
             temp = 0;
             for (int temp_index = 0; temp_index < designz_s.Count; temp_index++)
             {
-                test += designz_s[i];
+             
                 temp += Math.Pow((designz_s[temp_index] - average_designz), 2);
             }
 
-            float test_d = test / designz_s.Count;
+            
             deviation = temp / designz_s.Count;
             double standard_deviation_designz = Math.Sqrt(deviation);//标准差
 
