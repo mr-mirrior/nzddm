@@ -285,6 +285,8 @@ namespace DM.DMControl
         }
         public static bool IsConnected { get { return socket.Connected; } }
 
+        static DM.Geo.Coord3D cd;
+        static DM.Geo.Coord cdBar;
         unsafe private static void OnGPSData()
         {
             GPSCoordEventArg e = new GPSCoordEventArg();
@@ -293,7 +295,11 @@ namespace DM.DMControl
                 GPSDATA* gps = (GPSDATA*)p;
                 TRACE(gps->ToString());
                 if (Program.ISTJU)
-                    DB.TracePointDAO.getInstance().InsertOneTP(gps->CarID.ToString(), gps->XYZ.x.ToString(), gps->XYZ.y.ToString(), gps->XYZ.z.ToString(),(gps->Speed*100).ToString(),gps->Time.ToString(),((int)(gps->WorkFlag&0x0F)).ToString());
+                {
+                    cd=new DM.Geo.Coord3D(gps->XYZ.y, -(gps->XYZ.x), gps->XYZ.z);
+                    cdBar = cd.Plane.ToDamAxisCoord();
+                    DB.TracePointDAO.getInstance().InsertOneTP(gps->CarID.ToString(), cdBar.X.ToString(), cdBar.Y.ToString(), cd.Z.ToString(), (gps->Speed * 100).ToString(), gps->Time.ToString(), (Convert.ToInt32(gps->WorkFlag & 0x0F)).ToString());
+                }  
                 e.msg = GPSMessage.GPSDATA;
                 e.gps = *gps;
             }

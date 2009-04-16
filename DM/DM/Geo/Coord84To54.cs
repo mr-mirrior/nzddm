@@ -4,7 +4,8 @@ using System.Text;
 
 /*
  * John, 2008-09-23
- * 使用方法：
+ * 使用方法：
+
  * GPSCoord gpsTrans = new GPSCoord();
  * gpsTrans.InitCoord();
  * BLH ellipseCoord = new BLH(...);
