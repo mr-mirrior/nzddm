@@ -562,7 +562,7 @@ namespace DM.Models
             Bitmap roll = CreateRollCountImage(out areas);
             Bitmap elev = ElevationImage(out lo, out hi);
 
-            roll.Save(@"C:\pngroll.png");
+            //roll.Save(@"C:\pngroll.png");
 //             roll.Save(@"C:\roll.png", System.Drawing.Imaging.ImageFormat.Png);
 //             elev.Save(@"C:\elev.png", System.Drawing.Imaging.ImageFormat.Png);
             isDatamap = false;
@@ -602,12 +602,13 @@ namespace DM.Models
                                 if (color == layersColor[k].ToArgb())
                                 {
                                     count = k;
+                                    //DM.DB.DebugUtil.fileLog(k.ToString());
                                     break;
                                 }
                             }
                         }
                         *p++ = (byte)count;
-
+                        
                         // 高程
                         float elevation = 0;
                         color = *((int*)(ep + j * 4));
@@ -714,6 +715,10 @@ namespace DM.Models
 
                 int[] areas;
                 Bitmap output = CreateRollCountImage(out areas);
+ 
+#if DEBUG
+                output.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "OrignElevation.png", System.Drawing.Imaging.ImageFormat.Png);
+#endif
 
                 //output.Save("C:\\1.png");
                 areaScale = new double[areas.Length];
@@ -1058,7 +1063,7 @@ namespace DM.Models
             //}
             //g.Clear(Color.Transparent);
 //             pl.Line.Color = deckFrameColor;
-//             pl.Fill.Color = Color.Transparent;
+//             pl.Fill.Codlor = Color.Transparent;
 //             pl.Draw(g);
             //pl.SetDrawClip(g);
             DirectoryInfo di = new DirectoryInfo(@"C:\OUTPUT");
@@ -1066,10 +1071,9 @@ namespace DM.Models
             {
                 di.Create();
             }
-
-            //bmp.Save(@"C:\output_elevation1.png", System.Drawing.Imaging.ImageFormat.Png);
-
-
+#if DEBUG
+            bmp.Save(@"C:\OUTPUT\"+this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() +"OrignElevation.png", System.Drawing.Imaging.ImageFormat.Png);
+#endif
 
             #region - 画图 -
             Layer layer = owner;

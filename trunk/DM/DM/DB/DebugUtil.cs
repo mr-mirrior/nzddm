@@ -40,7 +40,8 @@ namespace DM.DB
                 logpath.Create();
             }
 
-            StreamWriter streamWriter = new StreamWriter(logfile.FullName, true);//如果logfile不存在，此方法自动建立文件
+            StreamWriter streamWriter = new StreamWriter(logfile.FullName, true);//如果logfile不存在，此方法自动建立文件
+
             streamWriter.WriteLine(DateTime.Now.ToString()+" "+logstr);
             streamWriter.Flush();
             streamWriter.Close();

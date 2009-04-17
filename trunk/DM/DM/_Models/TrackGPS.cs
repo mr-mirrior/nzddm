@@ -1083,8 +1083,8 @@ namespace DM.Models
                 string libratedstring=string.Empty;
                 if (VehicleControl.carLibratedStates[i] == -1 || !owner.Assignment.IsWorking()/*||this.owner.Assignment.DTEnd < lstLInfos.Last().Dt*/)
                     libratedstring = string.Empty;
-                else if (dtnow > VehicleControl.carLibratedTimes[i] && (dtnow - VehicleControl.carLibratedTimes[i]) > TimeSpan.FromSeconds(120))
-                    libratedstring = "（未振动）";
+                else if (dtnow > VehicleControl.carLibratedTimes[i] && (dtnow - VehicleControl.carLibratedTimes[i]) > TimeSpan.FromSeconds(240))
+                    libratedstring = string.Empty;
                 else 
                     libratedstring = "（"+Forms.Warning.GetLibratedString(VehicleControl.carLibratedStates[i])+"）";
 
