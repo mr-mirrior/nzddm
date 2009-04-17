@@ -268,6 +268,7 @@
             this.cbLibrate.Name = "cbLibrate";
             this.cbLibrate.Size = new System.Drawing.Size(135, 25);
             this.cbLibrate.TabIndex = 44;
+            this.cbLibrate.SelectedIndexChanged += new System.EventHandler(this.cbLibrate_SelectedIndexChanged);
             // 
             // label9
             // 

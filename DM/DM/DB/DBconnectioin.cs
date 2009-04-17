@@ -18,9 +18,9 @@ namespace DM.DB
             string server = /*"172.23.225.215"*/DBconfig.getInstance().Server;
             string username = /*"sa"*/DBconfig.getInstance().Username;
             string password = /*"s"*/DBconfig.getInstance().Password;
-            //string username = "sa";
-            //string password = "sa";
-            //string server = "FEIYING";
+            //username = "sa";
+            //password = "sa";
+            //server = "FEIYING";
 
             //             string sqlConnectionCommand = "Data Source="+server+";Initial Catalog="+dbname+";User ID="+username+";password="+"'"+password+"'";
             string sqlConnectionCommand = string.Format("Data Source={0}; Initial Catalog={1};User ID='{2}';password='{3}'",

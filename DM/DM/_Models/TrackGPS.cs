@@ -466,7 +466,7 @@ namespace DM.Models
                             {
                                 if (when < times[j].DtEnd && when > times[j].DtStart)
                                 {
-                                    libratedNO.Add(lst[0]);
+                                    //libratedNO.Add(lst[0]);
                                     hasNOlibrated = true;
                                     isbreak = true;
                                     break;
@@ -477,6 +477,11 @@ namespace DM.Models
                                 libratedOK.Add(lst[0]);
                                 libratedOKlst.Add(libratedOK);
                             }
+                            else
+                            {
+                                libratedNO.Add(lst[0]);
+                                libratedNOlst.Add(libratedNO);
+                            }
                         }
                         else
                         {
@@ -486,6 +491,7 @@ namespace DM.Models
                     }
                     else
                     {
+                        hasNOlibrated = false;
                         if (!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
                         {
                             libratedOK = new List<Coord3D>();
@@ -503,13 +509,11 @@ namespace DM.Models
                             libratedNO = new List<Coord3D>();
                             libratedNO.Add(lst[0]);
                             libratedNOlst.Add(libratedNO);
-                            hasNOlibrated = false;
                         }
                     }
 
 
                     isbreak = false;
-                    hasNOlibrated = false;
                     Coord3D previous = lst[0];
 
                     for (int i = 1; i < lst.Count; i++)
@@ -537,6 +541,7 @@ namespace DM.Models
                                             libratedNO.Add(lst[i]);
                                             libratedNOlst.Add(libratedNO);
                                             isbreak = true;
+                                            hasNOlibrated = true;
                                             break;
                                         }
                                     }
@@ -550,10 +555,10 @@ namespace DM.Models
                             {
                                 libratedOK.Add(lst[i]);
                             }
-                            //BFWHEN = true;
                         }
                         else
                         {
+                            hasNOlibrated = false;
                             if (!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index] == -1)
                             {
                                 if (isRight)
@@ -620,7 +625,7 @@ namespace DM.Models
                         onelist.Add(lst[i]);
                         previous = lst[i];
                     }
-                    if (hasNOlibrated&&(libratedNOlst.Count==0))
+                    if (hasNOlibrated && (libratedNOlst.Count == 0))
                     {
                         libratedNOlst.Add(libratedNO);
                     }
