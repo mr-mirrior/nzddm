@@ -235,5 +235,14 @@ namespace DM.Forms
             }
 #endif
         }
+
+        private void cbLibrate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbLibrate.SelectedIndex==1&&!DM.Models.Config.I.GEN_NOLIBRATE_VALID)
+            {
+                Utils.MB.Warning("此状态目前不是可选的振动标准。");
+                cbLibrate.SelectedIndex = -1;
+            }
+        }
     }
 }
