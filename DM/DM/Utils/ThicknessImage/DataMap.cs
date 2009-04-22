@@ -46,6 +46,10 @@ namespace DM.DB.datamap
         public Pixel getPixel(int x, int y)
         {
             int begin_offset = (y * width + x) * 5 + 8;
+            if (begin_offset<0)
+            {
+                return null;
+            }
             if(begin_offset>bytesData.Length){//不知道为何会出现这种情况.待研究
                 return null;
             }
