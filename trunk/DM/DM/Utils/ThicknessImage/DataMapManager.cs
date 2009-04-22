@@ -32,7 +32,7 @@ namespace DM.DB.datamap
             //得到上一层的所有仓面信息
             DateTime dtend = segment.EndDate;
 
-            double lastDesignz = DAO.getInstance().getLastDesignZ(blockid, designz, dtend.ToString());
+            double lastDesignz = DAO.getInstance().getLastDesignZ(blockid, designz,segmentid, dtend.ToString());
             List<Segment> segments = DAO.getInstance().getSegments(blockid, lastDesignz);
             //将上一层所有仓面的数据图读出来
             if (segments == null || segments.Count == 0)
@@ -123,7 +123,7 @@ namespace DM.DB.datamap
 
             for (i = 0; i < y; i++)
             {
-                //string linestr = "";
+              //  string linestr = "";
                 for (m = 0; m < x; m++)
                 {
 
@@ -174,6 +174,8 @@ namespace DM.DB.datamap
 
                     if (p.getRollcount() != 255 && this_designz != 0)//是否为仓面上的点
                     {
+
+
                         //找本网格中心点对应的下一层 + (c_x + SCREEN_ONEMETER * WIDTH / 2)
                         lastp = DataMapManager.getPixel("" + (c_x + WIDTH / 2), "" + (c_y - WIDTH / 2), segments);//得到上一点的数据
                         if (lastp != null && lastp.getRollthickness() != 0 && lastp.getRollcount() != 255)
@@ -192,7 +194,7 @@ namespace DM.DB.datamap
                         }
                         //为了统计高程的均值和标准差
                         //实际高程的范围在设计高程减去1倍的设计厚度和设计高程加上2倍的设计厚度之间
-                        if (this_designz > segment.DesignZ - designdepth && this_designz < segment.DesignZ + 2 * designdepth)
+                        if (this_designz > segment.DesignZ - 3*designdepth && this_designz < segment.DesignZ + 3 * designdepth)
                         {
                             if (max_designz < this_designz) { max_designz = this_designz; };
                             if (min_designz > this_designz) { min_designz = this_designz; };
@@ -202,12 +204,26 @@ namespace DM.DB.datamap
                             //double this_average = sum_designz / designz_s.Count;
                             //DebugUtil.fileLog("" + designz_s.Count + "\t" + this_designz + "\t" + sum_designz + "\t" + this_average);
                         }
+//                         if (p.getRollcount() < 10)
+//                         {
+//                             linestr += "0" + p.getRollcount();
+//                         }
+//                         else
+//                         {
+//                             linestr += p.getRollcount();
+//                         }
+                      //  linestr += p.getRollthickness();
                     }
+                    else
+                    {
+                      //  linestr += "##";
+                    }
+                    
                     c_x += WIDTH;//x值加
                 }
                 c_y -= WIDTH;//y
                 c_x = c.getX();
-                // DebugUtil.fileLog(linestr);
+               //  DebugUtil.fileLog(linestr);
             }
             //计算方差和均值
             double average_difference = sum / difference_s.Count;//平均厚度
@@ -227,11 +243,11 @@ namespace DM.DB.datamap
             temp = 0;
             for (int temp_index = 0; temp_index < designz_s.Count; temp_index++)
             {
-             
+
                 temp += Math.Pow((designz_s[temp_index] - average_designz), 2);
             }
 
-            
+
             deviation = temp / designz_s.Count;
             double standard_deviation_designz = Math.Sqrt(deviation);//标准差
 
@@ -267,6 +283,10 @@ namespace DM.DB.datamap
                         //取得大地坐标在数据图中的行列
                         Point row_column = getRowColumn_Earth(vertex, earth_point);
                         //取得该行列上的数据
+                        if (row_column.X<0||row_column.Y<0)
+                        {
+                            continue;
+                        }
                         Pixel pixel = dm.getPixel(row_column.X, row_column.Y);
                         if (pixel != null && pixel.getRollcount() != 255)//是否为仓面上的点
                         {
@@ -290,6 +310,14 @@ namespace DM.DB.datamap
                                 {//
                                     difference = pixel.getRollthickness() - lastpixel.getRollthickness();
                                 }
+                                else
+                                {
+                                    difference = -1;
+                                }
+                            }
+                            else
+                            {
+                                difference = -1;
                             }
                             /*else//按照正态分布随机产生厚度
                             {
@@ -302,7 +330,7 @@ namespace DM.DB.datamap
                                 elevation_count_grid[heng, zong] += 1;
                             }
 
-                            if (difference > 0 || difference < 1.5 * designdepth)
+                            if (difference > 0 && difference < 1.5 * designdepth)
                             {
                                 thickness_sum_grid[heng, zong] += difference;
                                 thickness_count_grid[heng, zong] += 1;

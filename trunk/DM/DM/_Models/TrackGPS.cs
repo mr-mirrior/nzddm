@@ -458,7 +458,7 @@ namespace DM.Models
                     //bool BFWHEN = false;//实时和数据库点交替开关
                     
                     DateTime when = lst[0].When;
-                    if (when < SetTime /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
+                    if (when < SetTime)
                     {
                         if (times.Count > 0)
                         {
@@ -494,18 +494,21 @@ namespace DM.Models
                         hasNOlibrated = false;
                         if (!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
                         {
+                            isRight = true;
                             libratedOK = new List<Coord3D>();
                             libratedOK.Add(lst[0]);
                             libratedOKlst.Add(libratedOK);
                         }
                         else if (ISCOMMAND && VehicleControl.carLibratedStates[index] == 2 || VehicleControl.carLibratedStates[index] == 1 || VehicleControl.carLibratedStates[index] == -1)
                         {
+                            isRight = true;
                             libratedOK = new List<Coord3D>();
                             libratedOK.Add(lst[0]);
                             libratedOKlst.Add(libratedOK);
                         }
                         else
                         {
+                            isRight = false;
                             libratedNO = new List<Coord3D>();
                             libratedNO.Add(lst[0]);
                             libratedNOlst.Add(libratedNO);
@@ -519,6 +522,7 @@ namespace DM.Models
                     for (int i = 1; i < lst.Count; i++)
                     {
                         when=lst[i].When;
+                        isbreak = false; 
                         if ( when< SetTime /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
                         {
                             if (times.Count > 0)
@@ -596,7 +600,7 @@ namespace DM.Models
                                 isRight = false;
                             }
                         }
-                        isbreak = false; 
+                        
 
                         if (lst[i].V >= owner.Owner.DeckInfo.MaxSpeed)
                         {

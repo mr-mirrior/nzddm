@@ -22,11 +22,12 @@ namespace DM.DB.datamap
             return myInstance;
         }
 
-        public static bool updateElevations(int blockid,double designz,int segmentid,string elevations){
+        public static bool updateElevations(int blockid, double designz, int segmentid, string elevations)
+        {
 
-            string sqlTxt = "update segment set elevations = '"+ elevations +
+            string sqlTxt = "update segment set elevations = '" + elevations +
                 "' where blockid=" + blockid + " and segmentid=" + segmentid +
-                " and designz=" + designz ;
+                " and designz=" + designz;
             try
             {
                 int updateCount = DBConnection.executeUpdate(sqlTxt);
@@ -44,12 +45,13 @@ namespace DM.DB.datamap
         }
 
         //得到当前高程的上一个高程
-        public double getLastDesignZ(int blockid, double designz,String dtend)
+        public double getLastDesignZ(int blockid, double designz, int segmentid, String dtend)
         {
             List<Segment> segments = new List<Segment>();
             SqlConnection connection = null;
             SqlDataReader reader = null;
-            String sqlTxt = "select top 1 * from segment where blockid=" + blockid + " and designz < '" + (designz.ToString()) + "' and dtend <'"+ dtend +"'and workstate=2 order by dtend desc";
+            String getdesignDepth = "(select designdepth from segment where blockid=" + blockid + " and segmentid=" + segmentid + " and designz=" + designz + ")*3";
+            String sqlTxt = "select top 1 * from segment where blockid=" + blockid + " and designz < '" + (designz.ToString()) + "'and designz>(" + designz + "-" + getdesignDepth + ") and dtend <'" + dtend + "'and workstate=2 order by dtend desc";
             try
             {
                 connection = DBConnection.getSqlConnection();
@@ -143,7 +145,7 @@ namespace DM.DB.datamap
             }
         }
 
-        public  List<Segment> getSegments(int blockid, double begin_designz, double end_designz)
+        public List<Segment> getSegments(int blockid, double begin_designz, double end_designz)
         {
             List<Segment> segments = new List<Segment>();
             Segment segment = null;
@@ -193,7 +195,7 @@ namespace DM.DB.datamap
                     //                     segment.DesignDepth = (double)reader["DESIGNDEPTH"];
                     segment = readSegment(reader);
                     segments.Add(segment);
-                    
+
 
                 }
                 return segments;
@@ -213,7 +215,7 @@ namespace DM.DB.datamap
 
         public Segment getSegment(Int32 blockID, double designZ, Int32 segmentid)
         {
-           
+
             Segment segment = null;
             SqlConnection connection = null;
             SqlDataReader reader = null;
@@ -261,10 +263,10 @@ namespace DM.DB.datamap
                     //                     segment.POP = (double)reader["POP"];
                     //                     segment.DesignDepth = (double)reader["DESIGNDEPTH"];
                     segment = readSegment(reader);
-                   
+
                 }
                 return segment;
-              
+
             }
             catch (Exception exp)
             {
