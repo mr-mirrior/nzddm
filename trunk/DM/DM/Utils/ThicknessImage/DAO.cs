@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
 using System.Data;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace DM.DB.datamap
 {
@@ -45,24 +47,26 @@ namespace DM.DB.datamap
         }
 
         //得到当前高程的上一个高程
-        public double getLastDesignZ(int blockid, double designz, int segmentid, String dtend)
+        public double getLastDesignZ(int blockid, double designz,int segmentid, String vertex)
         {
-            List<Segment> segments = new List<Segment>();
+            List<Segment> segments = new List<Segment>(); 
             SqlConnection connection = null;
             SqlDataReader reader = null;
-            String getdesignDepth = "(select designdepth from segment where blockid=" + blockid + " and segmentid=" + segmentid + " and designz=" + designz + ")*3";
-            String sqlTxt = "select top 1 * from segment where blockid=" + blockid + " and designz < '" + (designz.ToString()) + "'and designz>(" + designz + "-" + getdesignDepth + ") and dtend <'" + dtend + "'and workstate=2 order by dtend desc";
+            List<double> last_designzs = new List<double>();
+            List<String> last_vertexs = new List<string>();
+            //dtend = "2009/4/23 17:00:00";
+            String getdesignDepth = "(select designdepth from segment where blockid=" + blockid + " and segmentid=" + segmentid + " and designz=" + designz + ")";
+            String sqlTxt = "select * from segment where blockid=" + blockid + " and (designz < " + (designz.ToString()) + "-" + getdesignDepth + "*0.5) and designz>(" + designz + "-" + getdesignDepth + "*1.25) and workstate=2 order by dtend desc";
             try
             {
                 connection = DBConnection.getSqlConnection();
                 reader = DBConnection.executeQuery(connection, sqlTxt);
-                if (reader.Read())
+                while (reader.Read())
                 {
-                    return Double.Parse(reader["designz"].ToString());
-                }
-                else
-                {
-                    return -1;
+                    double d = (Double.Parse(reader["designz"].ToString()));
+                    string v = reader["vertex"].ToString();
+                    last_designzs.Add(d);
+                    last_vertexs.Add(v);
                 }
             }
             catch
@@ -73,6 +77,111 @@ namespace DM.DB.datamap
             {
                 DBConnection.closeDataReader(reader);
                 DBConnection.closeSqlConnection(connection);
+            }
+
+            if (last_designzs == null||last_designzs.Count==0)
+            {
+                return -1;
+            }
+            else if (last_designzs.Count == 1)
+            {
+                return last_designzs[0];
+            }
+            else
+            {
+                int count = last_designzs.Count;
+                List<Point>[] points = new List<Point>[count];
+                Color[] colors = new Color[count];
+                int[] pixel_count = new int[count];
+                int color_range = 255 / (count + 2);
+                List<Point> all = new List<Point>();
+                List<Point> up_Points = DataMapManager.getSegmentVertex_DAM(vertex);//上一层所有点
+                all.AddRange(up_Points);
+                for (int i = 0; i < count;i++ )
+                {
+                    int rgb = (i + 1) * color_range;
+                    colors[i] = Color.FromArgb(rgb,rgb,rgb);//设定颜色
+                    points[i] = DataMapManager.getSegmentVertex_DAM(last_vertexs[i]);
+                    all.AddRange(points[i]);
+                }
+                Point origin = DataMapManager.getOrigin(all.ToArray());
+                up_Points = DataMapManager.getRelatively(origin, up_Points);
+                for (int i = 0; i < count; i++)
+                {
+                    points[i] = DataMapManager.getRelatively(origin, points[i]);
+                }
+                int left_index = DataMapManager.getLeftIndex(all);
+                int right_index = DataMapManager.getRightIndex(all);
+                int top_index = DataMapManager.getTopIndex(all);
+                int bottom_index = DataMapManager.getBottomIndex(all);
+                int map_width = all[right_index].X - all[left_index].X;
+                int map_height = all[bottom_index].Y - all[top_index].Y;
+
+                Bitmap[] bitmaps = new Bitmap[count];
+                Graphics[] graphicses = new Graphics[count];
+
+                for (int i = 0; i < count; i++)
+                {
+                    bitmaps[i] = new Bitmap(map_width, map_height);
+                    graphicses[i] = Graphics.FromImage(bitmaps[i]);
+                    graphicses[i].Clear(Color.White);
+                }
+
+                System.Drawing.Drawing2D.GraphicsPath up_GraphicsPath = new System.Drawing.Drawing2D.GraphicsPath();
+                up_GraphicsPath.Reset();
+                up_GraphicsPath.AddPolygon(up_Points.ToArray());
+
+                for (int i = 0; i < count; i++)
+                {
+                    System.Drawing.Drawing2D.GraphicsPath this_GraphicsPath = new System.Drawing.Drawing2D.GraphicsPath();
+                    this_GraphicsPath.Reset();
+                    this_GraphicsPath.AddPolygon(points[i].ToArray());
+                    System.Drawing.Region this_region = new Region(this_GraphicsPath);
+                    graphicses[i].FillRegion(Brushes.Red, this_region);
+                    //本region与主region的交集
+                    this_region.Intersect(up_GraphicsPath);
+                    graphicses[i].FillRegion(new SolidBrush(colors[i]), this_region);
+                    graphicses[i].Flush();
+                    //bitmaps[i].Save("c:/" + blockid + " " + designz + " " + segmentid +" -"+i+ ".png", ImageFormat.Png);
+                }
+                
+
+              for (int i = 0; i < count; i++)
+           {
+  
+                for (int x = 0; x < map_width; x++)
+                {
+                    for (int y = 0; y < map_height; y++)
+                    {
+                        Color c = bitmaps[i].GetPixel(x, y);
+                        
+                            if (c.A == colors[i].A && c.R == colors[i].R && c.G == colors[i].G)
+                            {
+                                pixel_count[i]++;
+                                break;
+                            }
+                    }
+                }
+            }
+                int max = 0;
+                for (int i = 0; i < count;i++ )
+                {
+                    if (max<pixel_count[i])
+                    {
+                        max = pixel_count[i];
+                    }
+                }
+                if (max != 0)
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        if (max == pixel_count[i])
+                        {
+                            return last_designzs[i];
+                        }
+                    }
+                }
+                return -1;
             }
         }
 

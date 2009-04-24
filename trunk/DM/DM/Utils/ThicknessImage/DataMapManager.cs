@@ -31,8 +31,8 @@ namespace DM.DB.datamap
                 return null;
             //得到上一层的所有仓面信息
             DateTime dtend = segment.EndDate;
-
-            double lastDesignz = DAO.getInstance().getLastDesignZ(blockid, designz,segmentid, dtend.ToString());
+            String vertex = segment.Vertext;//大地坐标的vertex
+            double lastDesignz = DAO.getInstance().getLastDesignZ(blockid, designz, segmentid, vertex);
             List<Segment> segments = DAO.getInstance().getSegments(blockid, lastDesignz);
             //将上一层所有仓面的数据图读出来
             if (segments == null || segments.Count == 0)
@@ -50,7 +50,7 @@ namespace DM.DB.datamap
                 }
                 segments[ii].Datamap = datamap;
             }
-            String vertex = segment.Vertext;//大地坐标的vertex
+            
             byte[] bytes = DAO.getInstance().getDatamap(blockid, designz, segmentid);//本仓面的数据图
             if (bytes == null)
             {
@@ -123,7 +123,7 @@ namespace DM.DB.datamap
 
             for (i = 0; i < y; i++)
             {
-              //  string linestr = "";
+                //  string linestr = "";
                 for (m = 0; m < x; m++)
                 {
 
@@ -182,7 +182,7 @@ namespace DM.DB.datamap
                         {//
                             difference = this_designz - lastp.getRollthickness();
 
-                            if (difference > 0 && difference < 1.5 * designdepth)
+                            if (difference > 0 && difference < 1.1 * designdepth)
                             {
                                 if (max_thickness < difference) { max_thickness = difference; };
                                 if (min_thickness > difference) { min_thickness = difference; };
@@ -194,7 +194,7 @@ namespace DM.DB.datamap
                         }
                         //为了统计高程的均值和标准差
                         //实际高程的范围在设计高程减去1倍的设计厚度和设计高程加上2倍的设计厚度之间
-                        if (this_designz > segment.DesignZ - 3*designdepth && this_designz < segment.DesignZ + 3 * designdepth)
+                        if (this_designz > segment.DesignZ - 3 * designdepth && this_designz < segment.DesignZ + 3 * designdepth)
                         {
                             if (max_designz < this_designz) { max_designz = this_designz; };
                             if (min_designz > this_designz) { min_designz = this_designz; };
@@ -204,26 +204,26 @@ namespace DM.DB.datamap
                             //double this_average = sum_designz / designz_s.Count;
                             //DebugUtil.fileLog("" + designz_s.Count + "\t" + this_designz + "\t" + sum_designz + "\t" + this_average);
                         }
-//                         if (p.getRollcount() < 10)
-//                         {
-//                             linestr += "0" + p.getRollcount();
-//                         }
-//                         else
-//                         {
-//                             linestr += p.getRollcount();
-//                         }
-                      //  linestr += p.getRollthickness();
+                        //                         if (p.getRollcount() < 10)
+                        //                         {
+                        //                             linestr += "0" + p.getRollcount();
+                        //                         }
+                        //                         else
+                        //                         {
+                        //                             linestr += p.getRollcount();
+                        //                         }
+                        //  linestr += p.getRollthickness();
                     }
                     else
                     {
-                      //  linestr += "##";
+                        //  linestr += "##";
                     }
-                    
+
                     c_x += WIDTH;//x值加
                 }
                 c_y -= WIDTH;//y
                 c_x = c.getX();
-               //  DebugUtil.fileLog(linestr);
+                //  DebugUtil.fileLog(linestr);
             }
             //计算方差和均值
             double average_difference = sum / difference_s.Count;//平均厚度
@@ -283,7 +283,7 @@ namespace DM.DB.datamap
                         //取得大地坐标在数据图中的行列
                         Point row_column = getRowColumn_Earth(vertex, earth_point);
                         //取得该行列上的数据
-                        if (row_column.X<0||row_column.Y<0)
+                        if (row_column.X < 0 || row_column.Y < 0)
                         {
                             continue;
                         }
@@ -330,7 +330,7 @@ namespace DM.DB.datamap
                                 elevation_count_grid[heng, zong] += 1;
                             }
 
-                            if (difference > 0 && difference < 1.5 * designdepth)
+                            if (difference > 0 && difference < 1.1 * designdepth)
                             {
                                 thickness_sum_grid[heng, zong] += difference;
                                 thickness_count_grid[heng, zong] += 1;
@@ -806,7 +806,7 @@ namespace DM.DB.datamap
         }
 
         //得到这些点外切矩形的原点
-        static Point getOrigin(Point[] points)
+        public static Point getOrigin(Point[] points)
         {
             float x = float.MaxValue;
             float y = float.MaxValue;
@@ -827,7 +827,7 @@ namespace DM.DB.datamap
             return new Point((int)x, (int)y);
         }
         //大坝坐标转成屏幕坐标
-        static List<Point> getRelatively(List<Point> points)
+        public static List<Point> getRelatively(List<Point> points)
         {
             List<Point> newPoints = new List<Point>();
             Point origin = getOrigin(points.ToArray());
@@ -837,6 +837,30 @@ namespace DM.DB.datamap
             }
             return newPoints;
         }
+       
+        
+        //多层比较
+        public static List<Point> getRelatively(Point origin,List<Point> points)
+        {
+            List<Point> newPoints = new List<Point>();
+            for (int i = 0; i < points.Count; i++)
+            {
+                newPoints.Add(DDDdamToScreen(origin, points[i]));
+            }
+            return newPoints;
+        }
+
+
+        //大坝坐标转屏幕坐标   origin为大坝坐标外切矩形原点
+        static Point DDDdamToScreen(Point origin, Point dam_point)
+        {
+            int thisx = (dam_point.X - origin.X);
+            int thisy = (dam_point.Y - origin.Y);
+            return new Point(thisx, thisy);
+        }
+
+
+
         //大坝坐标转屏幕坐标   origin为大坝坐标外切矩形原点
         static Point damToScreen(Point origin, Point dam_point)
         {
@@ -853,7 +877,7 @@ namespace DM.DB.datamap
         }
 
         //通过大地坐标系的vertex字符串得到大坝坐标下的边界点值
-        static List<Point> getSegmentVertex_DAM(String vertex)
+       public static List<Point> getSegmentVertex_DAM(String vertex)
         {
             List<Point> cs = new List<Point>();
             Coordinate o = getOriginOfCoordinate(vertex);//得到原点坐标
@@ -889,7 +913,7 @@ namespace DM.DB.datamap
             return new Coordinate(x, y);
         }
         //得到这一堆点最左的点在这个数组中的下标,最小的X
-        static int getLeftIndex(List<Point> cs)
+        public static int getLeftIndex(List<Point> cs)
         {
             int i = -1;
             double minx = double.MaxValue;
@@ -912,7 +936,7 @@ namespace DM.DB.datamap
             return i;
         }
         //最大的X
-        static int getRightIndex(List<Point> cs)
+        public static int getRightIndex(List<Point> cs)
         {
             int i = -1;
             double maxx = double.MinValue;
@@ -935,7 +959,7 @@ namespace DM.DB.datamap
             return i;
         }
         //最大的Y
-        static int getBottomIndex(List<Point> cs)
+        public static int getBottomIndex(List<Point> cs)
         {
             int i = -1;
             double maxy = double.MinValue;
@@ -958,7 +982,7 @@ namespace DM.DB.datamap
             return i;
         }
         //最小的Y
-        static int getTopIndex(List<Point> cs)
+        public static int getTopIndex(List<Point> cs)
         {
             int i = -1;
             double miny = double.MaxValue;
