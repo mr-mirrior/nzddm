@@ -16,7 +16,7 @@ namespace DM.Forms
         {
             InitializeComponent();
         }
-
+        
         public string Prompt { get { return wait.Prompt; } set { wait.Prompt= value; } }
         volatile bool finished = false;
         public bool Finished { get { return finished; } set { finished = value; } }
