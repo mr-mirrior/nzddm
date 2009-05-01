@@ -553,7 +553,7 @@ namespace DM.Models
             double oldZoom = layer.Zoom;
             double oldRotate = layer.RotateDegree;
 
-            layer.Zoom = 2;
+            layer.Zoom = 10;
             layer.RotateDegree = 0;
             layer.CreateScreen();
 
@@ -563,8 +563,8 @@ namespace DM.Models
             Bitmap elev = ElevationImage(out lo, out hi);
 
             //roll.Save(@"C:\pngroll.png");
-//             roll.Save(@"C:\roll.png", System.Drawing.Imaging.ImageFormat.Png);
-//             elev.Save(@"C:\elev.png", System.Drawing.Imaging.ImageFormat.Png);
+            roll.Save(@"C:\roll.png", System.Drawing.Imaging.ImageFormat.Png);
+            elev.Save(@"C:\elev.png", System.Drawing.Imaging.ImageFormat.Png);
             isDatamap = false;
             if (roll == null || elev == null )//|| roll.Width != elev.Width || roll.Height != elev.Height)
             {
@@ -1396,12 +1396,12 @@ namespace DM.Models
             #endregion
             //#if DEBUG
 
-//            string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0")+this.ID.ToString() + "elevation.png";
-//#if DEBUG
-//            bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "elevation.png");
+            string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0")+this.ID.ToString() + "elevation.png";
+#if DEBUG
+            bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "elevation+.png");
 //#else
-//            bitMp.Save(address, System.Drawing.Imaging.ImageFormat.Png);
-//#endif
+            //            bitMp.Save(address, System.Drawing.Imaging.ImageFormat.Png);
+#endif
             //#else
             //            bitMp.Save(@"C:\output_elevation.png", System.Drawing.Imaging.ImageFormat.Png);
             //#endif
