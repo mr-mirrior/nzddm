@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
+using System.IO;
 
 namespace DM.Models
 {
@@ -33,5 +35,7 @@ namespace DM.Models
         public bool IS_LIBRATE_VALID = true;//振动不合格是否记录遍数
 
         public bool GEN_NOLIBRATE_VALID = false;//是否可用 常规振动 选项
+
+        //public byte[] bbbbbbbbb = File.ReadAllBytes(@"C:\Users\Administrator\Pictures\1440.jpg");
     }
 }
