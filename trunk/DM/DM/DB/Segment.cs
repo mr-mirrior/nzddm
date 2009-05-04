@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace DM.DB
 {
@@ -18,7 +19,20 @@ namespace DM.DB
         {
             return partitionID == this.BlockID && elevation == this.DesignZ && sID == this.SegmentID;
         }
+        string elevationValues;
 
+        public string ElevationValues
+        {
+            get { return elevationValues; }
+            set { elevationValues = value; }
+        }
+        Bitmap elevationImage;
+
+        public Bitmap ElevationImage
+        {
+            get { return elevationImage; }
+            set { elevationImage = value; }
+        } 
         byte[] datamap;
 
         public byte[] Datamap
@@ -174,7 +188,7 @@ namespace DM.DB
             return WorkState == SegmentWorkState.END;
         }
 
-        int librateState=-1;
+        int librateState;
 
         public int LibrateState
         {
