@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace DM.DB.datamap
 {
@@ -47,9 +48,9 @@ namespace DM.DB.datamap
         }
 
         //得到当前高程的上一个高程
-        public double getLastDesignZ(int blockid, double designz,int segmentid, String vertex)
+        public double getLastDesignZ(int blockid, double designz, int segmentid, String vertex)
         {
-            List<Segment> segments = new List<Segment>(); 
+            List<Segment> segments = new List<Segment>();
             SqlConnection connection = null;
             SqlDataReader reader = null;
             List<double> last_designzs = new List<double>();
@@ -79,7 +80,7 @@ namespace DM.DB.datamap
                 DBConnection.closeSqlConnection(connection);
             }
 
-            if (last_designzs == null||last_designzs.Count==0)
+            if (last_designzs == null || last_designzs.Count == 0)
             {
                 return -1;
             }
@@ -97,10 +98,10 @@ namespace DM.DB.datamap
                 List<Point> all = new List<Point>();
                 List<Point> up_Points = DataMapManager.getSegmentVertex_DAM(vertex);//上一层所有点
                 all.AddRange(up_Points);
-                for (int i = 0; i < count;i++ )
+                for (int i = 0; i < count; i++)
                 {
                     int rgb = (i + 1) * color_range;
-                    colors[i] = Color.FromArgb(rgb,rgb,rgb);//设定颜色
+                    colors[i] = Color.FromArgb(rgb, rgb, rgb);//设定颜色
                     points[i] = DataMapManager.getSegmentVertex_DAM(last_vertexs[i]);
                     all.AddRange(points[i]);
                 }
@@ -144,29 +145,29 @@ namespace DM.DB.datamap
                     graphicses[i].Flush();
                     //bitmaps[i].Save("c:/" + blockid + " " + designz + " " + segmentid +" -"+i+ ".png", ImageFormat.Png);
                 }
-                
 
-              for (int i = 0; i < count; i++)
-           {
-  
-                for (int x = 0; x < map_width; x++)
+
+                for (int i = 0; i < count; i++)
                 {
-                    for (int y = 0; y < map_height; y++)
+
+                    for (int x = 0; x < map_width; x++)
                     {
-                        Color c = bitmaps[i].GetPixel(x, y);
-                        
+                        for (int y = 0; y < map_height; y++)
+                        {
+                            Color c = bitmaps[i].GetPixel(x, y);
+
                             if (c.A == colors[i].A && c.R == colors[i].R && c.G == colors[i].G)
                             {
                                 pixel_count[i]++;
                                 break;
                             }
+                        }
                     }
                 }
-            }
                 int max = 0;
-                for (int i = 0; i < count;i++ )
+                for (int i = 0; i < count; i++)
                 {
-                    if (max<pixel_count[i])
+                    if (max < pixel_count[i])
                     {
                         max = pixel_count[i];
                     }
@@ -411,8 +412,11 @@ namespace DM.DB.datamap
             Double maxSpeed = Convert.ToDouble(reader["maxspeed"]);
             Int32 designRollCount = Convert.ToInt32(reader["designRollCount"]);
             Double errorParam = Convert.ToDouble(reader["errorParam"]);
+            string elevationValues = (reader["elevationValues"]).ToString();
             segment = new Segment();
             segment.MaxSpeed = maxSpeed;
+
+            segment.ElevationValues = elevationValues;
             segment.DesignRollCount = designRollCount;
             segment.ErrorParam = errorParam;
             segment.Remark = (remark);
@@ -455,5 +459,79 @@ namespace DM.DB.datamap
                 return null;
             }
         }
+
+        public byte[] ToByte(Image image)
+        {
+            System.IO.MemoryStream Ms = new System.IO.MemoryStream();
+            image.Save(Ms, System.Drawing.Imaging.ImageFormat.Bmp);//把图像数据序列化到内存
+            byte[] imgByte = new byte[Ms.Length];
+            Ms.Position = 0;
+            Ms.Read(imgByte, 0, Convert.ToInt32(Ms.Length));//反序列，存放在字节数组里
+            Ms.Close();
+
+            return imgByte;//这里我们就得到了图像的字节数组了
+
+        }
+
+
+
+        public int updateElevationBitMap(Int32 blockid, Double designz, Int32 segmentid, byte[] elevationImage, string values)
+        {
+            string sqlTxt = "update segment set elevationImage  = @elevationImage,elevationValues='" + values + "'  where blockid = " + blockid + " and designz=" + designz + " and segmentid=" + segmentid;
+
+            SqlConnection conn = null;
+            SqlCommand cmd = null;
+            try
+            {
+                conn = DBConnection.getSqlConnection();
+                cmd = new SqlCommand(sqlTxt, conn);
+                SqlParameter sqlImage = cmd.Parameters.Add("@elevationImage", SqlDbType.Image);
+                sqlImage.Value = elevationImage;
+                conn.Open();
+                int rows = cmd.ExecuteNonQuery();
+                return rows;
+            }
+            catch (System.Data.SqlClient.SqlException E)
+            {
+                DebugUtil.log(E);
+                return -1;
+            }
+            finally
+            {
+                DBConnection.closeSqlConnection(conn);
+            }
+
+        }
+
+        public Bitmap getElevationBitMap(int blockid, double designz, int segmentid)
+        {
+            string sqltext = string.Format(
+                "select elevationImage  from SEGMENT where (BLOCKID ={0}) and (DESIGNZ={1}) and (SEGMENTID={2})", blockid, designz, segmentid);
+            SqlConnection connection = null;
+            SqlDataReader reader = null;
+            try
+            {
+                connection = DBConnection.getSqlConnection();
+                reader = DBConnection.executeQuery(connection, sqltext);
+                if (reader != null)
+                {
+                    if (reader.Read()){
+                        byte[] b = (byte[])reader["elevationImage"];
+                        MemoryStream stream = new MemoryStream(b, true);
+                        stream.Write(b, 0, b.Length);
+                        Bitmap bitmap=new Bitmap(stream);
+                        stream.Close();
+                        return bitmap;
+                    }
+                }
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
     }
+
 }

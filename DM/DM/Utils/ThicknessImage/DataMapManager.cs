@@ -96,7 +96,7 @@ namespace DM.DB.datamap
             elevation_g.Clear(Color.White);
 
 
-            Font f = new Font("微软雅黑", 8f);
+            Font f = new Font("微软雅黑", 12f);
 
             //取得最大的厚度.最小的厚度.这部分比较耗费时间
             int x = dm.getWidth();
@@ -182,15 +182,13 @@ namespace DM.DB.datamap
                         {//
                             difference = this_designz - lastp.getRollthickness();
 
-                            if (difference > 0 && difference < 1.1 * designdepth)
+                            if (difference > 0 && difference < 1.25 * designdepth)
                             {
                                 if (max_thickness < difference) { max_thickness = difference; };
                                 if (min_thickness > difference) { min_thickness = difference; };
                                 sum += difference;
                                 difference_s.Add(difference);
                             }
-
-
                         }
                         //为了统计高程的均值和标准差
                         //实际高程的范围在设计高程减去1倍的设计厚度和设计高程加上2倍的设计厚度之间
@@ -330,7 +328,7 @@ namespace DM.DB.datamap
                                 elevation_count_grid[heng, zong] += 1;
                             }
 
-                            if (difference > 0 && difference < 1.1 * designdepth)
+                            if (difference > 0 && difference < 1.25 * designdepth)
                             {
                                 thickness_sum_grid[heng, zong] += difference;
                                 thickness_count_grid[heng, zong] += 1;
@@ -598,11 +596,11 @@ namespace DM.DB.datamap
 
             String startd = segment.StartDate.ToString();
             String endd = segment.EndDate.ToString();
-            thickness_g.DrawString("开始时间:" + startd, f, hb, new Point(right_top.X - 100, titlep.Y + titlefont.Height + 5 + f.Height));
-            thickness_g.DrawString("结束时间:" + endd, f, hb, new Point(right_top.X - 100, titlep.Y + titlefont.Height + 5 + f.Height * 2));
+            thickness_g.DrawString("开始时间:" + startd, f, hb, new Point(right_top.X - 150, titlep.Y + titlefont.Height + 5 + f.Height));
+            thickness_g.DrawString("结束时间:" + endd, f, hb, new Point(right_top.X - 150, titlep.Y + titlefont.Height + 5 + f.Height * 2));
 
-            elevation_g.DrawString("开始时间:" + startd, f, hb, new Point(right_top.X - 100, titlep.Y + titlefont.Height + 5 + f.Height));
-            elevation_g.DrawString("结束时间:" + endd, f, hb, new Point(right_top.X - 100, titlep.Y + titlefont.Height + 5 + f.Height * 2));
+            elevation_g.DrawString("开始时间:" + startd, f, hb, new Point(right_top.X - 150, titlep.Y + titlefont.Height + 5 + f.Height));
+            elevation_g.DrawString("结束时间:" + endd, f, hb, new Point(right_top.X - 150, titlep.Y + titlefont.Height + 5 + f.Height * 2));
 
             //坝
             Point right_bottom_dam = screenToDam(dam_origin, right_bottom);
