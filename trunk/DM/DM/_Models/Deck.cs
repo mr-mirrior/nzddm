@@ -515,6 +515,7 @@ namespace DM.Models
             }
 
             //output.Save(@"C:\debug.png", System.Drawing.Imaging.ImageFormat.Png);
+            
             return output;
 
         }
@@ -563,8 +564,8 @@ namespace DM.Models
             Bitmap elev = ElevationImage(out lo, out hi);
 
             //roll.Save(@"C:\pngroll.png");
-            roll.Save(@"C:\roll.png", System.Drawing.Imaging.ImageFormat.Png);
-            elev.Save(@"C:\elev.png", System.Drawing.Imaging.ImageFormat.Png);
+            //roll.Save(@"C:\roll.png", System.Drawing.Imaging.ImageFormat.Png);
+            //elev.Save(@"C:\elev.png", System.Drawing.Imaging.ImageFormat.Png);
             isDatamap = false;
             if (roll == null || elev == null )//|| roll.Width != elev.Width || roll.Height != elev.Height)
             {
@@ -717,7 +718,7 @@ namespace DM.Models
                 Bitmap output = CreateRollCountImage(out areas);
  
 #if DEBUG
-                output.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "OrignElevation.png", System.Drawing.Imaging.ImageFormat.Png);
+                output.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "OrignRoll.png", System.Drawing.Imaging.ImageFormat.Png);
 #endif
 
                 //output.Save("C:\\1.png");
@@ -1071,6 +1072,7 @@ namespace DM.Models
             {
                 di.Create();
             }
+            DB.datamap.DAO.getInstance().updateElevationBitMap(deckInfo.BlockID, deckInfo.DesignZ, deckInfo.SegmentID, DB.datamap.DAO.getInstance().ToByte(bmp), lo.ToString("0.00") + "," + hi.ToString("0.00"));
 #if DEBUG
             bmp.Save(@"C:\OUTPUT\"+this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() +"OrignElevation.png", System.Drawing.Imaging.ImageFormat.Png);
 #endif
