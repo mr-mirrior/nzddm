@@ -492,7 +492,7 @@ namespace DM.Models
                     else
                     {
                         hasNOlibrated = false;
-                        if (!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
+                        if (true)//!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
                         {
                             isRight = true;
                             libratedOK = new List<Coord3D>();
@@ -563,7 +563,7 @@ namespace DM.Models
                         else
                         {
                             hasNOlibrated = false;
-                            if (!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index] == -1)
+                            if (true)//!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index] == -1)
                             {
                                 if (isRight)
                                     libratedOK.Add(lst[i]);
