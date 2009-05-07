@@ -522,7 +522,7 @@ namespace DM.Views
                     using (Brush b = new SolidBrush(Color.FromArgb(0xFF, Color.White)), b1 = new SolidBrush(Color.FromArgb(0xFF, Color.Black)))
                     {
                         //string str = "糯   扎   渡   大   坝   填   筑   质   量   GPS   监   控   系   统";
-                        string str = "大   坝   填   筑   质   量   GPS   监   控   系   统";
+                        string str = "糯   扎   渡   水   电   站" + "\n大   坝   填   筑   质   量   GPS   监   控   系   统";
                         //g.DrawString("大 坝 填 筑 质 量 GPS 监 控 系 统", ft, b, this.ClientRectangle, sf);
                         //Utils.Graph.OutGlow.DrawOutglowText(g, str, ft, this.ClientRectangle, sf, b, b1);
                         GraphicsPath gp = new GraphicsPath();
@@ -1842,7 +1842,8 @@ namespace DM.Views
 
         private void ReportThicknest()
         {
-            Bitmap[] bp=DB.datamap.DataMapManager.draw(layer.VisibleDeck.DeckInfo.BlockID, layer.VisibleDeck.DeckInfo.DesignZ, layer.VisibleDeck.DeckInfo.SegmentID);
+            //Bitmap[] bp=DB.datamap.DataMapManager.draw(layer.VisibleDeck.DeckInfo.BlockID, layer.VisibleDeck.DeckInfo.DesignZ, layer.VisibleDeck.DeckInfo.SegmentID);
+            Bitmap[] bp=DB.datamap.DataMapManager4.draw(layer.VisibleDeck.DeckInfo.BlockID, layer.VisibleDeck.DeckInfo.DesignZ, layer.VisibleDeck.DeckInfo.SegmentID);
             if (bp==null)
                 Utils.MB.Warning("此仓面或者此仓面的下层仓面没有生成数据图，请确认这两个仓面都已在关仓状态出过图形报告！");
             else

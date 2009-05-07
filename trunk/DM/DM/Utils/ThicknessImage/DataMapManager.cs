@@ -177,7 +177,7 @@ namespace DM.DB.datamap
 
 
                         //找本网格中心点对应的下一层 + (c_x + SCREEN_ONEMETER * WIDTH / 2)
-                        lastp = DataMapManager.getPixel("" + (c_x + WIDTH / 2), "" + (c_y - WIDTH / 2), segments);//得到上一点的数据
+                        lastp = DataMapManager4.getPixel("" + (c_x + WIDTH / 2), "" + (c_y - WIDTH / 2), segments);//得到上一点的数据
                         if (lastp != null && lastp.getRollthickness() != 0 && lastp.getRollcount() != 255)
                         {//
                             difference = this_designz - lastp.getRollthickness();

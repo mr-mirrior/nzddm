@@ -3,13 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace DM.DB
 {
     public class Segment
     {
         Int32 segmentID;
+        double elevationValues_maxDesignz;
 
+        public double ElevationValues_maxDesignz
+        {
+            get { return elevationValues_maxDesignz; }
+            set { elevationValues_maxDesignz = value; }
+        }
+        double elevationValues_minDesignz;
+
+        public double ElevationValues_minDesignz
+        {
+            get { return elevationValues_minDesignz; }
+            set { elevationValues_minDesignz = value; }
+        }
         public Segment() { }
         public bool IsEqual(Segment s)
         {
@@ -24,14 +38,41 @@ namespace DM.DB
         public string ElevationValues
         {
             get { return elevationValues; }
-            set { elevationValues = value; }
+            set { 
+                elevationValues = value;
+                if (ElevationValues!=null)
+                {
+                    string[] v = elevationValues.Split(',');
+                    if (v.Length==2)
+                    {
+                        elevationValues_minDesignz = Convert.ToSingle(v[0]);
+                        elevationValues_maxDesignz = Convert.ToSingle(v[1]);
+                    }
+                }
+            }
         }
         Bitmap elevationImage;
+        byte[] elevationImageBytes;
+
+        public byte[] ElevationImageBytes
+        {
+            get {
+                return elevationImageBytes; 
+            }
+            set { elevationImageBytes = value; }
+        }
 
         public Bitmap ElevationImage
         {
             get { return elevationImage; }
-            set { elevationImage = value; }
+            set { elevationImage = value;
+            BitmapData data = elevationImage.LockBits(new Rectangle(0, 0, elevationImage.Width, elevationImage.Height), ImageLockMode.ReadWrite, elevationImage.PixelFormat);
+            IntPtr ptr = data.Scan0;
+            int tbytes = elevationImage.Width * elevationImage.Height * 4;
+            elevationImageBytes = new byte[tbytes];     // Copy the RGB values into the array. 
+            System.Runtime.InteropServices.Marshal.Copy(ptr, elevationImageBytes, 0, tbytes);     // Set every red value to 255. 
+            elevationImage.UnlockBits(data);
+            }
         } 
         byte[] datamap;
 

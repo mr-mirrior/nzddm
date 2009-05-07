@@ -11,7 +11,7 @@ namespace DM.DB
         public static SqlConnection  getSqlConnection()
         {
 
-            //DBconfig.getInstance().init();
+            //DBconfig.getInstance().init();糯扎渡水电站
             string dbname = /*"DAMGPS"*/DBconfig.getInstance().Dbname;
 
 

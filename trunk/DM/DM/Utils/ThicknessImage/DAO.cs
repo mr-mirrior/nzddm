@@ -91,32 +91,32 @@ namespace DM.DB.datamap
             else
             {
                 int count = last_designzs.Count;
-                List<Point>[] points = new List<Point>[count];
+                List<PointF>[] points = new List<PointF>[count];
                 Color[] colors = new Color[count];
                 int[] pixel_count = new int[count];
                 int color_range = 255 / (count + 2);
-                List<Point> all = new List<Point>();
-                List<Point> up_Points = DataMapManager.getSegmentVertex_DAM(vertex);//上一层所有点
+                List<PointF> all = new List<PointF>();
+                List<PointF> up_Points = DataMapManager4.getSegmentVertex_DAM(vertex);//上一层所有点
                 all.AddRange(up_Points);
                 for (int i = 0; i < count; i++)
                 {
                     int rgb = (i + 1) * color_range;
                     colors[i] = Color.FromArgb(rgb, rgb, rgb);//设定颜色
-                    points[i] = DataMapManager.getSegmentVertex_DAM(last_vertexs[i]);
+                    points[i] = DataMapManager4.getSegmentVertex_DAM(last_vertexs[i]);
                     all.AddRange(points[i]);
                 }
-                Point origin = DataMapManager.getOrigin(all.ToArray());
-                up_Points = DataMapManager.getRelatively(origin, up_Points);
+                PointF origin = DataMapManager4.getOrigin(all.ToArray());
+                up_Points = DataMapManager4.getRelatively(origin, up_Points);
                 for (int i = 0; i < count; i++)
                 {
-                    points[i] = DataMapManager.getRelatively(origin, points[i]);
+                    points[i] = DataMapManager4.getRelatively(origin, points[i]);
                 }
-                int left_index = DataMapManager.getLeftIndex(all);
-                int right_index = DataMapManager.getRightIndex(all);
-                int top_index = DataMapManager.getTopIndex(all);
-                int bottom_index = DataMapManager.getBottomIndex(all);
-                int map_width = all[right_index].X - all[left_index].X;
-                int map_height = all[bottom_index].Y - all[top_index].Y;
+                int left_index = DataMapManager4.getLeftIndex(all);
+                int right_index = DataMapManager4.getRightIndex(all);
+                int top_index = DataMapManager4.getTopIndex(all);
+                int bottom_index = DataMapManager4.getBottomIndex(all);
+                int map_width =(int)Math.Round(all[right_index].X - all[left_index].X);
+                int map_height = (int)Math.Round(all[bottom_index].Y - all[top_index].Y);
 
                 Bitmap[] bitmaps = new Bitmap[count];
                 Graphics[] graphicses = new Graphics[count];
@@ -198,48 +198,7 @@ namespace DM.DB.datamap
                 reader = DBConnection.executeQuery(connection, sqlTxt);
                 while (reader.Read())
                 {
-                    SegmentWorkState workState = (SegmentWorkState)Convert.ToInt32(reader["workState"]);
-                    Int32 segmentid = Convert.ToInt32(reader["segmentid"]);
-                    string vertex = reader["vertex"].ToString();
-                    DateTime enddate = DateTime.MinValue;
-                    DateTime startdate = DateTime.MinValue;
-                    if (!reader["dtend"].Equals(DBNull.Value))
-                    {
-                        enddate = Convert.ToDateTime(reader["dtend"]);
-                    }
-                    if (!reader["dtstart"].Equals(DBNull.Value))
-                    {
-                        startdate = Convert.ToDateTime(reader["dtstart"]);
-                    }
-                    string remark = reader["remark"].ToString();
-                    string segmentname = reader["segmentname"].ToString();
-                    Double startZ = Convert.ToDouble(reader["startz"]);
-                    Double maxSpeed = Convert.ToDouble(reader["maxspeed"]);
-                    Int32 designRollCount = Convert.ToInt32(reader["designRollCount"]);
-                    Double errorParam = Convert.ToDouble(reader["errorParam"]);
-                    Segment segment = new Segment();
-                    segment.MaxSpeed = maxSpeed;
-                    segment.DesignRollCount = designRollCount;
-                    segment.ErrorParam = errorParam;
-                    segment.Remark = (remark);
-                    segment.BlockID = (blockID);
-                    segment.SegmentID = (segmentid);
-                    segment.WorkState = (DB.SegmentWorkState)(workState);
-                    segment.DesignZ = (designZ);
-                    segment.Vertext = vertex;
-                    segment.StartDate = (startdate);
-                    segment.EndDate = (enddate);
-                    segment.SegmentName = (segmentname);
-                    segment.StartZ = startZ;
-                    segment.DesignDepth = (double)reader["DESIGNDEPTH"];
-                    segment.POP = (double)reader["POP"];
-                    if (reader["SenseOrganState"] != DBNull.Value)
-                        segment.LibrateState = (int)reader["SenseOrganState"];
-                    if (reader["NotRolling"] != DBNull.Value)
-                        segment.NotRollingstring = (string)reader["NotRolling"];
-                    if (reader["CommentNR"] != DBNull.Value)
-                        segment.CommentNRstring = (string)reader["CommentNR"];
-                    segments.Add(segment);
+                    segments.Add(readSegment(reader));
                 }
                 return segments;
             }
@@ -412,7 +371,7 @@ namespace DM.DB.datamap
             Double maxSpeed = Convert.ToDouble(reader["maxspeed"]);
             Int32 designRollCount = Convert.ToInt32(reader["designRollCount"]);
             Double errorParam = Convert.ToDouble(reader["errorParam"]);
-            string elevationValues = (reader["elevationValues"]).ToString();
+            string elevationValues = reader["elevationValues"].ToString();
             segment = new Segment();
             segment.MaxSpeed = maxSpeed;
 
@@ -425,7 +384,7 @@ namespace DM.DB.datamap
             segment.WorkState = (DB.SegmentWorkState)(workState);
             segment.DesignZ = (double)(reader["DESIGNZ"]);
             //segment.BlockName=
-            segment.StartDate = (DateTime)(startdate);
+            segment.StartDate = (startdate);
             segment.EndDate = (enddate);
             segment.SegmentName = (segmentname);
             segment.StartZ = startZ;
@@ -487,6 +446,35 @@ namespace DM.DB.datamap
                 cmd = new SqlCommand(sqlTxt, conn);
                 SqlParameter sqlImage = cmd.Parameters.Add("@elevationImage", SqlDbType.Image);
                 sqlImage.Value = elevationImage;
+                conn.Open();
+                int rows = cmd.ExecuteNonQuery();
+                return rows;
+            }
+            catch (System.Data.SqlClient.SqlException E)
+            {
+                DebugUtil.log(E);
+                return -1;
+            }
+            finally
+            {
+                DBConnection.closeSqlConnection(conn);
+            }
+
+        }
+
+
+        public int updateRollBitMap(Int32 blockid, Double designz, Int32 segmentid, byte[] rollImage)
+        {
+            string sqlTxt = "update segment set rollImage  = @rollImage where blockid = " + blockid + " and designz=" + designz + " and segmentid=" + segmentid;
+
+            SqlConnection conn = null;
+            SqlCommand cmd = null;
+            try
+            {
+                conn = DBConnection.getSqlConnection();
+                cmd = new SqlCommand(sqlTxt, conn);
+                SqlParameter sqlImage = cmd.Parameters.Add("@rollImage", SqlDbType.Image);
+                sqlImage.Value = rollImage;
                 conn.Open();
                 int rows = cmd.ExecuteNonQuery();
                 return rows;
