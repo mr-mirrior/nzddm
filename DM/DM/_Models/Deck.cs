@@ -716,7 +716,8 @@ namespace DM.Models
 
                 int[] areas;
                 Bitmap output = CreateRollCountImage(out areas);
- 
+
+                DB.datamap.DAO.getInstance().updateRollBitMap(deckInfo.BlockID, deckInfo.DesignZ, deckInfo.SegmentID, DB.datamap.DAO.getInstance().ToByte(output));
 #if DEBUG
                 output.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "OrignRoll.png", System.Drawing.Imaging.ImageFormat.Png);
 #endif

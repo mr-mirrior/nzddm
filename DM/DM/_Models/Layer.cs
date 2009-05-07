@@ -577,7 +577,7 @@ namespace DM.Models
         {
             if (VisibleDeck == null)
                 return;
-            if( DeckControl.CreateDataMap(VisibleDeck) )
+            if (DeckControl.CreateDataMap(VisibleDeck))
             {
                 //Utils.MB.OK("数据图更新成功！");
             }

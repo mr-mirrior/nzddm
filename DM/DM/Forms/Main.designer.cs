@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tab = new FarsiLibrary.Win.FATabStrip();
+            this.faTabStripItem1 = new FarsiLibrary.Win.FATabStripItem();
             ((System.ComponentModel.ISupportInitialize)(this.tab)).BeginInit();
             this.SuspendLayout();
             // 
@@ -40,6 +41,7 @@
             this.tab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tab.Location = new System.Drawing.Point(0, 0);
             this.tab.Name = "tab";
+            this.tab.SelectedItem = this.faTabStripItem1;
             this.tab.Size = new System.Drawing.Size(475, 304);
             this.tab.TabIndex = 0;
             this.tab.TabStripItemDBClicked += new System.EventHandler(this.tab_TabStripItemDBClicked);
@@ -48,6 +50,14 @@
             this.tab.TabStripItemSelectionChanged += new FarsiLibrary.Win.TabStripItemChangedHandler(this.tab_TabStripItemSelectionChanged);
             this.tab.TabStripItemClosing += new FarsiLibrary.Win.TabStripItemClosingHandler(this.tab_TabStripItemClosing);
             this.tab.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tab_KeyDown);
+            // 
+            // faTabStripItem1
+            // 
+            this.faTabStripItem1.IsDrawn = true;
+            this.faTabStripItem1.Name = "faTabStripItem1";
+            this.faTabStripItem1.Size = new System.Drawing.Size(473, 277);
+            this.faTabStripItem1.TabIndex = 0;
+            this.faTabStripItem1.Title = "TabStrip Page 1";
             // 
             // Main
             // 
@@ -73,6 +83,7 @@
 
         private System.Windows.Forms.ToolTip toolTip1;
         private FarsiLibrary.Win.FATabStrip tab;
+        private FarsiLibrary.Win.FATabStripItem faTabStripItem1;
 
     }
 }

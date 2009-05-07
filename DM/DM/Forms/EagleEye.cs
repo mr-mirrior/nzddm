@@ -454,7 +454,7 @@ new Geo.Coord(-444.92,69.2)
                 //using (Brush b = new SolidBrush(Color.FromArgb(0xFF, Color.White)), b1 = new SolidBrush(Color.FromArgb(0xFF, Color.Black)))
                 {
                     //string str = "糯   扎   渡   大   坝   填   筑   质   量   GPS   监   控   系   统";
-                    string str = "大   坝   填   筑   质   量   GPS   监   控   系   统";
+                    string str = "糯   扎   渡   水   电   站" + "\n 大   坝   填   筑   质   量   GPS   监   控   系   统";
                     g.DrawString(str, ft1, Brushes.Black, this.ClientRectangle, sf5);
                     //g.DrawString("大 坝 填 筑 质 量 GPS 监 控 系 统", ft, b, this.ClientRectangle, sf);
                     //Utils.Graph.OutGlow.DrawOutglowText(g, str, ft, this.ClientRectangle, sf, b, b1);
