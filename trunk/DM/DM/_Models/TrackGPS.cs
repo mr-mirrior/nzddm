@@ -458,8 +458,8 @@ namespace DM.Models
                     //bool BFWHEN = false;//实时和数据库点交替开关
                     
                     DateTime when = lst[0].When;
-                    if (when < SetTime)
-                    {
+                    //if (when < SetTime)
+                    //{
                         if (times.Count > 0)
                         {
                             for (int j = 0; j < times.Count; j++)
@@ -474,46 +474,49 @@ namespace DM.Models
                             }
                             if (!isbreak)
                             {
+                                libratedOK = new List<Coord3D>();
                                 libratedOK.Add(lst[0]);
                                 libratedOKlst.Add(libratedOK);
                             }
                             else
                             {
+                                libratedNO = new List<Coord3D>();
                                 libratedNO.Add(lst[0]);
                                 libratedNOlst.Add(libratedNO);
                             }
                         }
                         else
                         {
-                            libratedOK.Add(lst[0]);
-                            libratedOKlst.Add(libratedOK);
-                        }
-                    }
-                    else
-                    {
-                        hasNOlibrated = false;
-                        if (true)//!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
-                        {
-                            isRight = true;
-                            libratedOK = new List<Coord3D>();
-                            libratedOK.Add(lst[0]);
-                            libratedOKlst.Add(libratedOK);
-                        }
-                        else if (ISCOMMAND && VehicleControl.carLibratedStates[index] == 2 || VehicleControl.carLibratedStates[index] == 1 || VehicleControl.carLibratedStates[index] == -1)
-                        {
-                            isRight = true;
-                            libratedOK = new List<Coord3D>();
-                            libratedOK.Add(lst[0]);
-                            libratedOKlst.Add(libratedOK);
-                        }
-                        else
-                        {
-                            isRight = false;
                             libratedNO = new List<Coord3D>();
-                            libratedNO.Add(lst[0]);
-                            libratedNOlst.Add(libratedNO);
+                            libratedOK.Add(lst[0]);
+                            libratedOKlst.Add(libratedOK);
                         }
-                    }
+                    //}
+                    //else
+                    //{
+                    //    hasNOlibrated = false;
+                    //    if (true)//!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
+                    //    {
+                    //        isRight = true;
+                    //        libratedOK = new List<Coord3D>();
+                    //        libratedOK.Add(lst[0]);
+                    //        libratedOKlst.Add(libratedOK);
+                    //    }
+                    //    else if (ISCOMMAND && VehicleControl.carLibratedStates[index] == 2 || VehicleControl.carLibratedStates[index] == 1 || VehicleControl.carLibratedStates[index] == -1)
+                    //    {
+                    //        isRight = true;
+                    //        libratedOK = new List<Coord3D>();
+                    //        libratedOK.Add(lst[0]);
+                    //        libratedOKlst.Add(libratedOK);
+                    //    }
+                    //    else
+                    //    {
+                    //        isRight = false;
+                    //        libratedNO = new List<Coord3D>();
+                    //        libratedNO.Add(lst[0]);
+                    //        libratedNOlst.Add(libratedNO);
+                    //    }
+                    //}
 
 
                     isbreak = false;
@@ -523,8 +526,8 @@ namespace DM.Models
                     {
                         when=lst[i].When;
                         isbreak = false; 
-                        if ( when< SetTime /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
-                        {
+                        //if ( when< SetTime /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
+                        //{
                             if (times.Count > 0)
                             {
                                 for (int j = 0; j < times.Count; j++)
@@ -534,8 +537,8 @@ namespace DM.Models
                                         if (when - lst[i - 1].When < TimeSpan.FromSeconds(Config.I.LIBRATE_Secends))
                                         {
                                             libratedNO.Add(lst[i]);
-                                            hasNOlibrated = true;
                                             isbreak = true;
+                                            //hasNOlibrated = true;
                                             break;
                                         }
                                         else
@@ -559,47 +562,47 @@ namespace DM.Models
                             {
                                 libratedOK.Add(lst[i]);
                             }
-                        }
-                        else
-                        {
-                            hasNOlibrated = false;
-                            if (true)//!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index] == -1)
-                            {
-                                if (isRight)
-                                    libratedOK.Add(lst[i]);
-                                else
-                                {
-                                    libratedOK = new List<Coord3D>();
-                                    libratedOK.Add(lst[i]);
-                                    libratedOKlst.Add(libratedOK);
-                                }
-                                isRight = true;
-                            }
-                            else if (ISCOMMAND && VehicleControl.carLibratedStates[index] == 2 || VehicleControl.carLibratedStates[index] == 1 || VehicleControl.carLibratedStates[index] == -1)
-                            {
-                                if (isRight)
-                                    libratedOK.Add(lst[i]);
-                                else
-                                {
-                                    libratedOK = new List<Coord3D>();
-                                    libratedOK.Add(lst[i]);
-                                    libratedOKlst.Add(libratedOK);
-                                }
-                                isRight = true;
-                            }
-                            else
-                            {
-                                if (!isRight)
-                                    libratedNO.Add(lst[i]);
-                                else
-                                {
-                                    libratedNO = new List<Coord3D>();
-                                    libratedNO.Add(lst[i]);
-                                    libratedNOlst.Add(libratedNO);
-                                }
-                                isRight = false;
-                            }
-                        }
+                        //}
+                        //else
+                        //{
+                        //    hasNOlibrated = false;
+                        //    if (true)//!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index] == -1)
+                        //    {
+                        //        if (isRight)
+                        //            libratedOK.Add(lst[i]);
+                        //        else
+                        //        {
+                        //            libratedOK = new List<Coord3D>();
+                        //            libratedOK.Add(lst[i]);
+                        //            libratedOKlst.Add(libratedOK);
+                        //        }
+                        //        isRight = true;
+                        //    }
+                        //    else if (ISCOMMAND && VehicleControl.carLibratedStates[index] == 2 || VehicleControl.carLibratedStates[index] == 1 || VehicleControl.carLibratedStates[index] == -1)
+                        //    {
+                        //        if (isRight)
+                        //            libratedOK.Add(lst[i]);
+                        //        else
+                        //        {
+                        //            libratedOK = new List<Coord3D>();
+                        //            libratedOK.Add(lst[i]);
+                        //            libratedOKlst.Add(libratedOK);
+                        //        }
+                        //        isRight = true;
+                        //    }
+                        //    else
+                        //    {
+                        //        if (!isRight)
+                        //            libratedNO.Add(lst[i]);
+                        //        else
+                        //        {
+                        //            libratedNO = new List<Coord3D>();
+                        //            libratedNO.Add(lst[i]);
+                        //            libratedNOlst.Add(libratedNO);
+                        //        }
+                        //        isRight = false;
+                        //    }
+                        //}
                         
 
                         if (lst[i].V >= owner.Owner.DeckInfo.MaxSpeed)
