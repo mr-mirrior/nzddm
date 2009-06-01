@@ -260,56 +260,19 @@ namespace DM.DB
             List<Segment> segments = new List<Segment>();
             SqlConnection connection = null;
             SqlDataReader reader = null;
-            string sqlTxt = "select * from segment";
+            string sqlTxt = "select blockid,designz,segmentid from segment";
             try
             {
                 connection = DBConnection.getSqlConnection();
                 reader = DBConnection.executeQuery(connection, sqlTxt);
                 while (reader.Read())
                 {
-                    SegmentWorkState workState = (SegmentWorkState)Convert.ToInt32(reader["workState"]);
-                    Int32 segmentid = Convert.ToInt32(reader["segmentid"]);
-                    string vertex = reader["vertex"].ToString();
-                    DateTime enddate = DateTime.MinValue;
-                    DateTime startdate = DateTime.MinValue;
-                    if (!reader["dtend"].Equals(DBNull.Value))
-                    {
-                        enddate = Convert.ToDateTime(reader["dtend"]);
-                    }
-                    if (!reader["dtstart"].Equals(DBNull.Value))
-                    {
-                        startdate = Convert.ToDateTime(reader["dtstart"]);
-                    }
-                    string remark = reader["remark"].ToString();
-                    string segmentname = reader["segmentname"].ToString();
-                    Double startZ = Convert.ToDouble(reader["startz"]);
-                    Double maxSpeed = Convert.ToDouble(reader["maxspeed"]);
-                    Int32 designRollCount = Convert.ToInt32(reader["designRollCount"]);
-                    Double errorParam = Convert.ToDouble(reader["errorParam"]);
+                    if (reader["SegmentID"].Equals(DBNull.Value) || reader["BlockID"].Equals(DBNull.Value) || reader["DesignZ"].Equals(DBNull.Value))
+                        continue;
                     Segment segment = new Segment();
-                    segment.MaxSpeed = maxSpeed;
-                    segment.DesignRollCount = designRollCount;
-                    segment.ErrorParam = errorParam;
-                    segment.Remark = (remark);
                     segment.BlockID = (int)reader["BlockID"];
-                    segment.SegmentID = (segmentid);
-                    segment.WorkState = (DB.SegmentWorkState)(workState);
-                    segment.DesignZ = (double)reader["DesignZ"];
-                    segment.Vertext = vertex;
-                    segment.StartDate = (startdate);
-                    segment.EndDate = (enddate);
-                    segment.SegmentName = (segmentname);
-                    segment.StartZ = startZ;
-                    segment.DesignDepth = (double)reader["DESIGNDEPTH"];
-                    segment.POP = -1;
-                    if (!reader["POP"].Equals(DBNull.Value) )
-                        segment.POP = (double)reader["POP"];
-                    if (reader["SenseOrganState"] != DBNull.Value)
-                    segment.LibrateState = (int)reader["SenseOrganState"];
-                    if (reader["NotRolling"] != DBNull.Value)
-                        segment.NotRollingstring = (string)reader["NotRolling"];
-                    if (reader["CommentNR"] != DBNull.Value)
-                        segment.CommentNRstring = (string)reader["CommentNR"];
+                    segment.SegmentID = Convert.ToInt32(reader["SegmentID"]);
+                    segment.DesignZ = Convert.ToDouble(reader["DesignZ"]);
                     segments.Add(segment);
                 }
                 return segments;

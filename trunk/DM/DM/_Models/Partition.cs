@@ -166,7 +166,7 @@ namespace DM.Models
         ElevationFiles heights = new ElevationFiles();
         public List<ElevationFile> Heights { get { return heights.Files; } set { heights.Files = value; } }
 
-        public Partition Partition { get { return DMControl.PartitionControl.NewPartition(Name); } }
+        public Partition Partition { get {return DMControl.PartitionControl.NewPartition(Name); } }
     }
     public class PartitionDirectories
     {

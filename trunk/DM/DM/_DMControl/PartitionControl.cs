@@ -85,7 +85,7 @@ namespace DM.DMControl
             {
                 return keyID[i];
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
                 return default(Partition);
             }
@@ -97,7 +97,7 @@ namespace DM.DMControl
             {
                 return keyName[n];
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
                 return default(Partition);
             }
