@@ -240,6 +240,7 @@ namespace DM.Forms
 
             // 筛选正在工作的分区
             List<Models.PartitionDirectory> pdlst = new List<DM.Models.PartitionDirectory>();
+            
             for (int i = 0; i < partitions.Directories.Count; i++ )
             {
                 Models.PartitionDirectory pd = partitions.Directories[i];
@@ -247,7 +248,7 @@ namespace DM.Forms
                 {
                     if (pd.Partition == null)
                         continue;
-                    if(lst[j].BlockID == pd.Partition.ID)
+                    if (lst[j].BlockID == pd.Partition.ID)
                     {
                         pdlst.Add(pd);
                         break;
@@ -285,13 +286,13 @@ namespace DM.Forms
             //Application.DoEvents();
             if (partitions.Search(null))
             {
-                AutoCompleteStringCollection names = new AutoCompleteStringCollection();
+                //AutoCompleteStringCollection names = new AutoCompleteStringCollection();
 
                 FilterPartitions();
-//                 foreach (Models.PartitionDirectory di in partitions.Directories)
-//                 {
-//                     names.SetVertex(di.Name);
-//                 }
+                //foreach (Models.PartitionDirectory di in partitions.Directories)
+                //{
+                //    names.SetVertex(di.Name);
+                //}
                 cbPartitions.DataSource = partitions.Directories;
                 //cbPartitions.AutoCompleteCustomSource = names;
                 cbPartitions.DisplayMember = "Display";
