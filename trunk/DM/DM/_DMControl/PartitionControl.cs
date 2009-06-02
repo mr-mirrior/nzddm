@@ -63,10 +63,10 @@ namespace DM.DMControl
                 partitions.Add(new Block(18, "FU", "上游反滤区"));
                 partitions.Add(new Block(19, "FD", "下游反滤区"));
                 partitions.Add(new Block(29, "RU4", "上游粗堆石调节区"));
-                partitions.Add(new Block(35, "EJ", "接触粘土区"));
-                partitions.Add(new Block(32, "LeftTop", "左岸坝顶试验区")); 
-                partitions.Add(new Block(36, "yingdi", "业主营地门前")); 
-                partitions.Add(new Block(37, "sywy", "上游围堰"));
+                //partitions.Add(new Block(35, "EJ", "接触粘土区"));
+                //partitions.Add(new Block(32, "LeftTop", "左岸坝顶试验区")); 
+                //partitions.Add(new Block(36, "yingdi", "业主营地门前")); 
+                //partitions.Add(new Block(37, "sywy", "上游围堰"));
             }
 
             keyID = new Dictionary<int, Partition>();
@@ -85,7 +85,7 @@ namespace DM.DMControl
             {
                 return keyID[i];
             }
-            catch (System.Exception e)
+            catch
             {
                 return default(Partition);
             }
@@ -97,7 +97,7 @@ namespace DM.DMControl
             {
                 return keyName[n];
             }
-            catch (System.Exception e)
+            catch
             {
                 return default(Partition);
             }
