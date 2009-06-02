@@ -200,7 +200,9 @@ namespace DM.DB
             {
                 return UpdateSegmentResult.NO_SEGMENT;
             }
-            string sqlTxt = "delete from segment where blockid = " + blockid + " and designz=" + designz;
+            String sqlTxt = "select * from segment where blockid = " + blockid + " and designz=" + designz;
+            SqlDataReader dr = DBConnection.executeQuery(DBConnection.getSqlConnection(),sqlTxt);
+            sqlTxt = "delete from segment where blockid = " + blockid + " and designz=" + designz;
             int updateCount = DBConnection.executeUpdate(sqlTxt);
             //if(updateCount>0){
             foreach (Segment segment in segments)
@@ -244,6 +246,13 @@ namespace DM.DB
                 }
                 else
                 {
+                    while (dr.Read())
+                    {
+                        sqlTxt = string.Format("insert into segment  (SegmentID, WorkState, BlockID, DesignZ, Vertex, DTStart, DTEnd, MaxSpeed, DesignRollCount, ErrorParam, SpreadZ, DesignDepth, SegmentName,StartZ,pop,SenseOrganState,NotRolling,CommentNR) values(" +
+                    "{0},{1},{2},'{3}','{4}',{5},{6},'{7}','{8}',{9},'{10}','{11}','{12}','{13}','{14}',{15},'{16}','{17}'"
+                    + ")", (int)dr["SegmentID"], (int)dr["WorkState"], (int)dr["BlockID"], (float)dr["DesignZ"], (string)dr["Vertex"], (DateTime)dr["DTStart"], (DateTime)dr["DTEnd"], dr["MaxSpeed"], (float)dr["DesignRollCount"], (float)dr["ErrorParam"], (float)dr["SpreadZ"], (float)dr["DesignDepth"], (string)dr["SegmentName"], (float)dr["StartZ"], (float)dr["POP"], (int)dr["SenseOrganState"], (string)dr["NotRolling"], (string)dr["CommentNR"]);
+                        DBConnection.executeUpdate(sqlTxt);
+                    }
                     return UpdateSegmentResult.FAIL;
                 }
             }
