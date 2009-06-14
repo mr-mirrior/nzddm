@@ -103,15 +103,18 @@ namespace DM.DMControl
                     return;
                 }
                 decks.Add(deck);
+                de.Add(deck);
                 return;
             }
 
-            if( SubmitDB() )
+            if( SubmitDB(1) )
             {
+                de.Add(deck);
                 Forms.ToolsWindow.I.UpdateMode();
                 Utils.MB.OKI("添加仓面成功，已保存至数据库");
             }
         }
+        List<Deck> de=new List<Deck>();
         public void DeleteDeck(Deck deck)
         {
             if (deck.IsWorking || deck.WorkState== DM.DB.SegmentWorkState.END)
@@ -122,21 +125,31 @@ namespace DM.DMControl
 
             if (!Utils.MB.OKCancelQ("确定删除该仓面吗？\n\n" + deck.Name))
                 return;
-            
-            deck.VehicleControl.DeleteAll();
-
-            decks.Remove(deck);
-            if( SubmitDB() )
+            de.Add(deck);
+            if (SubmitDB(2))
             {
                 Forms.ToolsWindow.I.UpdateMode();
+                de.Clear();
                 Utils.MB.OKI("仓面已从数据库删除");
             }
+
+            deck.VehicleControl.DeleteAll();
+            
+            decks.Remove(deck);
         }
-        private bool SubmitDB()
+        private bool SubmitDB(int i)
         {
             try
             {
-                return DB.UpdateSegmentResult.SUCCESS == DB.SegmentDAO.getInstance().updateSegments(Translate(decks), partition.ID, elevation.Height);
+                switch (i)
+                {
+                    case 1:
+                        return DB.UpdateSegmentResult.SUCCESS == DB.SegmentDAO.getInstance().AddSegment(Translate(de)[0], partition.ID, elevation.Height);
+                    case 2:
+                       return DB.UpdateSegmentResult.SUCCESS == DB.SegmentDAO.getInstance().deleteSegment(Translate(de)[0].BlockID, Translate(de)[0].DesignZ, Translate(de)[0].SegmentID);
+                    case 3:
+                       return DB.UpdateSegmentResult.SUCCESS == DB.SegmentDAO.getInstance().modifySegment(Translate(de)[0]);
+                }
             }
             catch(Exception e)
             {
@@ -147,6 +160,7 @@ namespace DM.DMControl
             {
                 VehicleControl.LoadCarDistribute();
             }
+            return false;
         }
         public void Clear()
         {
@@ -293,15 +307,21 @@ namespace DM.DMControl
             Deck tobemodified = new Deck(dlg.Deck);
             tobemodified.Owner = this.Owner;
             tobemodified.Polygon = deck.Polygon;
-
+            de.Add(deck);
             if (dkFound == null || idx==-1)
                 decks.Add(tobemodified);
             else
                 decks[idx] = tobemodified;
+            bool re = false;
+            if (dkFound == null || idx == -1)
+               re = SubmitDB(1);
+            else
+                re=SubmitDB(3);
 
             //DB.SegmentDAO.getInstance().updateSegments(Translate(decks), deck.Partition.ID, deck.Elevation.Height);
-            if (SubmitDB())
+            if (re)
             {
+                de.Clear();
             }
             else
             {
