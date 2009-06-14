@@ -82,16 +82,16 @@ namespace DM.DB
         /// </summary>
         public string ReadSegmentRemark(int blockid, Double designz, Int32 segmentid)
         {
-           string sqlTxt = "select remark from Segment"+
-               "  where blockid = " + blockid +
-               " and designz=" + designz +
-               " and segmentid=" + segmentid;
+            string sqlTxt = "select remark from Segment" +
+                "  where blockid = " + blockid +
+                " and designz=" + designz +
+                " and segmentid=" + segmentid;
             try
             {
-               SqlDataReader dr=DBConnection.executeQuery(DBConnection.getSqlConnection(),sqlTxt);
-                while(dr.Read())
+                SqlDataReader dr = DBConnection.executeQuery(DBConnection.getSqlConnection(), sqlTxt);
+                while (dr.Read())
                 {
-                    if (dr["Remark"]==DBNull.Value)
+                    if (dr["Remark"] == DBNull.Value)
                     {
                         return string.Empty;
                     }
@@ -113,28 +113,28 @@ namespace DM.DB
         {
             string sqlTxt, co, mk;
             mk = co = null;
-//             sqlTxt = "select NotRolling,CommentNR from segment" + " where blockid = " + blockid + " and designz=" + designz + " and segmentid=" + segmentid;
-//             SqlDataReader dr=DBConnection.executeQuery(DBConnection.getSqlConnection(),sqlTxt);
-//             while(dr.Read())
-//             {
-//                 if (dr["NotRolling"].ToString().Equals(string.Empty) && dr["CommentNR"].ToString().Equals(string.Empty))
-//                 {
-//                     co = coord;
-//                     mk = mark;
-//                 }
-//                 else
-//                 {
-//                     co = dr["NotRolling"].ToString() + "|" + coord;
-//                     mk = dr["CommentNR"].ToString() + "|" + mark;
-//                 }
-//             }
+            //             sqlTxt = "select NotRolling,CommentNR from segment" + " where blockid = " + blockid + " and designz=" + designz + " and segmentid=" + segmentid;
+            //             SqlDataReader dr=DBConnection.executeQuery(DBConnection.getSqlConnection(),sqlTxt);
+            //             while(dr.Read())
+            //             {
+            //                 if (dr["NotRolling"].ToString().Equals(string.Empty) && dr["CommentNR"].ToString().Equals(string.Empty))
+            //                 {
+            //                     co = coord;
+            //                     mk = mark;
+            //                 }
+            //                 else
+            //                 {
+            //                     co = dr["NotRolling"].ToString() + "|" + coord;
+            //                     mk = dr["CommentNR"].ToString() + "|" + mark;
+            //                 }
+            //             }
             co = coord;
             mk = mark;
-            sqlTxt = "update segment set NotRolling = '" + co+ 
-                "',CommentNR='" + mk + 
+            sqlTxt = "update segment set NotRolling = '" + co +
+                "',CommentNR='" + mk +
                 "',AreaNR='" + areas +
-                "'  where blockid = " + blockid + 
-                " and designz=" + designz + 
+                "'  where blockid = " + blockid +
+                " and designz=" + designz +
                 " and segmentid=" + segmentid;
             try
             {
@@ -191,6 +191,120 @@ namespace DM.DB
             }
         }
 
+         public UpdateSegmentResult modifySegment(Segment segment)
+         {
+             Int32 segmentID = segment.SegmentID;
+             SegmentWorkState workState = segment.WorkState;
+             Int32 blockID = segment.BlockID;
+             Double designZ = segment.DesignZ;
+             string vertext = segment.Vertext;
+             DateTime startDate = segment.StartDate;
+             DateTime endDate = segment.EndDate;
+             Double maxSpeed = segment.MaxSpeed;
+             Int32 designRollCount = segment.DesignRollCount;
+             Double errorParam = segment.ErrorParam;
+             Double spreadZ = segment.SpreadZ;
+             Double designDepth = segment.DesignDepth;
+             //add in 2008-12-1
+             Double pop = segment.POP;
+             //string remark = segment.Remark;
+             string notrolling = segment.NotRollingstring;
+             string notrollingremark = segment.CommentNRstring;
+             string segmentName = segment.SegmentName;
+             Double startZ = segment.StartZ;
+             int librateState = segment.LibrateState;
+             string startDateStr = "'" + startDate.ToString() + "'";
+             string endDateStr = "'" + endDate.ToString() + "'";
+             if (startDate.Equals(DateTime.MinValue))
+             {
+                 startDateStr = "NULL";
+             }
+             if (endDate.Equals(DateTime.MinValue))
+             {
+                 endDateStr = "NULL";
+             }
+             string sqlTxt = string.Format("update segment set SegmentID={0}, WorkState={1}, BlockID={2}, DesignZ={3}, Vertex='{4}', DTStart={5}, DTEnd={6}, MaxSpeed='{7}', DesignRollCount='{8}', ErrorParam='{9}', SpreadZ='{10}', DesignDepth='{11}', SegmentName='{12}',StartZ='{13}',pop='{14}',SenseOrganState='{15}',NotRolling='{16}',CommentNR='{17}' where blockid={18} and designz={19} and segmentid={20}",
+                segmentID,  (int)workState, blockID, designZ, vertext, startDateStr, endDateStr, maxSpeed, designRollCount, errorParam, spreadZ, designDepth, segmentName, startZ, pop, librateState, notrolling, notrollingremark, blockID, designZ, segmentID);
+             if (DBConnection.executeUpdate(sqlTxt) != 1)
+             {
+                 return UpdateSegmentResult.FAIL;
+             }
+
+             return UpdateSegmentResult.SUCCESS;
+
+         }
+        /// <summary>
+        /// 添加舱面
+        /// </summary>
+        /// <returns></returns>
+        public UpdateSegmentResult AddSegment(Segment segment,int blockid,double designz)
+        {
+            
+                Int32 segmentID = segment.SegmentID;
+                SegmentWorkState workState = segment.WorkState;
+                Int32 blockID = segment.BlockID;
+                Double designZ = segment.DesignZ;
+                string vertext = segment.Vertext;
+                DateTime startDate = segment.StartDate;
+                DateTime endDate = segment.EndDate;
+                Double maxSpeed = segment.MaxSpeed;
+                Int32 designRollCount = segment.DesignRollCount;
+                Double errorParam = segment.ErrorParam;
+                Double spreadZ = segment.SpreadZ;
+                Double designDepth = segment.DesignDepth;
+                //add in 2008-12-1
+                Double pop = segment.POP;
+                //string remark = segment.Remark;
+                string notrolling = segment.NotRollingstring;
+                string notrollingremark = segment.CommentNRstring;
+                string segmentName = segment.SegmentName;
+                Double startZ = segment.StartZ;
+                int librateState = segment.LibrateState;
+                string startDateStr = "'" + startDate.ToString() + "'";
+                string endDateStr = "'" + endDate.ToString() + "'";
+                if (startDate.Equals(DateTime.MinValue))
+                {
+                    startDateStr = "NULL";
+                }
+                if (endDate.Equals(DateTime.MinValue))
+                {
+                    endDateStr = "NULL";
+                }
+                string sqlTxt = "select max(segmentid)+1 from segment where blockid=" + blockID + " and designz=" + designZ;
+                SqlDataReader dr = DBConnection.executeQuery(DBConnection.getSqlConnection(),sqlTxt);
+
+                if (dr.Read())
+                {
+                    if (dr[0] != DBNull.Value)
+                    segmentID = (int)dr[0];
+                }
+                    
+                sqlTxt = string.Format("insert into segment  (SegmentID, WorkState, BlockID, DesignZ, Vertex, DTStart, DTEnd, MaxSpeed, DesignRollCount, ErrorParam, SpreadZ, DesignDepth, SegmentName,StartZ,pop,SenseOrganState,NotRolling,CommentNR) values(" +
+                    "{0},{1},{2},{3},'{4}',{5},{6},{7},{8},{9},{10},'{11}','{12}','{13}','{14}',{15},'{16}','{17}'"
+                    + ")",segmentID,  (int)workState, blockID, designZ, vertext, startDateStr, endDateStr, maxSpeed, designRollCount, errorParam, spreadZ, designDepth, segmentName, startZ, pop, librateState, notrolling, notrollingremark);
+                if (DBConnection.executeUpdate(sqlTxt) != 1)
+                {
+                    return UpdateSegmentResult.FAIL;
+                }
+            
+            return UpdateSegmentResult.SUCCESS;
+        }
+
+        
+
+        //可能有几个字段不必更新的
+
+        public UpdateSegmentResult deleteSegment( Int32 blockid, Double designz,Int32 segmentid)
+        {
+            String sqlTxt = "delete from segment where blockid = " + blockid + " and designz=" + designz + "and segmentid="+segmentid;
+            int updateCount = DBConnection.executeUpdate(sqlTxt);
+            if (updateCount!=1)
+            {
+                return UpdateSegmentResult.FAIL;
+            }
+            return UpdateSegmentResult.SUCCESS;
+        }
+
         //可能有几个字段不必更新的
 
         public UpdateSegmentResult updateSegments(List<Segment> segments, Int32 blockid, Double designz)
@@ -201,9 +315,15 @@ namespace DM.DB
                 return UpdateSegmentResult.NO_SEGMENT;
             }
             String sqlTxt = "select * from segment where blockid = " + blockid + " and designz=" + designz;
-            SqlDataReader dr = DBConnection.executeQuery(DBConnection.getSqlConnection(),sqlTxt);
-            sqlTxt = "delete from segment where blockid = " + blockid + " and designz=" + designz;
+            SqlDataReader dr = DBConnection.executeQuery(DBConnection.getSqlConnection(), sqlTxt);
+            sqlTxt = "update segment set elevationImage=NULL,rollImage=NULL where blockid = " + blockid + " and designz=" + designz;
+            //sqlTxt = "update segment set workstate=3 where blockid = " + blockid + " and designz=" + designz;
+            //System.Windows.Forms.MessageBox.Show("!!!!!!!!!!!!!!1");
+
             int updateCount = DBConnection.executeUpdate(sqlTxt);
+            //System.Windows.Forms.MessageBox.Show("!!!!!!!!!!!!!!1");
+            sqlTxt = "delete from segment where blockid = " + blockid + " and designz=" + designz;
+            updateCount = DBConnection.executeUpdate(sqlTxt);
             //if(updateCount>0){
             foreach (Segment segment in segments)
             {
@@ -239,7 +359,7 @@ namespace DM.DB
                 }
                 sqlTxt = string.Format("insert into segment  (SegmentID, WorkState, BlockID, DesignZ, Vertex, DTStart, DTEnd, MaxSpeed, DesignRollCount, ErrorParam, SpreadZ, DesignDepth, SegmentName,StartZ,pop,SenseOrganState,NotRolling,CommentNR) values(" +
                     "{0},{1},{2},'{3}','{4}',{5},{6},'{7}','{8}',{9},'{10}','{11}','{12}','{13}','{14}',{15},'{16}','{17}'"
-                    + ")", segmentID, (int)workState, blockID, designZ, vertext, startDateStr, endDateStr, maxSpeed, designRollCount, errorParam, spreadZ, designDepth, segmentName, startZ, pop,librateState,notrolling,notrollingremark);
+                    + ")", segmentID, (int)workState, blockID, designZ, vertext, startDateStr, endDateStr, maxSpeed, designRollCount, errorParam, spreadZ, designDepth, segmentName, startZ, pop, librateState, notrolling, notrollingremark);
                 if (DBConnection.executeUpdate(sqlTxt) == 1)
                 {
                     continue;
@@ -351,8 +471,8 @@ namespace DM.DB
                     segment.StartZ = startZ;
                     segment.DesignDepth = (double)reader["DESIGNDEPTH"];
                     segment.POP = (double)reader["POP"];
-                    if (reader["SenseOrganState"]!=DBNull.Value)
-                    segment.LibrateState = (int)reader["SenseOrganState"];
+                    if (reader["SenseOrganState"] != DBNull.Value)
+                        segment.LibrateState = (int)reader["SenseOrganState"];
                     if (reader["NotRolling"] != DBNull.Value)
                         segment.NotRollingstring = (string)reader["NotRolling"];
                     if (reader["CommentNR"] != DBNull.Value)
@@ -408,7 +528,7 @@ namespace DM.DB
             segment.StartDate = (startdate);
             segment.EndDate = (enddate);
             segment.SegmentName = (segmentname);
-            if (reader["NotRolling"]!=DBNull.Value)
+            if (reader["NotRolling"] != DBNull.Value)
                 segment.NotRollingstring = (string)reader["NotRolling"];
             if (reader["CommentNR"] != DBNull.Value)
                 segment.CommentNRstring = (string)reader["CommentNR"];
@@ -416,7 +536,7 @@ namespace DM.DB
             segment.POP = (double)reader["POP"];
             segment.DesignDepth = (double)reader["DESIGNDEPTH"];
             if (reader["SenseOrganState"] != DBNull.Value)
-            segment.LibrateState = (int)reader["SenseOrganState"];
+                segment.LibrateState = (int)reader["SenseOrganState"];
             return segment;
         }
         public List<Segment> getSegment(Int32 blockID, Double designZ, Int32 segmentid)
@@ -425,7 +545,7 @@ namespace DM.DB
             Segment segment = null;
             SqlConnection connection = null;
             SqlDataReader reader = null;
-            string sqlTxt = "select * from segment where (blockid=" + blockID + ") and (designZ=" + designZ + 
+            string sqlTxt = "select * from segment where (blockid=" + blockID + ") and (designZ=" + designZ +
                 ") and (segmentid=" + segmentid + ")";
             try
             {
@@ -433,41 +553,41 @@ namespace DM.DB
                 reader = DBConnection.executeQuery(connection, sqlTxt);
                 while (reader.Read())
                 {
-//                     SegmentWorkState workState = (SegmentWorkState)Convert.ToInt32(reader["workState"]);
-//                     //Int32 segmentid = Convert.ToInt32(reader["segmentid"]);
-//                     string vertex = reader["vertex"].ToString();
-//                     DateTime enddate = DateTime.MinValue;
-//                     DateTime startdate = DateTime.MinValue;
-//                     if (!reader["dtend"].Equals(DBNull.Value))
-//                     {
-//                         enddate = Convert.ToDateTime(reader["dtend"]);
-//                     }
-//                     if (!reader["dtstart"].Equals(DBNull.Value))
-//                     {
-//                         startdate = Convert.ToDateTime(reader["dtstart"]);
-//                     }
-//                     string remark = reader["remark"].ToString();
-//                     string segmentname = reader["segmentname"].ToString();
-//                     Double startZ = Convert.ToDouble(reader["startz"]);
-//                     Double maxSpeed = Convert.ToDouble(reader["maxspeed"]);
-//                     Int32 designRollCount = Convert.ToInt32(reader["designRollCount"]);
-//                     Double errorParam = Convert.ToDouble(reader["errorParam"]);
-//                     segment = new Segment();
-//                     segment.MaxSpeed = maxSpeed;
-//                     segment.DesignRollCount = designRollCount;
-//                     segment.ErrorParam = errorParam;
-//                     segment.Remark = (remark);
-//                     segment.BlockID = (blockID);
-//                     segment.SegmentID = (segmentid);
-//                     segment.WorkState = (DB.SegmentWorkState)(workState);
-//                     segment.DesignZ = (designZ);
-//                     segment.Vertext = vertex;
-//                     segment.StartDate = (startdate);
-//                     segment.EndDate = (enddate);
-//                     segment.SegmentName = (segmentname);
-//                     segment.StartZ = startZ;
-//                     segment.POP = (double)reader["POP"];
-//                     segment.DesignDepth = (double)reader["DESIGNDEPTH"];
+                    //                     SegmentWorkState workState = (SegmentWorkState)Convert.ToInt32(reader["workState"]);
+                    //                     //Int32 segmentid = Convert.ToInt32(reader["segmentid"]);
+                    //                     string vertex = reader["vertex"].ToString();
+                    //                     DateTime enddate = DateTime.MinValue;
+                    //                     DateTime startdate = DateTime.MinValue;
+                    //                     if (!reader["dtend"].Equals(DBNull.Value))
+                    //                     {
+                    //                         enddate = Convert.ToDateTime(reader["dtend"]);
+                    //                     }
+                    //                     if (!reader["dtstart"].Equals(DBNull.Value))
+                    //                     {
+                    //                         startdate = Convert.ToDateTime(reader["dtstart"]);
+                    //                     }
+                    //                     string remark = reader["remark"].ToString();
+                    //                     string segmentname = reader["segmentname"].ToString();
+                    //                     Double startZ = Convert.ToDouble(reader["startz"]);
+                    //                     Double maxSpeed = Convert.ToDouble(reader["maxspeed"]);
+                    //                     Int32 designRollCount = Convert.ToInt32(reader["designRollCount"]);
+                    //                     Double errorParam = Convert.ToDouble(reader["errorParam"]);
+                    //                     segment = new Segment();
+                    //                     segment.MaxSpeed = maxSpeed;
+                    //                     segment.DesignRollCount = designRollCount;
+                    //                     segment.ErrorParam = errorParam;
+                    //                     segment.Remark = (remark);
+                    //                     segment.BlockID = (blockID);
+                    //                     segment.SegmentID = (segmentid);
+                    //                     segment.WorkState = (DB.SegmentWorkState)(workState);
+                    //                     segment.DesignZ = (designZ);
+                    //                     segment.Vertext = vertex;
+                    //                     segment.StartDate = (startdate);
+                    //                     segment.EndDate = (enddate);
+                    //                     segment.SegmentName = (segmentname);
+                    //                     segment.StartZ = startZ;
+                    //                     segment.POP = (double)reader["POP"];
+                    //                     segment.DesignDepth = (double)reader["DESIGNDEPTH"];
                     segment = readSegment(reader);
                     segments.Add(segment);
                 }
@@ -489,7 +609,7 @@ namespace DM.DB
 
         public Boolean startAllSegments(Int32 blockid, Double designz)
         {
-            string sqlTxt = "update segment set workstate=" + (int)SegmentWorkState.WORK + 
+            string sqlTxt = "update segment set workstate=" + (int)SegmentWorkState.WORK +
                 ",dtstart=getdate() where blockid=" + blockid + " and designz=" + designz +
                 " and wrokstate =" + (int)SegmentWorkState.WAIT;
             try
@@ -543,8 +663,8 @@ namespace DM.DB
         public Boolean reStartThisSegment(Int32 blockid, Double designZ, Int32 segmentid)
         {
 
-            string sqlTxt = "update segment set workstate=" + (int)SegmentWorkState.WORK + 
-                ",dtstart=getdate(),dtend=null where blockid=" + blockid + " and segmentid=" + segmentid + 
+            string sqlTxt = "update segment set workstate=" + (int)SegmentWorkState.WORK +
+                ",dtstart=getdate(),dtend=null where blockid=" + blockid + " and segmentid=" + segmentid +
                 " and designz=" + designZ + " and (workstate=" + (int)SegmentWorkState.END + ")";
             try
             {
@@ -564,29 +684,29 @@ namespace DM.DB
         }
 
 
-//         //结束当前层所有工作舱面,设置workstate,和dtend
-//         protected Boolean endAllWorkSegments(Int32 blockid, Double designz)
-//         {
-//             //wrokstate <> WORKING		避免重复启动.
-//             string sqlTxt = "update segment set workstate=" + (int)SegmentWorkState.END + 
-//                 ",dtend=getdate() where blockid=" + blockid + " and designz=" + designz + 
-//                 " and wrokstate = " + (int)SegmentWorkState.WORK;
-//             try
-//             {
-//                 int updateCount = DBConnection.executeUpdate(sqlTxt);
-//                 if (updateCount <= 0)
-//                 {
-//                     return false;
-//                 }
-//                 return true;
-//             }
-//             catch (Exception exp)
-//             {
-//                 DebugUtil.log(exp);
-//                 return false;
-//             }
-// 
-//         }
+        //         //结束当前层所有工作舱面,设置workstate,和dtend
+        //         protected Boolean endAllWorkSegments(Int32 blockid, Double designz)
+        //         {
+        //             //wrokstate <> WORKING		避免重复启动.
+        //             string sqlTxt = "update segment set workstate=" + (int)SegmentWorkState.END + 
+        //                 ",dtend=getdate() where blockid=" + blockid + " and designz=" + designz + 
+        //                 " and wrokstate = " + (int)SegmentWorkState.WORK;
+        //             try
+        //             {
+        //                 int updateCount = DBConnection.executeUpdate(sqlTxt);
+        //                 if (updateCount <= 0)
+        //                 {
+        //                     return false;
+        //                 }
+        //                 return true;
+        //             }
+        //             catch (Exception exp)
+        //             {
+        //                 DebugUtil.log(exp);
+        //                 return false;
+        //             }
+        // 
+        //         }
 
         // 结束某分区下的某工作层下的正在工作的舱面.
         //如果该舱面是最后一个未被结束的舱面,则结束该层.
@@ -594,7 +714,7 @@ namespace DM.DB
         {
             SqlConnection connection = null;
             SqlDataReader reader = null;
-            string sqlTxt = "update segment set workstate=" + (int)SegmentWorkState.END + 
+            string sqlTxt = "update segment set workstate=" + (int)SegmentWorkState.END +
                 ",dtend=getdate() where blockid=" + blockid + " and segmentid=" + segmentid +
                 " and designZ=" + designZ /*+ " and workstate=" + (int)SegmentWorkState.WORK*/;
             try
@@ -609,34 +729,34 @@ namespace DM.DB
 
                 // 查看当前处于非结束状态的segment的数量
 
-//                 connection = DBConnection.getSqlConnection();
-//                 sqlTxt = "select * from segment where (workstate=" + (int)SegmentWorkState.WAIT +
-//                     " or workstate=" + (int)SegmentWorkState.WORK + ") and blockid=" + blockid + " and designz=" + designZ;
-//                 reader = DBConnection.executeQuery(connection, sqlTxt);
-//                 if (reader.Read())
-//                 {// 若无,结束本层
-//                     sqlTxt = "update worklayer set workstate=" + (int)SegmentWorkState.END +
-//                         ",DTEnd=getDate() where blockid=" + blockid /*+ " and workstate<>" + (int)SegmentWorkState.END*/+ 
-//                         " and designz=" + designZ /*+ " and DTEnd is null"*/;
-//                     try
-//                     {
-//                         updateCount = DBConnection.executeUpdate(sqlTxt);
-//                         if (updateCount <= 0)
-//                         {
-//                             return EndSegmengResult.END_ERROR;
-//                         }
-//                     }
-//                     catch (Exception exp)
-//                     {
-//                         DebugUtil.log(exp);
-//                         return EndSegmengResult.END_ERROR;
-//                     }
-//                     return EndSegmengResult.THIS_LAYER_END;
-//                 }
-//                 else
-//                 {
-//                     return EndSegmengResult.ONLY_SEGMENT_END;
-//                 }
+                //                 connection = DBConnection.getSqlConnection();
+                //                 sqlTxt = "select * from segment where (workstate=" + (int)SegmentWorkState.WAIT +
+                //                     " or workstate=" + (int)SegmentWorkState.WORK + ") and blockid=" + blockid + " and designz=" + designZ;
+                //                 reader = DBConnection.executeQuery(connection, sqlTxt);
+                //                 if (reader.Read())
+                //                 {// 若无,结束本层
+                //                     sqlTxt = "update worklayer set workstate=" + (int)SegmentWorkState.END +
+                //                         ",DTEnd=getDate() where blockid=" + blockid /*+ " and workstate<>" + (int)SegmentWorkState.END*/+ 
+                //                         " and designz=" + designZ /*+ " and DTEnd is null"*/;
+                //                     try
+                //                     {
+                //                         updateCount = DBConnection.executeUpdate(sqlTxt);
+                //                         if (updateCount <= 0)
+                //                         {
+                //                             return EndSegmengResult.END_ERROR;
+                //                         }
+                //                     }
+                //                     catch (Exception exp)
+                //                     {
+                //                         DebugUtil.log(exp);
+                //                         return EndSegmengResult.END_ERROR;
+                //                     }
+                //                     return EndSegmengResult.THIS_LAYER_END;
+                //                 }
+                //                 else
+                //                 {
+                //                     return EndSegmengResult.ONLY_SEGMENT_END;
+                //                 }
 
             }
             catch (Exception exp)
@@ -662,7 +782,7 @@ namespace DM.DB
                 cd.Blockid = (blockid);
                 cd.DesignZ = (designZ);
                 cd.Segmentid = (segmentid);
-                Segment deck=getSegment( blockid,  designZ,  segmentid)[0];
+                Segment deck = getSegment(blockid, designZ, segmentid)[0];
                 if (CarDistributeDAO.getInstance().startCars(cd, maxSpeed, deck.LibrateState, deck.DesignZ))
                 {
 
@@ -787,7 +907,7 @@ namespace DM.DB
             {
                 connection = DBConnection.getSqlConnection();
                 reader = DBConnection.executeQuery(connection, sqltext);
-                while(reader.Read())
+                while (reader.Read())
                 {
                     Segment seg = new Segment();
                     lst.Add(readSegment(reader));

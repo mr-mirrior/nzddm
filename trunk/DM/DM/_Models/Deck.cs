@@ -554,7 +554,7 @@ namespace DM.Models
             double oldZoom = layer.Zoom;
             double oldRotate = layer.RotateDegree;
 
-            layer.Zoom = 10;
+            //layer.Zoom = 5;  //修改出数据图的比例
             layer.RotateDegree = 0;
             layer.CreateScreen();
 
@@ -694,7 +694,7 @@ namespace DM.Models
                     layer.Zoom = 2;
                     layer.RotateDegree = 0;
                 }
-
+                layer.Zoom = 5;
                 layer.CreateScreen();
                 Polygon pl = this.Polygon;
                 if (pl.ScreenBoundary.Width > 5000 || pl.ScreenBoundary.Height > 5000)
@@ -721,7 +721,19 @@ namespace DM.Models
 #if DEBUG
                 output.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "OrignRoll.png", System.Drawing.Imaging.ImageFormat.Png);
 #endif
-
+                layer.Zoom = oldZoom;
+               
+                layer.CreateScreen();
+                pl = this.Polygon;
+                if (pl.ScreenBoundary.Width > 5000 || pl.ScreenBoundary.Height > 5000)
+                {
+                    layer.RotateDegree = oldRotate;
+                    layer.Zoom = oldZoom;
+                    layer.CreateScreen();
+                    Utils.MB.Warning("放大率过大，请缩小图形后再试一次");
+                    return false;
+                }
+                output = CreateRollCountImage(out areas);
                 //output.Save("C:\\1.png");
                 areaScale = new double[areas.Length];
 
@@ -1046,7 +1058,12 @@ namespace DM.Models
         {
             Polygon pl = this.Polygon;
             double lo, hi;
+            double zoomold = this.Owner.Zoom;
+            this.Owner.Zoom = 5;
             Bitmap bmp = ElevationImage(out lo, out hi);
+            DB.datamap.DAO.getInstance().updateElevationBitMap(deckInfo.BlockID, deckInfo.DesignZ, deckInfo.SegmentID, DB.datamap.DAO.getInstance().ToByte(bmp), lo.ToString("0.00") + "," + hi.ToString("0.00"));
+            this.Owner.Zoom = zoomold;
+            bmp = ElevationImage(out lo, out hi);
             // 1、决定车辆轨迹时间上的先后次序
             // 2、计算相对高度
             // 3、渐变画图
@@ -1073,7 +1090,7 @@ namespace DM.Models
             {
                 di.Create();
             }
-            DB.datamap.DAO.getInstance().updateElevationBitMap(deckInfo.BlockID, deckInfo.DesignZ, deckInfo.SegmentID, DB.datamap.DAO.getInstance().ToByte(bmp), lo.ToString("0.00") + "," + hi.ToString("0.00"));
+            
 #if DEBUG
             bmp.Save(@"C:\OUTPUT\"+this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() +"OrignElevation.png", System.Drawing.Imaging.ImageFormat.Png);
 #endif

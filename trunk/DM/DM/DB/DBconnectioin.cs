@@ -18,9 +18,9 @@ namespace DM.DB
             string server = /*"172.23.225.215"*/DBconfig.getInstance().Server;
             string username = /*"sa"*/DBconfig.getInstance().Username;
             string password = /*"s"*/DBconfig.getInstance().Password;
-            username = "sa";
-            password = "123456";
-            server = "localhost";
+            //username = "sa";
+            //password = "123456";
+            //server = "localhost";
 
             //             string sqlConnectionCommand = "Data Source="+server+";Initial Catalog="+dbname+";User ID="+username+";password="+"'"+password+"'";
             string sqlConnectionCommand = string.Format("Data Source={0}; Initial Catalog={1};User ID='{2}';password='{3}'",
@@ -78,6 +78,7 @@ namespace DM.DB
             {
                 conn = getSqlConnection();
                 cmd = new SqlCommand(SQLString, conn);
+                //cmd.CommandTimeout = 600000;
                 conn.Open();
                 int rows = cmd.ExecuteNonQuery();
                 return rows;
