@@ -11,9 +11,11 @@ namespace DM.Views
         RectangleF boundary = new RectangleF();
         RectangleF left, right;
         public RectangleF Boundary { get { return boundary; } }
-        // 顺时针
+        // 顺时针
+
         public event EventHandler OnCW;
-        // 逆时针
+        // 逆时针
+
         public event EventHandler OnCCW;
         public Compass() 
         { 

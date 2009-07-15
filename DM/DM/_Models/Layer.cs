@@ -14,7 +14,7 @@ namespace DM.Models
     /// 层
 
     /// </summary>
-    public class Layer: IDisposable
+    public class Layer : IDisposable
     {
         public event EventHandler OnMouseEnter;
         public event EventHandler OnMouseLeave;
@@ -42,18 +42,18 @@ namespace DM.Models
             OnMouseLeaveDeck += Dummy;
             mtx.zoom = 1;
         }
-        private void Dummy(object sender, EventArgs e) {}
+        private void Dummy(object sender, EventArgs e) { }
         public Layer(string _fullpath)
         {
             fullpath = _fullpath;
             Init();
         }
-//         public Layer(List<Coord> vtx, string _fullpath) 
-//         {
-//             fullpath = _fullpath;
-//             Init();
-//             AddLayer(vtx);
-//         }
+        //         public Layer(List<Coord> vtx, string _fullpath) 
+        //         {
+        //             fullpath = _fullpath;
+        //             Init();
+        //             AddLayer(vtx);
+        //         }
         Partition part = null;
         Elevation ele;
         Views.LayerView owner = null;
@@ -63,16 +63,16 @@ namespace DM.Models
             get { return owner; }
             set { owner = value; }
         }
-        
+
         public Partition Partition { get { return part; } set { part = value; dkcontrol.Owner = this; } }
         public Elevation Elevation { get { return ele; } set { ele = value; dkcontrol.Owner = this; } }
         DMControl.DeckControl dkcontrol = new DM.DMControl.DeckControl(null);
         public DMControl.DeckControl DeckControl
         {
             get { return dkcontrol; }
-//             set { dkcontrol = value; }
+            //             set { dkcontrol = value; }
         }
-        
+
         public static string Format(Partition p, Elevation e)
         {
             return string.Format("{0}-{1}米", p.Name, e.Height);
@@ -109,9 +109,9 @@ namespace DM.Models
         {
             List<Coord> newlst = new List<Coord>();
             newlst.Capacity = lst.Count;
-            for (int i = 0; i < lst.Count-1; i++ )
+            for (int i = 0; i < lst.Count - 1; i++)
             {
-                if( lst[i].IsEqual(lst[i+1]))
+                if (lst[i].IsEqual(lst[i + 1]))
                 {
                     // 这里千万不能用Remove(object)
                     // 否则会删错对象，期望删除第71，却删除了第一个
@@ -143,7 +143,7 @@ namespace DM.Models
             if (vertex == null)
                 return;
             FilterIdentical(ref vertex);
-            if (vertex.Count <=4 )  // 最少4点才能成为一个多边形，首尾点相同
+            if (vertex.Count <= 4)  // 最少4点才能成为一个多边形，首尾点相同
                 return;
             //layers.Clear();
 
@@ -157,17 +157,17 @@ namespace DM.Models
                 if (dkcontrol.Decks.Count == 0)
                 {
                     dkcontrol.Owner = this;
-                    if( loadDB )
+                    if (loadDB)
                         dkcontrol.LoadDB(null);
                 }
             }
-//             mtx.boundary = new DMRectangle();
-//             mtx.boundary.Left = mtx.boundary.Top = float.MaxValue;
-//             mtx.boundary.Right = mtx.boundary.Bottom = float.MinValue;
+            //             mtx.boundary = new DMRectangle();
+            //             mtx.boundary.Left = mtx.boundary.Top = float.MaxValue;
+            //             mtx.boundary.Right = mtx.boundary.Bottom = float.MinValue;
 
             List<Coord> batch = new List<Coord>();
             bool first = true;
-            for (int i = 0; i < vertex.Count; i++ )
+            for (int i = 0; i < vertex.Count; i++)
             {
                 Coord pt = vertex[i];
 
@@ -186,7 +186,7 @@ namespace DM.Models
                 // 如果发现和第一个点相同的点，说明图形封闭
 
                 // 添加前面已经统计的点，并开启新统计
-                if( pt.IsEqual(batch.First())  )
+                if (pt.IsEqual(batch.First()))
                 {
                     AddPolygon(batch, p, e);
                     batch = new List<Coord>();
@@ -227,10 +227,10 @@ namespace DM.Models
         [XmlIgnore]
         public Size VisibleSize { get { return new Size((int)screenBoundary.Width, (int)screenBoundary.Height); } }
         Rectangle canvas;
-//         public void CreateScreen()
-//         {
-//             CreateScreen(canvas);
-//         }
+        //         public void CreateScreen()
+        //         {
+        //             CreateScreen(canvas);
+        //         }
         public bool RectContains(Coord pt)
         {
             return mtx.boundary.Contains(pt.PF);
@@ -244,7 +244,7 @@ namespace DM.Models
         {
             canvas = rcClient;
             ResetBoundary();
-            foreach(Polygon pl in layers)
+            foreach (Polygon pl in layers)
             {
                 pl.Token = true;
                 pl.CreateScreen(mtx);
@@ -256,11 +256,11 @@ namespace DM.Models
             if (AlwaysFitScreen)
                 DoFitScreen();
 
-            for (int i = 0; i < dkcontrol.Decks.Count; i++ )
+            for (int i = 0; i < dkcontrol.Decks.Count; i++)
             {
                 Polygon pl = dkcontrol.Decks[i].Polygon;
                 CreateDeckScreen(ref pl);
-                foreach(Vehicle v in dkcontrol.Decks[i].VehicleControl.Vehicles)
+                foreach (Vehicle v in dkcontrol.Decks[i].VehicleControl.Vehicles)
                 {
                     v.TrackGPSControl.Tracking.CreateScreen();
                 }
@@ -285,8 +285,8 @@ namespace DM.Models
         }
         private void CheckVisible()
         {
-//             if (screenBoundary.Left >= 0 && screenBoundary.Top >= 0)
-//                 return;
+            //             if (screenBoundary.Left >= 0 && screenBoundary.Top >= 0)
+            //                 return;
             Coord offset = new Coord(0, 0);
 
             offset.X = -screenBoundary.Left;
@@ -309,8 +309,8 @@ namespace DM.Models
         }
         private void CheckFitScreen()
         {
-//             if (!AlwaysFitScreen)
-//                 return;
+            //             if (!AlwaysFitScreen)
+            //                 return;
 
             double cwidth = canvas.Width;
             double cheight = canvas.Height;
@@ -384,7 +384,7 @@ namespace DM.Models
             {
                 Deck deck = dkcontrol.Decks[i];
                 Polygon pl = deck.Polygon;
-                if (pl.IsScreenVisible(scrCursor) && focusedDeck==null)
+                if (pl.IsScreenVisible(scrCursor) && focusedDeck == null)
                 {
                     deck.Polygon.LineDashStyle = DashStyle.Solid;
                     deck.Polygon.LineWidth = 4;
@@ -452,7 +452,7 @@ namespace DM.Models
 
             c.X -= mtx.offset.X;
             c.Y -= mtx.offset.Y;
-            c = Geo.DamUtils.RotateRadian(c, new Coord(0,0), Geo.DamUtils.Degree2Radian(-mtx.degrees));
+            c = Geo.DamUtils.RotateRadian(c, new Coord(0, 0), Geo.DamUtils.Degree2Radian(-mtx.degrees));
             c.X /= Zoom;
             c.Y /= Zoom;
             c.X += mtx.at.X;
@@ -498,16 +498,18 @@ namespace DM.Models
                 // 其他层面只做视觉参考
 
                 Polygon scrDeck = pl.CutBy(scrCut);
-                if (scrDeck != null && (!pl.Partition.Equals(this.Partition) || !pl.Elevation.Equals(this.Elevation)))
-                {
-                    if (!shownWarning)
-                    {
-                        Utils.MB.Warning("只能对当前有效层\"" + this.ToString() + "\"进行分仓，\n其他层只做视觉参考，无法进行分仓。\n" +
-                            "若要对该分区进行分仓，请打开对应分区的层。");
-                        shownWarning = true;
-                    }
-                    continue;
-                }
+
+                int 注_判断仓面;
+                //if (scrDeck != null && (!pl.Partition.Equals(this.Partition) || !pl.Elevation.Equals(this.Elevation)))
+                //{
+                //    if (!shownWarning)
+                //    {
+                //        Utils.MB.Warning("只能对当前有效层\"" + this.ToString() + "\"进行分仓，\n其他层只做视觉参考，无法进行分仓。\n" +
+                //            "若要对该分区进行分仓，请打开对应分区的层。");
+                //        shownWarning = true;
+                //    }
+                //    continue;
+                //}
                 if (scrDeck != null)
                 {
                     List<Coord> lc = scrDeck.Vertex;
@@ -522,7 +524,7 @@ namespace DM.Models
                     AddNewDeck(dk);
                     //cutby.SetVertex(cut);
                 }
-                if(isDeckInput)
+                if (isDeckInput)
                 {
                     Polygon DamDeck = pl.CutByOfEarth(scrCut);
                     if (DamDeck != null)
@@ -575,16 +577,16 @@ namespace DM.Models
         }
         public void CreateDataMap()
         {
-            if (VisibleDeck == null)
-                return;
-            if (DeckControl.CreateDataMap(VisibleDeck))
-            {
-                //Utils.MB.OK("数据图更新成功！");
-            }
-            else
-            {
-                Utils.MB.OK("数据图更新失败！");
-            }
+            //if (VisibleDeck == null)
+            //    return;
+            //if (DeckControl.CreateDataMap(VisibleDeck))
+            //{
+            //    //Utils.MB.OK("数据图更新成功！");
+            //}
+            //else
+            //{
+            //    Utils.MB.OK("数据图更新失败！");
+            //}
         }
     }
 }

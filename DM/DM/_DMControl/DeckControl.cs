@@ -509,7 +509,7 @@ namespace DM.DMControl
             DMControl.LayerControl.Instance.LoadWorkingLayer();
             VehicleControl.LoadCarDistribute();
             LoadDB(dk);
-            //UpdateGraphics();
+            UpdateGraphics();
             GPSServer.CloseDeck();
 
             //if (CreateDataMap(dk))
@@ -636,23 +636,23 @@ namespace DM.DMControl
             }
             return null;
         }
-        public bool CreateDataMap(Deck dk)
-        {
-            byte[] map = dk.CreateDatamap();
-            if( map != null )
-            {
-                DB.SegmentDAO dao = DB.SegmentDAO.getInstance();
-                if( dao.updateDatamap(dk.Partition.ID, dk.Elevation.Height, dk.ID, map) > 0 )
-                {
-                    return true;
-                }
-                else
-                {
-                    //Utils.MB.OK("数据图更新失败！");
-                    return false;
-                }
-            }
-            return false;
-        }
+        //public bool CreateDataMap(Deck dk)
+        //{
+        //    byte[] map = dk.CreateDatamap();
+        //    if (map != null)
+        //    {
+        //        DB.SegmentDAO dao = DB.SegmentDAO.getInstance();
+        //        if (dao.updateDatamap(dk.Partition.ID, dk.Elevation.Height, dk.ID, map) > 0)
+        //        {
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            //Utils.MB.OK("数据图更新失败！");
+        //            return false;
+        //        }
+        //    }
+        //    return false;
+        //}
     }
 }
