@@ -24,15 +24,11 @@ namespace DM.Models
             this.Assignment = car;
         }
         Deck owner = null;
-        //TrackGPS trackGPS = null;
         TrackGPSControl trackCtrl = new TrackGPSControl();
         private void Init()
         {
             TrackGPSControl.Owner = this;
             info.ScrollWidth = 2.17;
-
-//             DMControl.GPSReceiver.OnResponseData -= OnGPSData;
-//             DMControl.GPSReceiver.OnResponseData += OnGPSData;
         }
         public void Dispose()
         {
@@ -67,17 +63,6 @@ namespace DM.Models
                     return;
                 if (!dist.IsWorking())
                     return;
-
-                //this.TrackGPSControl.CheckOverThickness(e.gps.Coord3D);
-
-                //             if (!Owner.IsVisible)
-                //                 return;
-                //             DateTime start = dist.DTStart;
-                //             DateTime end = dist.DTEnd;
-                //             if (end == DateTime.MinValue)
-                //                 end = DateTime.MaxValue;
-                //             if (e.gps.Time < start || e.gps.Time > end)
-                //                 return;
 
                 // 这个点属于该车段
                 if (owner.IsVisible)
@@ -120,7 +105,7 @@ namespace DM.Models
         }
         private DB.CarInfo FindThis() { return DMControl.VehicleControl.FindVechicle(ID); }
         public int ID { get { return info.CarID; } set { info.CarID = value; } }
-        //public string Name { get { return FindThis().CarName; } set { DMControl.VehicleControl.FindVechicle(ID).CarName = value; } }
+
         // 轮宽
         public float WheelWidth { get { return (float)info.ScrollWidth; } set { info.ScrollWidth = value; } }
         // 天线高度

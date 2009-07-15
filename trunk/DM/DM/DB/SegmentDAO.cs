@@ -418,12 +418,7 @@ namespace DM.DB
             }
         }
 
-        /// </summary>
-        /// <param name="blockID"></param>
-        /// <param name="designZ"></param>
-        /// <returns>
-        /// 
-        /// </returns>
+  
         public List<Segment> getSegments(Int32 blockID, Double designZ)
         {
             List<Segment> segments = new List<Segment>();
@@ -659,54 +654,7 @@ namespace DM.DB
             }
 
         }
-        //重新启动当前仓面,更新workstate,设置dtstart为当前时间,dtend为空
-        public Boolean reStartThisSegment(Int32 blockid, Double designZ, Int32 segmentid)
-        {
-
-            string sqlTxt = "update segment set workstate=" + (int)SegmentWorkState.WORK +
-                ",dtstart=getdate(),dtend=null where blockid=" + blockid + " and segmentid=" + segmentid +
-                " and designz=" + designZ + " and (workstate=" + (int)SegmentWorkState.END + ")";
-            try
-            {
-                int updateCount = DBConnection.executeUpdate(sqlTxt);
-                if (updateCount <= 0)
-                {
-                    return false;
-                }
-                return true;
-            }
-            catch (Exception exp)
-            {
-                DebugUtil.log(exp);
-                return false;
-            }
-
-        }
-
-
-        //         //结束当前层所有工作舱面,设置workstate,和dtend
-        //         protected Boolean endAllWorkSegments(Int32 blockid, Double designz)
-        //         {
-        //             //wrokstate <> WORKING		避免重复启动.
-        //             string sqlTxt = "update segment set workstate=" + (int)SegmentWorkState.END + 
-        //                 ",dtend=getdate() where blockid=" + blockid + " and designz=" + designz + 
-        //                 " and wrokstate = " + (int)SegmentWorkState.WORK;
-        //             try
-        //             {
-        //                 int updateCount = DBConnection.executeUpdate(sqlTxt);
-        //                 if (updateCount <= 0)
-        //                 {
-        //                     return false;
-        //                 }
-        //                 return true;
-        //             }
-        //             catch (Exception exp)
-        //             {
-        //                 DebugUtil.log(exp);
-        //                 return false;
-        //             }
-        // 
-        //         }
+        
 
         // 结束某分区下的某工作层下的正在工作的舱面.
         //如果该舱面是最后一个未被结束的舱面,则结束该层.

@@ -337,7 +337,6 @@ namespace DM.Models
             {
                 colorDict[i] = learning.GetPixel(i, 0).ToArgb();
             }
-            //learning.Save(@"C:\learning.png", System.Drawing.Imaging.ImageFormat.Png);
 
 
             Bitmap bmp = new Bitmap((int)Math.Ceiling(pl.ScreenBoundary.Width), (int)Math.Ceiling(pl.ScreenBoundary.Height), PixelFormat.Format32bppPArgb);
@@ -454,20 +453,28 @@ namespace DM.Models
             }
             //填充数据库总面积和碾压遍数百分比字段
             double[] areasPercents = Deck.AreaRatio(areas, this);
+
+            
+                
+
             string percentages, one;
             percentages = string.Empty;
-            for (int i = 0; i < 15; i++)
+            if (areasPercents != null)
             {
-                if (i < areasPercents.Length)
-                    one = areasPercents[i].ToString("0.0000");
-                else
-                    one = ((double)0).ToString("0.0000");
-                if (i != 14)
-                    percentages = percentages + one + ",";
-                else
-                    percentages += one;
+                for (int i = 0; i < 15; i++)
+                {
+                    if (i < areasPercents.Length)
+                        one = areasPercents[i].ToString("0.0000");
+                    else
+                        one = ((double)0).ToString("0.0000");
+                    if (i != 14)
+                        percentages = percentages + one + ",";
+                    else
+                        percentages += one;
+                }
+                DB.SegmentDAO.getInstance().UpdateSegmentAreaAndRollingPercentages(Partition.ID, Elevation.Height, ID, Polygon.ActualArea, percentages);
             }
-            DB.SegmentDAO.getInstance().UpdateSegmentAreaAndRollingPercentages(Partition.ID, Elevation.Height, ID, Polygon.ActualArea, percentages);
+         
             //// 超过部分统一
             if (!isDatamap)
             {
@@ -1060,9 +1067,17 @@ namespace DM.Models
             double lo, hi;
             double zoomold = this.Owner.Zoom;
             this.Owner.Zoom = 5;
+            this.Owner.CreateScreen();
             Bitmap bmp = ElevationImage(out lo, out hi);
+            if (bmp == null)
+                Utils.MB.Error("高程图错误!");
             DB.datamap.DAO.getInstance().updateElevationBitMap(deckInfo.BlockID, deckInfo.DesignZ, deckInfo.SegmentID, DB.datamap.DAO.getInstance().ToByte(bmp), lo.ToString("0.00") + "," + hi.ToString("0.00"));
+
+#if DEBUG
+            bmp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "OrignElevation.png", System.Drawing.Imaging.ImageFormat.Png);
+#endif
             this.Owner.Zoom = zoomold;
+            this.Owner.CreateScreen();
             bmp = ElevationImage(out lo, out hi);
             // 1、决定车辆轨迹时间上的先后次序
             // 2、计算相对高度
@@ -1091,9 +1106,7 @@ namespace DM.Models
                 di.Create();
             }
             
-#if DEBUG
-            bmp.Save(@"C:\OUTPUT\"+this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() +"OrignElevation.png", System.Drawing.Imaging.ImageFormat.Png);
-#endif
+
 
             #region - 画图 -
             Layer layer = owner;
@@ -1467,9 +1480,7 @@ namespace DM.Models
             {
                 v.TrackGPSControl.Tracking.Reset();
             }
-//#if DEBUG
-//            bmp.Save(@"C:\OUTPUT\"+this.DeckInfo.SegmentName+@"\elevation.png", System.Drawing.Imaging.ImageFormat.Png);
-//#endif
+
             return bmp;
         }
         public void DrawPathMap()

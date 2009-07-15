@@ -18,7 +18,7 @@ namespace DM.Views
         {
             InitializeComponent();
         }
-        public new void Dispose() { layer.Dispose();  this.Dispose(true); GC.SuppressFinalize(this); }
+        public new void Dispose() { layer.Dispose(); landscape.Close(); this.Dispose(true); GC.SuppressFinalize(this); }
 
         public void Init()
         {
@@ -409,8 +409,6 @@ namespace DM.Views
         {
             get { return dirty; }
             set { dirty = value; }
-            //get { while (isPainting) System.Threading.Thread.Sleep(1); return dirty; }
-            //set { while (isPainting) System.Threading.Thread.Sleep(1); dirty = value; /*if (dirty) Refresh();*/ }
         }
         private volatile bool isPainting = false;
         public void MyRefresh()
@@ -848,7 +846,7 @@ namespace DM.Views
             dk.VehicleControl.Clear();
 
             if (tracking == null)
-                tracking = Models.FileHelper.ReadTracking("TrackingExp.txt");
+                tracking = Models.FileHelper.ReadTracking(@"C:\TrackingExp.txt");
             //Models.FileHelper.WriteTracking(tracking);
 
             //                 const int START = 40;
@@ -1528,8 +1526,9 @@ namespace DM.Views
                 case Keys.F11:
                     miVehicle_Click(null, null);
                     return true;
-//                 case Keys.F12:
-//                     return true;
+                case Keys.F12:
+                    CreateExperiment(this.zoom);
+                    return true;
             }
 
             return Forms.Main.MainWindow.ProcessKeys(this, e);
@@ -1835,16 +1834,17 @@ namespace DM.Views
 
         private void 生成压实厚度图TToolStripMenuItem_Click(object sender, EventArgs e)
         {
-                dlg.Dispose();
-                dlg = new DM.Forms.Waiting();
-                dlg.Start(this, "正在计算，请稍候……", ReportThicknest, 1000);
+            dlg.Dispose();
+            dlg = new DM.Forms.Waiting();
+            dlg.Start(this, "正在计算，请稍候……", ReportThicknest, 1000);
         }
+
 
         private void ReportThicknest()
         {
             //Bitmap[] bp=DB.datamap.DataMapManager.draw(layer.VisibleDeck.DeckInfo.BlockID, layer.VisibleDeck.DeckInfo.DesignZ, layer.VisibleDeck.DeckInfo.SegmentID);
-            Bitmap[] bp=DB.datamap.DataMapManager4.draw(layer.VisibleDeck.DeckInfo.BlockID, layer.VisibleDeck.DeckInfo.DesignZ, layer.VisibleDeck.DeckInfo.SegmentID);
-            if (bp==null)
+            Bitmap[] bp = DB.datamap.DataMapManager4.draw(layer.VisibleDeck.DeckInfo.BlockID, layer.VisibleDeck.DeckInfo.DesignZ, layer.VisibleDeck.DeckInfo.SegmentID);
+            if (bp == null)
                 Utils.MB.Warning("此仓面或者此仓面的下层仓面没有生成数据图，请确认这两个仓面都已在关仓状态出过图形报告！");
             else
             {
@@ -1874,5 +1874,6 @@ namespace DM.Views
             }
             dlg.Finished = true;
         }
+    
     }
 }
