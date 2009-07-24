@@ -48,6 +48,7 @@
             this.Load += new System.EventHandler(this.Librated_Load);
             this.Activated += new System.EventHandler(this.Librated_Activated);
             this.Resize += new System.EventHandler(this.Librated_Resize);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Librated_KeyDown);
             this.ResumeLayout(false);
 
         }

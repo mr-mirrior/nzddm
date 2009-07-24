@@ -199,5 +199,12 @@ namespace DM.Forms
         {
             this.Refresh();
         }
+
+        private void Librated_KeyDown(object sender, KeyEventArgs e)
+        {
+            Main.MainWindow.ProcessKeys(sender, e);
+        }
+
+      
     }
 }

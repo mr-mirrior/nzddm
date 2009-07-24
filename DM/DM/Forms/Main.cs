@@ -33,7 +33,7 @@ namespace DM.Forms
             const int WM_MBUTTONDBLCLK = 0x0209;
             const int WM_KEYDOWN = 0x0100;
             const int WM_KEYUP = 0x0101;
-            //const int WM_CHAR = 0x0102;
+            const int WM_CHAR = 0x0102;
 
             switch (msg.Msg)
             {
@@ -48,6 +48,7 @@ namespace DM.Forms
                 case WM_MBUTTONDBLCLK:
                 case WM_KEYDOWN:
                 case WM_KEYUP:
+                case WM_CHAR:
                     break;
             }
 
@@ -215,6 +216,7 @@ namespace DM.Forms
                 case Keys.F1:
                     toolsWnd.Visible = !toolsWnd.Visible;
                     EagleEye.Me.Visible = toolsWnd.Visible;
+                    Forms.Librated.GetInstance.Visible = !Forms.Librated.GetInstance.Visible;
                     if (toolsWnd.CurrentLayer != null)
                         toolsWnd.CurrentLayer.ShowLandscape(toolsWnd.Visible);
                     System.Diagnostics.Debug.Print("F1 pressed");
