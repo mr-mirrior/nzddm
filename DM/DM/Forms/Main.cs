@@ -107,7 +107,7 @@ namespace DM.Forms
 //             EagleEye.Me.AddLayer(new Models.Partition("RD1"), new Models.Elevation(583.7f));
 //             EagleEye.Me.AddLayer(new Models.Partition("RD3"), new Models.Elevation(639.9f));
             EagleEye.Me.Show(this);
-            Librated.GetInstance.Show(this);
+            //Librated.GetInstance.Show(this);
         }
         private bool IsFullScreen
         {
@@ -216,7 +216,7 @@ namespace DM.Forms
                 case Keys.F1:
                     toolsWnd.Visible = !toolsWnd.Visible;
                     EagleEye.Me.Visible = toolsWnd.Visible;
-                    Forms.Librated.GetInstance.Visible = !Forms.Librated.GetInstance.Visible;
+                    //Forms.Librated.GetInstance.Visible = !Forms.Librated.GetInstance.Visible;
                     if (toolsWnd.CurrentLayer != null)
                         toolsWnd.CurrentLayer.ShowLandscape(toolsWnd.Visible);
                     System.Diagnostics.Debug.Print("F1 pressed");
@@ -227,7 +227,7 @@ namespace DM.Forms
                 //    DMControl.GPSServer.test();
                 //    return true;
                 case Keys.F12:
-                    Forms.Librated.GetInstance.Visible = !Forms.Librated.GetInstance.Visible;
+                    //Forms.Librated.GetInstance.Visible = !Forms.Librated.GetInstance.Visible;
                     return true;
                 default:
                     break;
