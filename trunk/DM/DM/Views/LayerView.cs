@@ -1527,8 +1527,9 @@ namespace DM.Views
                     miVehicle_Click(null, null);
                     return true;
                 case Keys.F12:
-                    CreateExperiment(this.zoom);
-                    return true;
+                    break;
+                    //CreateExperiment(this.zoom);
+                    //return true;
             }
 
             return Forms.Main.MainWindow.ProcessKeys(this, e);
