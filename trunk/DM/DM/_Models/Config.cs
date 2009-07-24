@@ -36,6 +36,7 @@ namespace DM.Models
 
         public bool GEN_NOLIBRATE_VALID = false;//是否可用 常规振动 选项
 
-        //public byte[] bbbbbbbbb = File.ReadAllBytes(@"C:\Users\Administrator\Pictures\1440.jpg");
+        public string SHOWLIBRATED_CARIDS = "9,5,2,3,6,10,11,12,13,14,15,16";   //击震力窗口显示的车辆状态ids
+
     }
 }

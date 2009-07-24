@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0D02E7DE-F9B1-40E4-BFAC-DA0E7B83E9DA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -111,6 +111,12 @@
     <Compile Include="Forms\DeckCoordInput.Designer.cs">
       <DependentUpon>DeckCoordInput.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Librated.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Librated.Designer.cs">
+      <DependentUpon>Librated.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\OverBlock.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +141,7 @@
     <Compile Include="Forms\WarningList.Designer.cs">
       <DependentUpon>WarningList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\FileHelper\FileHelper.cs" />
     <Compile Include="Utils\Graph\OutGlow.cs" />
     <Compile Include="Utils\Graph\RoundPanel.cs">
       <SubType>Component</SubType>
@@ -370,6 +377,9 @@
     <EmbeddedResource Include="Forms\LayerPreview.resx">
       <DependentUpon>LayerPreview.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Librated.resx">
+      <DependentUpon>Librated.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>

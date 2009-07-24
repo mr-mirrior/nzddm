@@ -61,12 +61,20 @@
             this.WorkStat = new System.Windows.Forms.ColumnHeader();
             this.stop = new System.Windows.Forms.ColumnHeader();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.btnStop19 = new System.Windows.Forms.Button();
+            this.btnStop16 = new System.Windows.Forms.Button();
+            this.btnStop17 = new System.Windows.Forms.Button();
+            this.btnStop18 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.btnStop19);
+            this.panel1.Controls.Add(this.btnStop16);
+            this.panel1.Controls.Add(this.btnStop17);
+            this.panel1.Controls.Add(this.btnStop18);
             this.panel1.Controls.Add(this.btnStop8);
             this.panel1.Controls.Add(this.btnStop15);
             this.panel1.Controls.Add(this.btnStop10);
@@ -95,7 +103,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(436, 520);
+            this.panel1.Size = new System.Drawing.Size(436, 586);
             this.panel1.TabIndex = 4;
             // 
             // btnStop8
@@ -318,7 +326,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(225, 484);
+            this.btnCancel.Location = new System.Drawing.Point(225, 550);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(91, 27);
@@ -330,7 +338,7 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(110, 484);
+            this.btnOK.Location = new System.Drawing.Point(110, 550);
             this.btnOK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(91, 27);
@@ -355,7 +363,7 @@
             this.lstVehicle.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lstVehicle.MultiSelect = false;
             this.lstVehicle.Name = "lstVehicle";
-            this.lstVehicle.Size = new System.Drawing.Size(403, 422);
+            this.lstVehicle.Size = new System.Drawing.Size(403, 492);
             this.lstVehicle.SmallImageList = this.imageList1;
             this.lstVehicle.TabIndex = 4;
             this.lstVehicle.UseCompatibleStateImageBehavior = false;
@@ -393,13 +401,53 @@
             this.imageList1.ImageSize = new System.Drawing.Size(1, 22);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // btnStop19
+            // 
+            this.btnStop19.Location = new System.Drawing.Point(296, 417);
+            this.btnStop19.Name = "btnStop19";
+            this.btnStop19.Size = new System.Drawing.Size(88, 24);
+            this.btnStop19.TabIndex = 35;
+            this.btnStop19.Text = "强制停止(&S)";
+            this.btnStop19.UseVisualStyleBackColor = true;
+            this.btnStop19.Visible = false;
+            // 
+            // btnStop16
+            // 
+            this.btnStop16.Location = new System.Drawing.Point(296, 361);
+            this.btnStop16.Name = "btnStop16";
+            this.btnStop16.Size = new System.Drawing.Size(88, 24);
+            this.btnStop16.TabIndex = 34;
+            this.btnStop16.Text = "强制停止(&S)";
+            this.btnStop16.UseVisualStyleBackColor = true;
+            this.btnStop16.Visible = false;
+            // 
+            // btnStop17
+            // 
+            this.btnStop17.Location = new System.Drawing.Point(296, 381);
+            this.btnStop17.Name = "btnStop17";
+            this.btnStop17.Size = new System.Drawing.Size(88, 24);
+            this.btnStop17.TabIndex = 33;
+            this.btnStop17.Text = "强制停止(&S)";
+            this.btnStop17.UseVisualStyleBackColor = true;
+            this.btnStop17.Visible = false;
+            // 
+            // btnStop18
+            // 
+            this.btnStop18.Location = new System.Drawing.Point(296, 398);
+            this.btnStop18.Name = "btnStop18";
+            this.btnStop18.Size = new System.Drawing.Size(88, 24);
+            this.btnStop18.TabIndex = 32;
+            this.btnStop18.Text = "强制停止(&S)";
+            this.btnStop18.UseVisualStyleBackColor = true;
+            this.btnStop18.Visible = false;
+            // 
             // AssignVehicle
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(436, 520);
+            this.ClientSize = new System.Drawing.Size(436, 586);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -454,6 +502,10 @@
         private System.Windows.Forms.Button btnStop13;
         private System.Windows.Forms.Button btnStop14;
         private System.Windows.Forms.Button btnStop9;
+        private System.Windows.Forms.Button btnStop19;
+        private System.Windows.Forms.Button btnStop16;
+        private System.Windows.Forms.Button btnStop17;
+        private System.Windows.Forms.Button btnStop18;
 
     }
 }

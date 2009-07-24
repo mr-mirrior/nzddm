@@ -185,8 +185,11 @@ namespace DM.DMControl
                 Color.Goldenrod,
                 Color.Indigo,
                 Color.SteelBlue,
-                Color.LimeGreen
-
+                Color.LimeGreen,
+                Color.Turquoise,
+                Color.RoyalBlue,
+                Color.LawnGreen,
+                Color.PowderBlue
             };
 
             List<Vehicle> vs = new List<Vehicle>();
@@ -199,7 +202,7 @@ namespace DM.DMControl
                 {
                     if (VehicleControl.vehiclesInfo[i].CarID == cd.Carid)
                     {
-                        color = i % 16;
+                        color = i % 20;
                         break;
                     }
                 }

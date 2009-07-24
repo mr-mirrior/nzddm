@@ -513,6 +513,7 @@ namespace DM.DMControl
                        if (VehicleControl.carIDs[i]==warningLibrated->CarID)
                        {
                            VehicleControl.carLibratedStates[i] = warningLibrated->SenseOrgan;
+                           Forms.Librated.GetInstance.ChangeLibratedInfos(warningLibrated->CarID, warningLibrated->SenseOrgan);
                            VehicleControl.carLibratedTimes[i] = DB.DBCommon.getDate();
                        }
                     }
