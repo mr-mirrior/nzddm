@@ -58,6 +58,7 @@
             // 
             this.faTabStripItem1.IsDrawn = true;
             this.faTabStripItem1.Name = "faTabStripItem1";
+            this.faTabStripItem1.Selected = true;
             this.faTabStripItem1.Size = new System.Drawing.Size(473, 277);
             this.faTabStripItem1.TabIndex = 0;
             this.faTabStripItem1.Title = "TabStrip Page 1";
@@ -69,6 +70,7 @@
             this.Controls.Add(this.tab);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Main";
             this.Text = "DamManager 2.0";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

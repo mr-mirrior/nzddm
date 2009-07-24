@@ -44,7 +44,7 @@ namespace DM.Forms
         {
             InitializeComponent();
             buttons = new Button[] { btnStop0, btnStop1, btnStop2, btnStop3, btnStop4, 
-            btnStop5, btnStop6, btnStop7,btnStop8,btnStop9,btnStop10,btnStop11,btnStop12,btnStop13,btnStop14,btnStop15 };
+            btnStop5, btnStop6, btnStop7,btnStop8,btnStop9,btnStop10,btnStop11,btnStop12,btnStop13,btnStop14,btnStop15,btnStop16,btnStop17,btnStop18,btnStop19 };
             //添加所有按钮的事件
             btnStop1.Click += new EventHandler(btnStop_Click);
             btnStop2.Click += new EventHandler(btnStop_Click);
@@ -61,6 +61,10 @@ namespace DM.Forms
             btnStop13.Click += new EventHandler(btnStop_Click);
             btnStop14.Click += new EventHandler(btnStop_Click);
             btnStop15.Click += new EventHandler(btnStop_Click);
+            btnStop16.Click += new EventHandler(btnStop_Click);
+            btnStop17.Click += new EventHandler(btnStop_Click);
+            btnStop18.Click += new EventHandler(btnStop_Click);
+            btnStop19.Click += new EventHandler(btnStop_Click);
         }
         public AssignVehicle(int blockid, double designZ, int segmentid)
         {

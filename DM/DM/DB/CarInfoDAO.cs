@@ -91,6 +91,24 @@ namespace DM.DB
 
             return -1;
         }
+
+        static List<CarInfo> _MyCarInfos;
+
+        public string getCarName(int carid)
+        {
+            if (_MyCarInfos == null)
+                _MyCarInfos = getAllCarInfo();
+
+            foreach (CarInfo car in _MyCarInfos)
+            {
+                if (car.CarID==carid)
+                {
+                    return car.CarName;
+                }
+            }
+
+            return string.Empty;
+        }
     }
 }
 ;

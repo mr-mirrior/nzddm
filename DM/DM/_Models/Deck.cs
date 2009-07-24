@@ -541,7 +541,7 @@ namespace DM.Models
                             Color.Blue,
                             Color.SlateGray,
                             Color.Indigo,
-                            Color.Aqua
+                            Color.Aqua,
                         };
         public bool isDatamap = false;
         public unsafe byte[] CreateDatamap()
