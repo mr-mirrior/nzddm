@@ -424,6 +424,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DM21.ico" />
+    <Content Include="Pictures\warning.png" />
     <Content Include="SETUP\软件重用修改目录.txt" />
     <Content Include="Utils\ThicknessImage\副本 DataMapManager.txt" />
     <None Include="SETUP\DM2.iss" />
