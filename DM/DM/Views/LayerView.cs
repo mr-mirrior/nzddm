@@ -1719,6 +1719,7 @@ namespace DM.Views
                 mi.Checked = !check;
             }
         }
+
         private void miSkeleton_Click(object sender, EventArgs e)
         {
             CheckMenu(miSkeleton, Models.DrawingComponent.SKELETON);

@@ -18,6 +18,7 @@ namespace DM.DB
             string server = /*"172.23.225.215"*/DBconfig.getInstance().Server;
             string username = /*"sa"*/DBconfig.getInstance().Username;
             string password = /*"s"*/DBconfig.getInstance().Password;
+            //dbname="dam"
             username = "sa";
             password = "123456";
             server = "localhost";

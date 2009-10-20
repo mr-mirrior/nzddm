@@ -23,13 +23,16 @@ namespace DM.DB.datamap
         static int map_right = 80;//右侧
         static int map_top = 160;//上侧
 
+        static float min_mutiple ;
+        static float max_mutiple ;
+
         public static Bitmap[] draw(int blockid, double designz, int segmentid)
         {
 //              string valuesstrs = "604.52,609.89";
 //              Bitmap eimage = new Bitmap("d:/elevation/ED607.20OrignElevation.png");//segment.ElevationImage;
 //              DAO.getInstance().updateElevationBitMap(blockid, 607.2, 0, DAO.getInstance().ToByte(eimage), valuesstrs);
 // 
-
+            
             //从数据库中读出本仓面,和本仓面上一层的所有仓面信息.
             Segment segment = DAO.getInstance().getSegment(blockid, designz, segmentid);
             if (segment == null)
@@ -41,26 +44,26 @@ namespace DM.DB.datamap
             List<Segment> segments = DAO.getInstance().getSegments(blockid, lastDesignz);
             //将上一层所有仓面的数据图读出来
             
-                        if (segments == null || segments.Count == 0)
-                        {
-                            return null;
-                        }
+            if (segments == null || segments.Count == 0)
+            {
+                return null;
+            }
 
-                        for (int ii = 0; ii < segments.Count; ii++)
-                        {
+            for (int ii = 0; ii < segments.Count; ii++)
+            {
 
-                            //byte[] datamap = DAO.getInstance().getDatamap(blockid, lastDesignz, segments[ii].SegmentID);
-                            Bitmap this_e_map = DAO.getInstance().getElevationBitMap(blockid, lastDesignz, segments[ii].SegmentID);
-                            if (this_e_map == null)
-                            {
-                                DebugUtil.fileLog("没有elevationImage图" + blockid + " " + lastDesignz + " " + segments[ii].SegmentID);
-                                 return null;
-                            }
-                            else
-                            {
-                                segments[ii].ElevationImage = this_e_map;
-                            }
-                        }
+                //byte[] datamap = DAO.getInstance().getDatamap(blockid, lastDesignz, segments[ii].SegmentID);
+                Bitmap this_e_map = DAO.getInstance().getElevationBitMap(blockid, lastDesignz, segments[ii].SegmentID);
+                if (this_e_map == null)
+                {
+                    DebugUtil.fileLog("没有elevationImage图" + blockid + " " + lastDesignz + " " + segments[ii].SegmentID);
+                     return null;
+                }
+                else
+                {
+                    segments[ii].ElevationImage = this_e_map;
+                }
+            }
             
             
             //byte[] bytes = DAO.getInstance().getDatamap(blockid, designz, segmentid);//本仓面的数据图
@@ -72,10 +75,14 @@ namespace DM.DB.datamap
                 DebugUtil.fileLog("没有elevationImage图" + blockid + " " + designz + " " + segmentid);
                 return null;
             }
+
+            min_mutiple = Convert.ToSingle(DifferenceConfig.getInstance().getMinValue());
+            max_mutiple = Convert.ToSingle(DifferenceConfig.getInstance().getMaxValue());
+
             segment.ElevationImage = this_elevation_map;
 
             //DataMap dm = new DataMap(bytes);
-
+            
             //通过vertex得到大坝坐标系的边界点
             List<PointF> dam_points = getSegmentVertex_DAM(vertex);
             //大坝坐标系下的外切矩阵的原点,把屏幕坐标转换成大坝坐标会用到
@@ -132,10 +139,11 @@ namespace DM.DB.datamap
 
             //初始化
             double hengxiand = (left_bottom.Y - left_top.Y) / (grid * SCREEN_ONEMETER);
-            int hengxian = (int)Math.Round(hengxiand);
+            int hengxian = (int)Math.Round(hengxiand+0.5);
+            
             double shuxiand = (right_bottom.X - left_bottom.X) / (grid * SCREEN_ONEMETER);
-            int shuxian = (int)Math.Round(shuxiand);
-
+            int shuxian = (int)Math.Round(shuxiand+0.5);
+            
             double[,] thickness_sum_grid = new double[hengxian, shuxian];//存储大网格的厚度和
             int[,] thickness_count_grid = new int[hengxian, shuxian];//存储每个大网格包含的可用小网格数
             double[,] elevation_sum_grid = new double[hengxian, shuxian];//存储每个高程大网格的和
@@ -218,8 +226,8 @@ namespace DM.DB.datamap
                     else
                     {
                         this_difference = this_designz - getLastDesignz;
-
-                        if (this_difference <= 0 || this_difference > 1.25 * designdepth)
+                        //改这里
+                        if (this_difference <= min_mutiple*designdepth || this_difference > max_mutiple * designdepth)
                         {
                             difference_s.Add(-1);
                             continue;
@@ -450,16 +458,17 @@ namespace DM.DB.datamap
                     double this_y_m = y_m;
                     double this_x_n = x_n;
                    
-//                     if (y_m < left_top.Y)
-//                     {
-//                         r_height = r_height - left_top.Y + y_m;
-//                         this_y_m = left_top.Y;
-//                     }
-
-                    /*if (x_n + SCREEN_ONEMETER * grid > right_top.X)
+                    if (this_y_m < left_top.Y)
                     {
-                        r_width = r_width - (x_n + SCREEN_ONEMETER * grid - right_top.X);
-                    }*/
+                        r_height = (int)Math.Round(r_height + this_y_m - left_top.Y);
+                        this_y_m = left_top.Y;
+                        
+                    }
+
+                    if (x_n + SCREEN_ONEMETER * grid > right_top.X)
+                    {
+                        r_width = (int)Math.Round(r_width - (x_n + SCREEN_ONEMETER * grid - right_top.X));
+                    }
 
                     if (thickness_color != Color.Yellow)
                     {
