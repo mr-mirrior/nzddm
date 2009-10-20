@@ -536,7 +536,7 @@ namespace DM.DMControl
             isStoppingDeck = false;
 
             int[] areas = null;
-            Bitmap bmp = dk.CreateRollCountImage(out areas);
+            Bitmap bmp = dk.CreateRollCountImage(out areas,false);
             bmp.Dispose();
 
             int expected = dk.DeckInfo.DesignRollCount;

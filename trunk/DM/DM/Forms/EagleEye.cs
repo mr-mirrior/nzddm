@@ -658,7 +658,7 @@ new Geo.Coord(-444.92,69.2)
             {
                 if( deck.BlockID == part.ID )
                 {
-                    string confirm = string.Format("目前分区{0}正在工作的层高程为{1}米，现在打开吗？", part.Name, deck.DesignZ);
+                    string confirm = string.Format("目前仓面{0}正在工作的碾压层为{1}米，现在打开吗？", part.Name, deck.DesignZ);
                     if( Utils.MB.OKCancelQ(confirm))
                     {
                         ToolsWindow.I.OpenLayer(partition, deck.DesignZ);

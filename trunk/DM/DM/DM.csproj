@@ -17,7 +17,7 @@
     <SccLocalPath>Svn</SccLocalPath>
     <SccAuxPath>Svn</SccAuxPath>
     <SccProvider>SubversionScc</SccProvider>
-    <ApplicationIcon>DM21.ico</ApplicationIcon>
+    <ApplicationIcon>图标.ico</ApplicationIcon>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -156,6 +156,7 @@
     <Compile Include="Utils\ThicknessImage\DataMap.cs" />
     <Compile Include="Utils\ThicknessImage\DataMapManager.cs" />
     <Compile Include="Utils\ThicknessImage\DataMapManager4.cs" />
+    <Compile Include="Utils\ThicknessImage\DifferenceConfig.cs" />
     <Compile Include="Utils\ThicknessImage\PieChart.cs" />
     <Compile Include="Utils\ThicknessImage\Pixel.cs" />
     <Compile Include="_DMControl\DeckControl.cs" />
@@ -427,6 +428,7 @@
     <Content Include="Pictures\warning.png" />
     <Content Include="SETUP\软件重用修改目录.txt" />
     <Content Include="Utils\ThicknessImage\副本 DataMapManager.txt" />
+    <Content Include="图标.ico" />
     <None Include="SETUP\DM2.iss" />
   </ItemGroup>
   <ItemGroup>

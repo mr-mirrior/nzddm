@@ -316,7 +316,7 @@ namespace DM.Models
         /// </summary>
         /// <param name="areas">返回不同碾压编数的总和点（面积）</param>
         /// <returns>返回图形，用完后必须bmp.Dispose();</returns>
-        public Bitmap CreateRollCountImage(out int[] areas)
+        public Bitmap CreateRollCountImage(out int[] areas,bool isDataMap)
         {
             Layer layer = this.owner;
             Polygon pl = this.Polygon;
@@ -438,7 +438,7 @@ namespace DM.Models
                         last_idx = Math.Min(cl_idx, this.DeckInfo.DesignRollCount);
 
                         areas[cl_idx]++;
-                        if(isDatamap)
+                        if(isDataMap)
                             *(pp + j) = layersColor[cl_idx].ToArgb();
                         else
                             *(pp + j) = layersColor[last_idx].ToArgb();
@@ -476,7 +476,7 @@ namespace DM.Models
             }
          
             //// 超过部分统一
-            if (!isDatamap)
+            if (!isDataMap)
             {
                 for (int idx = this.DeckInfo.DesignRollCount + 1; idx < areas.Length; idx++)
                 {
@@ -543,7 +543,7 @@ namespace DM.Models
                             Color.Indigo,
                             Color.Aqua,
                         };
-        public bool isDatamap = false;
+ 
         public unsafe byte[] CreateDatamap()
         {
             /*
@@ -556,7 +556,7 @@ namespace DM.Models
              * float height1 (4 bytes)
              * ...
              */
-            isDatamap = true;
+            //isDatamap = true;
             Layer layer = owner;
             double oldZoom = layer.Zoom;
             double oldRotate = layer.RotateDegree;
@@ -567,13 +567,13 @@ namespace DM.Models
 
             double lo, hi;
             int[] areas = null;
-            Bitmap roll = CreateRollCountImage(out areas);
+            Bitmap roll = CreateRollCountImage(out areas,false);
             Bitmap elev = ElevationImage(out lo, out hi);
 
             //roll.Save(@"C:\pngroll.png");
             //roll.Save(@"C:\roll.png", System.Drawing.Imaging.ImageFormat.Png);
             //elev.Save(@"C:\elev.png", System.Drawing.Imaging.ImageFormat.Png);
-            isDatamap = false;
+            //isDatamap = false;
             if (roll == null || elev == null )//|| roll.Width != elev.Width || roll.Height != elev.Height)
             {
                 return null;
@@ -722,7 +722,7 @@ namespace DM.Models
                     return false;
 
                 int[] areas;
-                Bitmap output = CreateRollCountImage(out areas);
+                Bitmap output = CreateRollCountImage(out areas,true);
 
                 DB.datamap.DAO.getInstance().updateRollBitMap(deckInfo.BlockID, deckInfo.DesignZ, deckInfo.SegmentID, DB.datamap.DAO.getInstance().ToByte(output));
 #if DEBUG
@@ -740,7 +740,7 @@ namespace DM.Models
                     Utils.MB.Warning("放大率过大，请缩小图形后再试一次");
                     return false;
                 }
-                output = CreateRollCountImage(out areas);
+                output = CreateRollCountImage(out areas,false);
                 //output.Save("C:\\1.png");
                 areaScale = new double[areas.Length];
 
