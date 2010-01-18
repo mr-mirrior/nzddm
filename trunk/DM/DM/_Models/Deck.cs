@@ -1431,8 +1431,8 @@ namespace DM.Models
             string address = @"C:\OUTPUT\" + this.DeckInfo.SegmentName + @"\" + this.Partition.Name + this.Elevation.Height.ToString("0.0")+this.ID.ToString() + "elevation.png";
 #if DEBUG
             bitMp.Save(@"C:\OUTPUT\" + this.Partition.Name + this.Elevation.Height.ToString("0.0") + this.ID.ToString() + "elevation+.png");
-//#else
-            //            bitMp.Save(address, System.Drawing.Imaging.ImageFormat.Png);
+#else
+            bitMp.Save(address, System.Drawing.Imaging.ImageFormat.Png);
 #endif
             //#else
             //            bitMp.Save(@"C:\output_elevation.png", System.Drawing.Imaging.ImageFormat.Png);
