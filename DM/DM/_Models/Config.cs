@@ -27,6 +27,8 @@ namespace DM.Models
         public readonly double ELEV_FILTER_ELEV_LOWER = 0; // %
         public readonly double ELEV_FILTER_ELVE_UPPER = 1; // %
         public double ELEV_FILTER_SECONDS = 5; // sec
+        public string ELEVMAP_STATUS = "3";// 出高程图状态种类
+
 
         public readonly int REFRESH_TIME = 500; // milliseconds
         public int OVERTHICKNESS_DISTANCE = 1; // 米

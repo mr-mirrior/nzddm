@@ -1136,16 +1136,49 @@ namespace DM.Models
             //double lo = dkinfo.StartZ + dkinfo.DesignDepth * Config.I.ELEV_FILTER_ELEV_LOWER;
             //double hi = dkinfo.StartZ + dkinfo.DesignDepth * Config.I.ELEV_FILTER_ELVE_UPPER;
             //double speedmax = dkinfo.MaxSpeed * Config.I.ELEV_FILTER_SPEED;
-
-            for (int i = 0; i < origTP.Count; i++)
+            int statu;
+            if (int.TryParse(Config.I.ELEVMAP_STATUS, out statu))
             {
-                //double z = origTP[i].Z;
-                //double v = origTP[i].V;
-                //if (z >= lo && z <= hi && (v < speedmax))
-                if (origTP[i].tag1==3)
-                    lst.Add(origTP[i]);
-            }
+                for (int i = 0; i < origTP.Count; i++)
+                {
+                    //double z = origTP[i].Z;
+                    //double v = origTP[i].V;
+                    //if (z >= lo && z <= hi && (v < speedmax))
 
+                    if (origTP[i].tag1 == statu)
+                    {
+                        lst.Add(origTP[i]);
+                    }
+
+                }
+            }
+            else
+            {
+                string[] status = Config.I.ELEVMAP_STATUS.Split(',');
+                List<int> sts = new List<int>();
+
+                foreach (string s in status)
+                {
+                    if (int.TryParse(s, out statu))
+                        sts.Add(statu);
+                }
+
+                for (int i = 0; i < origTP.Count; i++)
+                {
+                    //double z = origTP[i].Z;
+                    //double v = origTP[i].V;
+                    //if (z >= lo && z <= hi && (v < speedmax))
+                    foreach (int j in sts)
+                    {
+                        if (origTP[i].tag1 == j)
+                        {
+                            lst.Add(origTP[i]);
+                            break;
+                        }
+                    }
+                }
+            }
+            
             old = origTP;
             isDrawingElevation = true;
             SetTracking(lst, 0, 0);
@@ -1211,6 +1244,7 @@ namespace DM.Models
                     }
                     subdistances.Add(0);
                     //List<Color> colors = new List<Color>();
+                   
                     for (int i = 1; i < distances.Count - 1; i++)
                     {
                         float subdistance = distances[i] / distance;
