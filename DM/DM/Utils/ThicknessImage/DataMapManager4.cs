@@ -51,6 +51,10 @@ namespace DM.DB.datamap
 
             for (int ii = 0; ii < segments.Count; ii++)
             {
+                if (segment.WorkState != SegmentWorkState.END)
+                {
+                    continue;
+                }
 
                 //byte[] datamap = DAO.getInstance().getDatamap(blockid, lastDesignz, segments[ii].SegmentID);
                 Bitmap this_e_map = DAO.getInstance().getElevationBitMap(blockid, lastDesignz, segments[ii].SegmentID);
@@ -69,7 +73,7 @@ namespace DM.DB.datamap
             //byte[] bytes = DAO.getInstance().getDatamap(blockid, designz, segmentid);//本仓面的数据图
 
             Bitmap this_elevation_map = DAO.getInstance().getElevationBitMap(blockid, designz, segmentid);
-            if (this_elevation_map== null)
+            if (this_elevation_map == null)
             {
 
                 DebugUtil.fileLog("没有elevationImage图" + blockid + " " + designz + " " + segmentid);
@@ -200,7 +204,13 @@ namespace DM.DB.datamap
             {
                 int tr = rgbValues[counter];
 
-                if (tr != 255)
+                int color_248 = rgbValues[counter];
+                int color_249 = rgbValues[counter + 1];
+                int color_200 = rgbValues[counter + 2];
+
+              //  DebugUtil.fileLog("" + rgbValues[counter] + "," + rgbValues[counter + 1] + "" + rgbValues[counter + 2]);
+                //if (tr != 255)
+                if (color_248 != 248 && color_249 != 249)
                 {
                     this_designz = min_value + (max_value - min_value) / 255 * tr;
                     designz_s.Add(this_designz);
@@ -992,6 +1002,7 @@ namespace DM.DB.datamap
             for (int i = 0; i < segments.Count; i++)
             {
                 Segment segment = segments[i];
+              
                 String vertex = segment.Vertext;
                 List<PointF> dam_points = getSegmentVertex_DAM(vertex);
                 //判断大坝坐标的point在不在范围内

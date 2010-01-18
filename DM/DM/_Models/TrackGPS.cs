@@ -39,8 +39,6 @@ namespace DM.Models
                 libratedTracking.Clear();
                 libratedOKTracking.Clear();
                 screenSegLibrated.Clear();
-                //hasReadCar.Clear();
-                //alltimes.Clear();
             }
             screenSeg.Clear();
             screenSegFiltered.Clear();
@@ -387,8 +385,6 @@ namespace DM.Models
                 gpLibrated.Clear();
                 libratedOKTracking.Clear();
                 screenSegLibrated.Clear();
-                //hasReadCar.Clear();
-                //alltimes.Clear();
 
                 screenSeg = new List<List<Coord3D>>(filteredSeg);
                 for (int i = 0; i < filteredSeg.Count; i++)
@@ -454,156 +450,74 @@ namespace DM.Models
                     int index = GetCarIDIndex(owner.ID);
                     bool isRight = VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState || VehicleControl.carLibratedStates[index] == -1;
                     bool isbreak = false;
-                    bool hasNOlibrated = false;//第一个不合格list开关量
-                    //bool BFWHEN = false;//实时和数据库点交替开关
                     
                     DateTime when = lst[0].When;
-                    //if (when < SetTime)
-                    //{
-                        if (times.Count > 0)
+
+                    if (times.Count > 0)
+                    {
+                        for (int j = 0; j < times.Count; j++)
                         {
-                            for (int j = 0; j < times.Count; j++)
+                            if (when <= times[j].DtEnd && when >= times[j].DtStart)
                             {
-                                if (when < times[j].DtEnd && when > times[j].DtStart)
-                                {
-                                    //libratedNO.Add(lst[0]);
-                                    hasNOlibrated = true;
-                                    isbreak = true;
-                                    break;
-                                }
-                            }
-                            if (!isbreak)
-                            {
-                                libratedOK = new List<Coord3D>();
-                                libratedOK.Add(lst[0]);
-                                libratedOKlst.Add(libratedOK);
-                            }
-                            else
-                            {
-                                libratedNO = new List<Coord3D>();
-                                libratedNO.Add(lst[0]);
-                                libratedNOlst.Add(libratedNO);
+                                isbreak = true;
+                                break;
                             }
                         }
-                        else
+                        if (!isbreak)
                         {
-                            libratedNO = new List<Coord3D>();
                             libratedOK.Add(lst[0]);
                             libratedOKlst.Add(libratedOK);
                         }
-                    //}
-                    //else
-                    //{
-                    //    hasNOlibrated = false;
-                    //    if (true)//!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index]==-1)
-                    //    {
-                    //        isRight = true;
-                    //        libratedOK = new List<Coord3D>();
-                    //        libratedOK.Add(lst[0]);
-                    //        libratedOKlst.Add(libratedOK);
-                    //    }
-                    //    else if (ISCOMMAND && VehicleControl.carLibratedStates[index] == 2 || VehicleControl.carLibratedStates[index] == 1 || VehicleControl.carLibratedStates[index] == -1)
-                    //    {
-                    //        isRight = true;
-                    //        libratedOK = new List<Coord3D>();
-                    //        libratedOK.Add(lst[0]);
-                    //        libratedOKlst.Add(libratedOK);
-                    //    }
-                    //    else
-                    //    {
-                    //        isRight = false;
-                    //        libratedNO = new List<Coord3D>();
-                    //        libratedNO.Add(lst[0]);
-                    //        libratedNOlst.Add(libratedNO);
-                    //    }
-                    //}
+                        else
+                        {
+                            libratedNO.Add(lst[0]);
+                            libratedNOlst.Add(libratedNO);
+                        }
+                    }
+                    else
+                    {
+                        libratedOK.Add(lst[0]);
+                        libratedOKlst.Add(libratedOK);
+                    }     
 
-
-                    isbreak = false;
                     Coord3D previous = lst[0];
 
                     for (int i = 1; i < lst.Count; i++)
                     {
                         when=lst[i].When;
                         isbreak = false; 
-                        //if ( when< SetTime /*|| VehicleControl.carLibratedTimes[index].Equals(DateTime.MinValue)*/)
-                        //{
-                            if (times.Count > 0)
+                        if (times.Count > 0)
+                        {
+                            for (int j = 0; j < times.Count; j++)
                             {
-                                for (int j = 0; j < times.Count; j++)
+                                if (when<= times[j].DtEnd && when >= times[j].DtStart)
                                 {
-                                    if (when< times[j].DtEnd && when > times[j].DtStart)
+                                    if ((when - lst[i - 1].When).TotalSeconds < Config.I.LIBRATE_Secends / 1000 )
                                     {
-                                        if (when - lst[i - 1].When < TimeSpan.FromSeconds(Config.I.LIBRATE_Secends))
-                                        {
-                                            libratedNO.Add(lst[i]);
-                                            isbreak = true;
-                                            //hasNOlibrated = true;
-                                            break;
-                                        }
-                                        else
-                                        {
+                                        libratedNO.Add(lst[i]);
+                                        if (libratedNO.Count < 2)
                                             libratedNOlst.Add(libratedNO);
-                                            libratedNO = new List<Coord3D>();
-                                            libratedNO.Add(lst[i]);
-                                            libratedNOlst.Add(libratedNO);
-                                            isbreak = true;
-                                            hasNOlibrated = true;
-                                            break;
-                                        }
                                     }
-                                }
-                                if (!isbreak)
-                                {
-                                    libratedOK.Add(lst[i]);
+                                    else
+                                    {
+                                        libratedNO = new List<Coord3D>();
+                                        libratedNO.Add(lst[i]);
+                                        libratedNOlst.Add(libratedNO);
+                                    }
+
+                                    isbreak = true;
+                                    break;
                                 }
                             }
-                            else
+                            if (!isbreak)
                             {
                                 libratedOK.Add(lst[i]);
                             }
-                        //}
-                        //else
-                        //{
-                        //    hasNOlibrated = false;
-                        //    if (true)//!ISCOMMAND&&VehicleControl.carLibratedStates[index] == owner.Owner.DeckInfo.LibrateState||VehicleControl.carLibratedStates[index] == -1)
-                        //    {
-                        //        if (isRight)
-                        //            libratedOK.Add(lst[i]);
-                        //        else
-                        //        {
-                        //            libratedOK = new List<Coord3D>();
-                        //            libratedOK.Add(lst[i]);
-                        //            libratedOKlst.Add(libratedOK);
-                        //        }
-                        //        isRight = true;
-                        //    }
-                        //    else if (ISCOMMAND && VehicleControl.carLibratedStates[index] == 2 || VehicleControl.carLibratedStates[index] == 1 || VehicleControl.carLibratedStates[index] == -1)
-                        //    {
-                        //        if (isRight)
-                        //            libratedOK.Add(lst[i]);
-                        //        else
-                        //        {
-                        //            libratedOK = new List<Coord3D>();
-                        //            libratedOK.Add(lst[i]);
-                        //            libratedOKlst.Add(libratedOK);
-                        //        }
-                        //        isRight = true;
-                        //    }
-                        //    else
-                        //    {
-                        //        if (!isRight)
-                        //            libratedNO.Add(lst[i]);
-                        //        else
-                        //        {
-                        //            libratedNO = new List<Coord3D>();
-                        //            libratedNO.Add(lst[i]);
-                        //            libratedNOlst.Add(libratedNO);
-                        //        }
-                        //        isRight = false;
-                        //    }
-                        //}
-                        
+                        }
+                        else
+                        {
+                            libratedOK.Add(lst[i]);
+                        }
 
                         if (lst[i].V >= owner.Owner.DeckInfo.MaxSpeed)
                         {
@@ -632,10 +546,6 @@ namespace DM.Models
                         onelist.Add(lst[i]);
                         previous = lst[i];
                     }
-                    if (hasNOlibrated && (libratedNOlst.Count == 0))
-                    {
-                        libratedNOlst.Add(libratedNO);
-                    }
                     //System.Diagnostics.Debug.Print("舍弃超速点{0}个", count);
                     using (Pen p = WidthPen(Color.Black))
                         for (int i = 0; i < lstoflst.Count; i++)
@@ -661,23 +571,26 @@ namespace DM.Models
                             PointF[] pf = Geo.DamUtils.Translate(libratedOKlst[i]);
                             GraphicsPath path = new GraphicsPath();
                             path.AddLines(pf);
-                            rc = RectangleF.Union(rc, path.GetBounds(new Matrix(), p));
                             screenSegLibrated.Add(libratedOKlst[i]);
                             libratedOKTracking.Add(path);
                         }
                     using (Pen p = WidthPen(Color.Black))
                         for (int i = 0; i < libratedNOlst.Count; i++)
                         {
-                            if (libratedNOlst[i].Count < 2)
+                            if (libratedNOlst[i].Count <4)
                                 continue;
+
+                            if (i == libratedNOlst.Count - 1)
+                            {
+                                libratedNOlst[i].Remove(libratedNOlst[i].Last());
+                                libratedNOlst[i].Remove(libratedNOlst[i].Last());
+                            }
+
                             PointF[] pf = Geo.DamUtils.Translate(libratedNOlst[i]);
                             GraphicsPath path = new GraphicsPath();
                             path.AddLines(pf);
-                            rc = RectangleF.Union(rc, path.GetBounds(new Matrix(), p));
                             libratedTracking.Add(path);
                         }
-                   
-                    //取出振动合格的点列表放入screenSegLibrated
                 }
                
                 //// John, 2009-1-19
@@ -1039,11 +952,15 @@ namespace DM.Models
                             g.DrawPath(p, gpTracking[i]);
                     }
                 ///////////////////////////////////////////////////////////feiying 09.3.22
-                using (Pen p1 = new Pen(Color.Red, size))
-                foreach (GraphicsPath path in libratedTracking)
+                if (Config.I.Show_LIBRATE_VALID)
                 {
-                    g.DrawPath(p1,path);
+                    using (Pen p1 = new Pen(Color.Red, size))
+                        foreach (GraphicsPath path in libratedTracking)
+                        {
+                            g.DrawPath(p1, path);
+                        }
                 }
+               
             }
         }
         public void DrawAnchor(Graphics g)
@@ -1216,15 +1133,16 @@ namespace DM.Models
             List<Coord3D> lst = new List<Coord3D>();
             DB.Segment dkinfo = owner.Owner.DeckInfo;
 
-            double lo = dkinfo.StartZ + dkinfo.DesignDepth * Config.I.ELEV_FILTER_ELEV_LOWER;
-            double hi = dkinfo.StartZ + dkinfo.DesignDepth * Config.I.ELEV_FILTER_ELVE_UPPER;
-            double speedmax = dkinfo.MaxSpeed*Config.I.ELEV_FILTER_SPEED;
+            //double lo = dkinfo.StartZ + dkinfo.DesignDepth * Config.I.ELEV_FILTER_ELEV_LOWER;
+            //double hi = dkinfo.StartZ + dkinfo.DesignDepth * Config.I.ELEV_FILTER_ELVE_UPPER;
+            //double speedmax = dkinfo.MaxSpeed * Config.I.ELEV_FILTER_SPEED;
 
-            for (int i = 0; i < origTP.Count; i++ )
+            for (int i = 0; i < origTP.Count; i++)
             {
-                double z = origTP[i].Z;
-                double v = origTP[i].V;
-                if (z >= lo && z <= hi && (v<speedmax))
+                //double z = origTP[i].Z;
+                //double v = origTP[i].V;
+                //if (z >= lo && z <= hi && (v < speedmax))
+                if (origTP[i].tag1==3)
                     lst.Add(origTP[i]);
             }
 
@@ -1245,78 +1163,97 @@ namespace DM.Models
             if (delta <= 0)
                 return;
 
-            for (int idx = 0; idx < screenSeg.Count; idx++ )
-            {
-//                 if (gpOverspeed[idx])
-//                     continue;
-                List<Coord3D> seg = screenSeg[idx];
-                Vector test = new Vector(seg.First(), seg.Last());
-                if (test.Length() < 0.01)
-                    continue;
-
-                float distance = 0;
-                List<float> distances = new List<float>(); // 距离
-                List<float> factors = new List<float>();    // 因子
-                List<float> subdistances = new List<float>();    // 子距离, 0~1
-                distances.Add(0);
-                double f = (seg.First().Z - lo) / delta;
-                f = Math.Max(0, f);
-                f = Math.Min(1, f);
-                factors.Add((float)f);
-                for (int i = 1; i < seg.Count; i++)
+                for (int idx = 0; idx < screenSeg.Count; idx++)
                 {
-                    Vector v = new Vector(seg[i - 1], seg[i]);
-                    float length = (float)v.Length();
-                    distance += length;
-                    distances.Add(distance);
-                    f = (seg[i].Z - lo) / (delta);
+                    //                 if (gpOverspeed[idx])
+                    //                     continue;
+
+                    List<Coord3D> seg = screenSeg[idx];
+                    Vector test = new Vector(seg.First(), seg.Last());
+                    if (test.Length() < 0.001)
+                        continue;
+
+                    //int grag = (int)((seg[0].Z - lo) / delta);
+                    //Color c = Color.FromArgb(grag, grag, grag);
+
+                    //if (seg.Count == 1)
+                    //{
+                    //    using (Pen pp = new Pen(c))
+                    //    {
+                    //        pp.Width = WidthPen();
+                    //        foreach (Coord3D cord in screenSeg[idx])
+                    //        {
+                    //            g.DrawLine(pp, cord.Plane.PF.X, cord.Plane.PF.Y, cord.Plane.PF.X + 1, cord.Plane.PF.Y + 1);
+                    //        }
+                    //    }
+                    //    continue;
+                    //}
+
+                    float distance = 0;
+                    List<float> distances = new List<float>(); // 距离
+                    List<float> factors = new List<float>();    // 因子
+                    List<float> subdistances = new List<float>();    // 子距离, 0~1
+                    distances.Add(0);
+                    double f = (seg.First().Z - lo) / delta;
                     f = Math.Max(0, f);
-                    f = Math.Min(1, f); 
+                    f = Math.Min(1, f);
                     factors.Add((float)f);
+                    for (int i = 1; i < seg.Count; i++)
+                    {
+                        Vector v = new Vector(seg[i - 1], seg[i]);
+                        float length = (float)v.Length();
+                        distance += length;
+                        distances.Add(distance);
+                        f = (seg[i].Z - lo) / (delta);
+                        f = Math.Max(0, f);
+                        f = Math.Min(1, f);
+                        factors.Add((float)f);
+                    }
+                    subdistances.Add(0);
+                    //List<Color> colors = new List<Color>();
+                    for (int i = 1; i < distances.Count - 1; i++)
+                    {
+                        float subdistance = distances[i] / distance;
+                        //int gray = (int)(factors[i]*255);
+                        //colors.Add(Color.FromArgb(gray,gray,gray));
+                        subdistances.Add(subdistance);
+                    }
+                    subdistances.Add(1f);
+
+                    GraphicsPath gp = new GraphicsPath();
+                    gp.AddLines(Geo.DamUtils.TranslatePoints(seg).ToArray());
+                    LinearGradientBrush br = new LinearGradientBrush(seg.First().Plane.PF, seg.Last().Plane.PF, Color.Black, Color.White);
+                    Blend bl = new Blend();
+                    bl.Factors = factors.ToArray();
+                    bl.Positions = subdistances.ToArray();
+                    br.Blend = bl;
+
+                    br.WrapMode = WrapMode.TileFlipXY;
+                    Pen p = new Pen(br);
+                    p.Width = WidthPen();
+                    g.DrawPath(p, gp);
+
+                    p.Dispose();
+                    br.Dispose();
+                    gp.Dispose();
+                    //GraphicsPath gp = (GraphicsPath)gpTracking[idx].Clone();
+                    //using (Pen p = WidthPen(Color.White))
+                    //{
+                    //    gp.Widen(p);
+                    //    using (PathGradientBrush b = new PathGradientBrush(gp))
+                    //    {
+                    //        //b.CenterColor = Color.Black;
+                    //        ColorBlend cb = new ColorBlend();
+                    //        cb.Colors = colors.ToArray();
+                    //        cb.Positions = subdistances.ToArray();
+                    //        b.InterpolationColors = cb;
+
+                    //        //b.WrapMode = WrapMode.TileFlipXY;
+                    //        g.FillPath(b, gp);
+                    //    }
+                    //    gp.Dispose();
+                    //}
                 }
-                List<Color> colors = new List<Color>();
-                for (int i = 0; i < distances.Count; i++)
-                {
-                    float subdistance = distances[i] / distance;
-                    int gray = (int)(factors[i]*255);
-                    colors.Add(Color.FromArgb(gray,gray,gray));
-                    subdistances.Add(subdistance);
-                }
-
-                GraphicsPath gp = new GraphicsPath();
-                gp.AddLines(Geo.DamUtils.TranslatePoints(seg).ToArray());
-                LinearGradientBrush br = new LinearGradientBrush(seg.First().Plane.PF, seg.Last().Plane.PF, Color.Black, Color.White);
-                Blend bl = new Blend();
-                bl.Factors = factors.ToArray();
-                bl.Positions = subdistances.ToArray();
-                br.Blend = bl;
-
-                br.WrapMode = WrapMode.TileFlipXY;
-                Pen p = new Pen(br);
-                p.Width = WidthPen();
-                g.DrawPath(p, gp);
-
-                p.Dispose();
-                br.Dispose();
-                gp.Dispose();
-//                 GraphicsPath gp = (GraphicsPath)gpTracking[idx].Clone();
-//                 using (Pen p = WidthPen(Color.White))
-//                 {
-//                     gp.Widen(p);
-//                     using (PathGradientBrush b = new PathGradientBrush(gp))
-//                     {
-//                         //b.CenterColor = Color.Black;
-//                         ColorBlend cb = new ColorBlend();
-//                         cb.Colors = colors.ToArray();
-//                         cb.Positions = subdistances.ToArray();
-//                         b.InterpolationColors = cb;
-// 
-//                         //b.WrapMode = WrapMode.TileFlipXY;
-//                         g.FillPath(b, gp);
-//                     }
-//                     gp.Dispose();
-//                 }
-            }
         }
     }
 }

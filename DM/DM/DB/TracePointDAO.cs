@@ -217,6 +217,8 @@ namespace DM.DB
                     tracePoint.Z = Convert.ToDouble((reader["z"]));
                     tracePoint.V = Convert.ToInt32((reader["v"]));
                     tracePoint.Dttrace = Convert.ToDateTime(reader["dttrace"]);
+                    tracePoint.Tag = Convert.ToInt32(reader["status"]);
+
                     //Console.WriteLine(tracePoint.X);
                     tracepoints.Add(tracePoint);                
                 }

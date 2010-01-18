@@ -389,6 +389,7 @@ namespace DM.DB
             List<Segment> segments = new List<Segment>();
             SqlConnection connection = null;
             SqlDataReader reader = null;
+
             string sqlTxt = "select blockid,designz,segmentid from segment";
             try
             {
@@ -424,7 +425,7 @@ namespace DM.DB
             List<Segment> segments = new List<Segment>();
             SqlConnection connection = null;
             SqlDataReader reader = null;
-            string sqlTxt = "select * from segment where (blockid=" + blockID + ") and (designZ=" + designZ + ")";
+            string sqlTxt = "select DesignZ,BLOCKID,workState,segmentid,vertex,dtend,dtstart,remark,segmentname,startz,maxspeed,designRollCount,errorParam,DESIGNDEPTH,POP,SenseOrganState,NotRolling,CommentNR from segment where (blockid=" + blockID + ") and (designZ=" + designZ + ")";
             try
             {
                 connection = DBConnection.getSqlConnection();
@@ -540,7 +541,7 @@ namespace DM.DB
             Segment segment = null;
             SqlConnection connection = null;
             SqlDataReader reader = null;
-            string sqlTxt = "select * from segment where (blockid=" + blockID + ") and (designZ=" + designZ +
+            string sqlTxt = "select DesignZ,BLOCKID,workState,segmentid,vertex,dtend,dtstart,remark,segmentname,startz,maxspeed,designRollCount,errorParam,DESIGNDEPTH,POP,SenseOrganState,NotRolling,CommentNR from segment where (blockid=" + blockID + ") and (designZ=" + designZ +
                 ") and (segmentid=" + segmentid + ")";
             try
             {

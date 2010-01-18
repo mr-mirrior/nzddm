@@ -18,7 +18,7 @@ namespace DM.DB
             string server = /*"172.23.225.215"*/DBconfig.getInstance().Server;
             string username = /*"sa"*/DBconfig.getInstance().Username;
             string password = /*"s"*/DBconfig.getInstance().Password;
-            //dbname="dam"
+            dbname = "damgps";
             username = "sa";
             password = "123456";
             server = "localhost";
@@ -72,7 +72,6 @@ namespace DM.DB
 
         public static int executeUpdate(string SQLString)
         {
-
             SqlConnection conn = null;
             SqlCommand cmd = null;
             try
@@ -93,18 +92,17 @@ namespace DM.DB
             {
                 closeSqlConnection(conn);
             }
-
         }
 
         ///
         /// 执行查询sql语句,返回SqlDataReader
-
         public static SqlDataReader executeQuery(SqlConnection sqlConnection, string sqlString)
         {
 
             SqlCommand sqlCommand = new SqlCommand();
             sqlCommand.Connection = sqlConnection;
             sqlCommand.CommandText = sqlString;
+            sqlCommand.CommandTimeout = 180;
             sqlConnection.Open();
             try
             {
