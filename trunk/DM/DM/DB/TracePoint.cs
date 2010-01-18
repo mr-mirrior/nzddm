@@ -53,7 +53,15 @@ namespace DM.DB
         {
             get { return dttrace; }
             set { dttrace = value; }
-        }        
+        }
+
+        private int _Tag;
+
+        public int Tag
+        {
+            get { return _Tag; }
+            set { _Tag = value; }
+        }
         
     }
     

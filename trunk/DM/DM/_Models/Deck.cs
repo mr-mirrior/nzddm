@@ -1058,7 +1058,6 @@ namespace DM.Models
                 layer.Zoom = oldZoom;
                 layer.CreateScreen();
             
-
             return true;
         }
         public Bitmap CreateElevationImage()
@@ -1284,7 +1283,7 @@ namespace DM.Models
                     va = ((float)cl.B) / 255;
                     elevationValue = va * (hi - lo) + lo;
                     recValue = new RectangleF(allX[i], 0, offset, allY[j]);
-                    if (cl.A == 0)
+                    if (cl.A == 0||cl.B!=cl.G)
                     {
                         continue;
                     }
@@ -1450,10 +1449,14 @@ namespace DM.Models
             Polygon pl = this.Polygon;
             Bitmap bmp = new Bitmap((int)pl.ScreenBoundary.Width + 1, (int)pl.ScreenBoundary.Height + 1);
 
-            foreach(Vehicle v in this.VehicleControl.Vehicles)
+            Graphics g = Graphics.FromImage(bmp);
+
+            foreach (Vehicle v in this.VehicleControl.Vehicles)
             {
                 v.TrackGPSControl.Tracking.FilterForOutput();
             }
+
+            g.Clear(Color.FromArgb(200,249,248));//200，249，248
 
             // 1、决定车辆轨迹时间上的先后次序
             // 2、计算相对高度
@@ -1462,8 +1465,7 @@ namespace DM.Models
             if (lo < 100 || hi < 100 || lo == double.MaxValue || hi == double.MinValue)
                 return null;
             //double delta = hi - lo;
-            Graphics g = Graphics.FromImage(bmp);
-            //g.Clear(Color.Transparent);
+           
             g.TranslateTransform((float)-pl.ScreenBoundary.Left, (float)-pl.ScreenBoundary.Top);
             //pl.Line.Color = Color.Transparent;
             //pl.Fill.Color = Color.Transparent;

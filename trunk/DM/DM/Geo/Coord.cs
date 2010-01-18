@@ -149,7 +149,7 @@ namespace DM.Geo
 
     public struct Coord3D
     {
-        public byte tag1;
+        public int tag1;
         double v;
         public double V { get { return v; } set { v = value; } }
         Coord plane;
@@ -165,7 +165,7 @@ namespace DM.Geo
             plane = new Coord(xx,yy);
             z = zz;
         }
-        public Coord3D(Coord3D c, byte t1)
+        public Coord3D(Coord3D c, int t1)
         {
             when = DateTime.MinValue;
             this.plane = c.Plane;
@@ -173,7 +173,7 @@ namespace DM.Geo
             this.v = c.v;
             this.tag1 = t1;
         }
-        public Coord3D(double xx, double yy, double zz, double vv, byte t1)
+        public Coord3D(double xx, double yy, double zz, double vv, int t1)
         {
             when = DateTime.MinValue;
             tag1 = t1;
@@ -182,7 +182,7 @@ namespace DM.Geo
             z = zz;
             v = vv;
         }
-        public Coord3D(double xx, double yy, double zz, double vv, byte t1,DateTime dt)
+        public Coord3D(double xx, double yy, double zz, double vv, int t1,DateTime dt)
         {
             when = dt;
             tag1 = t1;
@@ -204,6 +204,17 @@ namespace DM.Geo
         {
             return string.Format("{{X={0:0.00},Y={1:0.00},Z={2:0.00},V={3:0.00}}}",plane.X, plane.Y, z, v);
         }
+
+        public bool Equals(Coord3D obj)
+        {
+            if (this.Plane.X == obj.Plane.X && this.Plane.Y == obj.Plane.Y)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+      
         DateTime when;
         public DateTime When { get { return when; } set { when = value; } }
     }

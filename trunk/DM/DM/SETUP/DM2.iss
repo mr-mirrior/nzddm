@@ -7,7 +7,7 @@ AppVerName=大坝填筑质量GPS监控系统
 DefaultDirName={pf}\大坝填筑质量GPS监控系统
 DefaultGroupName=大坝填筑质量GPS监控系统
 OutputDir=.\
-OutputBaseFilename=SETUP 2-25 debug
+OutputBaseFilename=SETUP 2-25 d
 Compression=lzma
 SolidCompression=yes
 SetupIconFile=..\DM21.ico
@@ -21,7 +21,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 ;Source: "..\bin\release\HVMRuntm.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\bin\debug\DM_Secure\DM.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\bin\debug\DM.exe"; DestDir: "{app}"; Flags: ignoreversion
 source: "TrackPoint.wav"; destdir:"{app}"; flags: ignoreversion
 Source: "..\bin\debug\difference.config"; DestDir: "{app}"; Flags: ignoreversion
 ;Source: ".\TrackingExp.txt"; DestDir: "{app}"; Flags: ignoreversion

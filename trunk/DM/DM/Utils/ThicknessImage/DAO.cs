@@ -422,12 +422,14 @@ namespace DM.DB.datamap
         public byte[] ToByte(Image image)
         {
             System.IO.MemoryStream Ms = new System.IO.MemoryStream();
-            image.Save(Ms, System.Drawing.Imaging.ImageFormat.Bmp);//把图像数据序列化到内存
+            if(image!=null)
+            {
+                image.Save(Ms, System.Drawing.Imaging.ImageFormat.Bmp);//把图像数据序列化到内存
+            }
             byte[] imgByte = new byte[Ms.Length];
             Ms.Position = 0;
             Ms.Read(imgByte, 0, Convert.ToInt32(Ms.Length));//反序列，存放在字节数组里
             Ms.Close();
-
             return imgByte;//这里我们就得到了图像的字节数组了
 
         }

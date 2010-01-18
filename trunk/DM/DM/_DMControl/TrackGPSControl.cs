@@ -59,7 +59,7 @@ namespace DM.DMControl
             {
                 blh = new DM.Geo.BLH(pt.Y, pt.X, pt.Z);
                 xyz = Geo.Coord84To54.Convert(blh);
-                Geo.Coord3D c3d = new DM.Geo.Coord3D(xyz.y, -xyz.x, xyz.z, (double)pt.V/100, 0);
+                Geo.Coord3D c3d = new DM.Geo.Coord3D(xyz.y, -xyz.x, xyz.z, (double)pt.V/100, pt.Tag);
                 c3d.When = pt.Dttrace;
                 c3d.Z -= owner.Info.GPSHeight;
                 if( owner.Owner.Owner.RectContains(c3d.Plane) && IsValid(lst, c3d, owner.Owner.DeckInfo, owner.Info))
